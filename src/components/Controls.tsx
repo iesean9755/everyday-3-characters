@@ -1,0 +1,3 @@
+export function SpeakerButton({onClick,label='再听一遍'}:{onClick:()=>void;label?:string}){return <button className="speaker" onClick={onClick} aria-label={label}><span aria-hidden="true">🔊</span><span>{label}</span></button>}
+export function PrimaryButton({onClick,label,icon='▶',disabled=false}:{onClick:()=>void;label:string;icon?:string;disabled?:boolean}){return <button className="primary" onClick={onClick} disabled={disabled} aria-label={label}><span aria-hidden="true">{icon}</span><span>{label}</span></button>}
+export function ProgressDots({current,total}:{current:number;total:number}){return <div className="dots" aria-label={`已完成${current}个，共${total}个`}>{Array.from({length:total},(_,i)=><span key={i} className={i<current?'done':''}>{i<current?'✓':''}</span>)}</div>}

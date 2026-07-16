@@ -1,0 +1,26 @@
+{
+  "appId": "com.everydaythreecharacters.app",
+  "appName": "每天认3个字",
+  "webDir": "dist",
+  "android": {
+    "backgroundColor": "#f6f1e7"
+  },
+  "ios": {
+    "backgroundColor": "#f6f1e7",
+    "preferredContentMode": "mobile"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 1500,
+      "launchAutoHide": true,
+      "backgroundColor": "#315c4c",
+      "showSpinner": false,
+      "androidScaleType": "CENTER_CROP"
+    },
+    "StatusBar": {
+      "overlaysWebView": false,
+      "style": "DARK",
+      "backgroundColor": "#f6f1e7"
+    }
+  }
+}

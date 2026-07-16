@@ -1,0 +1,1136 @@
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Capacitor } from "@capacitor/core";
+import { App as NativeApp } from "@capacitor/app";
+import { Network } from "@capacitor/network";
+import { SplashScreen } from "@capacitor/splash-screen";
+import { StatusBar, Style } from "@capacitor/status-bar";
+import { courses } from "./data/courses";
+import {
+  PrimaryButton,
+  ProgressDots,
+  SpeakerButton,
+} from "./components/Controls";
+import { SceneArt } from "./components/SceneArt";
+import {
+  findNextCourseIndex,
+  freshProgress,
+  loadProgress,
+  saveProgress,
+} from "./lib/storage";
+import {
+  getChineseVoices,
+  initializeVoices,
+  preloadAudio,
+  speak,
+  speakTeaching,
+  stopSpeech,
+  subscribeVoices,
+  type PlaybackResult,
+} from "./lib/speech";
+import type { Progress, Stage } from "./types";
+
+const distractors = [
+  "水",
+  "木",
+  "人",
+  "大",
+  "中",
+  "天",
+  "手",
+  "白",
+  "里",
+  "山",
+];
+function App({ initialProgress }: { initialProgress?: Progress } = {}) {
+  const [p, setP] = useState<Progress>(() => initialProgress ?? loadProgress());
+  const [locked, setLocked] = useState(false);
+  const [feedback, setFeedback] = useState<"good" | "retry" | null>(null);
+  const [soundHelp, setSoundHelp] = useState(false);
+  const [voiceRevision, setVoiceRevision] = useState(0);
+  const [storageOk, setStorageOk] = useState(true);
+  const idleCount = useRef(0);
+  const idleTimer = useRef<number | undefined>(undefined);
+  const holdTimer = useRef<number | undefined>(undefined);
+  const soundAttempt = useRef(0);
+  const progressRef = useRef(p);
+  const lastBackAt = useRef(0);
+  const [isOffline, setIsOffline] = useState(!navigator.onLine);
+  progressRef.current = p;
+  const course = courses[p.courseIndex % courses.length];
+  const allItems = useMemo(() => courses.flatMap((c) => c.characters), []);
+  const dailyItems = course.characters;
+  const todayItems = useMemo(
+    () =>
+      p.todayLearnedCharacterIds
+        .map((id) => allItems.find((item) => item.id === id))
+        .filter((item): item is NonNullable<typeof item> => !!item),
+    [allItems, p.todayLearnedCharacterIds],
+  );
+  const priorItems = useMemo(
+    () =>
+      p.reviewIds
+        .map((id) => allItems.find((x) => x.id === id))
+        .filter((x): x is NonNullable<typeof x> => !!x),
+    [allItems, p.reviewIds],
+  );
+  const item =
+    dailyItems[Math.min(Math.max(p.characterIndex, 0), dailyItems.length - 1)];
+  const activeReviewItems = p.characterIndex === -1 ? priorItems : dailyItems;
+  const hasMoreCourses = p.nextCourseIndex < courses.length;
+  const maxReached =
+    p.settings.maxDailyCharacters !== null &&
+    p.todayNewCharacterCount >= p.settings.maxDailyCharacters;
+  const handlePlayback = useCallback((result: PlaybackResult) => {
+    if (result.ok) setSoundHelp(false);
+    else setSoundHelp(true);
+    return result;
+  }, []);
+  const say = useCallback(
+    async (text: string, audioPath?: string) => {
+      const attempt = ++soundAttempt.current;
+      const result = await speak(text, {
+        rate: p.settings.speechRate,
+        voiceName: p.settings.voiceName,
+        audioPath,
+      });
+      return attempt === soundAttempt.current ? handlePlayback(result) : result;
+    },
+    [handlePlayback, p.settings.speechRate, p.settings.voiceName],
+  );
+  const sayTeaching = useCallback(async () => {
+    const attempt = ++soundAttempt.current;
+    const result = await speakTeaching(item, {
+      rate: p.settings.speechRate,
+      voiceName: p.settings.voiceName,
+      introPauseMs: p.settings.introPauseMs,
+      characterPauseMs: p.settings.characterPauseMs,
+    });
+    return attempt === soundAttempt.current ? handlePlayback(result) : result;
+  }, [handlePlayback, item, p.settings]);
+  const commit = useCallback((next: Progress) => {
+    setP(next);
+    setStorageOk(saveProgress(next));
+  }, []);
+  const go = useCallback(
+    (stage: Stage, extra: Partial<Progress> = {}) => {
+      if (locked) return;
+      setLocked(true);
+      soundAttempt.current += 1;
+      setSoundHelp(false);
+      stopSpeech();
+      commit({ ...p, stage, ...extra });
+      window.setTimeout(() => setLocked(false), 650);
+    },
+    [commit, locked, p],
+  );
+  const stageSpeech = useMemo(() => {
+    switch (p.stage) {
+      case "welcome":
+      case "home":
+        return p.dailyBaseGoalCompleted
+          ? "您今天已经完成任务。想继续学习，请点中间的大按钮。"
+          : "您好，今天我们认识三个字。请点一下屏幕中间的大圆按钮。";
+      case "goal":
+        return `今天我们学习${course.goal}，一共认识${dailyItems.length}个字。`;
+      case "learn":
+        return item.speech;
+      case "quiz":
+        return `请找出${item.char}字。`;
+      case "review":
+        return `请找出${activeReviewItems[p.reviewIndex]?.char ?? dailyItems[0].char}字。`;
+      case "todayReview":
+        return `请找出${todayItems[p.reviewIndex]?.char ?? todayItems[0]?.char ?? "刚学过的"}字。`;
+      case "complete":
+        return "今天的三个字已经学会了。您可以今天学到这里，也可以再学三个新字。";
+      case "rest":
+        return "您今天已经学了不少，可以休息一下，明天再学。";
+      default:
+        return "";
+    }
+  }, [
+    activeReviewItems,
+    course,
+    dailyItems,
+    item,
+    p.dailyBaseGoalCompleted,
+    p.reviewIndex,
+    p.stage,
+    todayItems,
+  ]);
+  const stageAudio = useMemo(() => {
+    switch (p.stage) {
+      case "welcome":
+      case "home":
+        return "/audio/system/welcome.mp3";
+      case "goal":
+        return course.openingAudio;
+      case "quiz":
+        return item.questionAudio;
+      case "review":
+        return activeReviewItems[p.reviewIndex]?.questionAudio;
+      case "todayReview":
+        return todayItems[p.reviewIndex]?.questionAudio;
+      case "complete":
+        return course.completionAudio;
+      default:
+        return undefined;
+    }
+  }, [activeReviewItems, course, item, p.reviewIndex, p.stage, todayItems]);
+  const playCurrentStage = useCallback(
+    () => (p.stage === "learn" ? sayTeaching() : say(stageSpeech, stageAudio)),
+    [p.stage, say, sayTeaching, stageAudio, stageSpeech],
+  );
+  useEffect(() => {
+    const cleanupVoices = initializeVoices();
+    const unsubscribe = subscribeVoices(() =>
+      setVoiceRevision((value) => value + 1),
+    );
+    return () => {
+      unsubscribe();
+      cleanupVoices();
+      stopSpeech();
+    };
+  }, []);
+  useEffect(() => {
+    const available = getChineseVoices();
+    if (!available.length) return;
+    if (!available.some((voice) => voice.name === p.settings.voiceName)) {
+      commit({
+        ...p,
+        settings: { ...p.settings, voiceName: available[0].name },
+      });
+    }
+    // voiceRevision 仅用于 voiceschanged 后重新检查设备音色。
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [voiceRevision]);
+  useEffect(() => {
+    void preloadAudio([
+      course.openingAudio,
+      course.completionAudio,
+      ...dailyItems.flatMap((entry) => [
+        entry.teachingAudio,
+        entry.introAudio,
+        entry.characterAudio,
+        entry.explanationAudio,
+        entry.exampleAudio,
+        entry.questionAudio,
+        entry.successAudio,
+        entry.retryAudio,
+      ]),
+    ]);
+  }, [course, dailyItems]);
+  useEffect(() => {
+    document.documentElement.style.setProperty(
+      "--font-scale",
+      String(p.settings.fontScale),
+    );
+    if (p.settings.autoPlay && stageSpeech) {
+      const id = window.setTimeout(() => void playCurrentStage(), 350);
+      return () => {
+        clearTimeout(id);
+        stopSpeech();
+      };
+    }
+  }, [
+    p.settings.autoPlay,
+    p.settings.fontScale,
+    playCurrentStage,
+    stageSpeech,
+  ]);
+  useEffect(() => {
+    const reset = () => {
+      idleCount.current = 0;
+      clearTimeout(idleTimer.current);
+      idleTimer.current = window.setTimeout(() => {
+        if (
+          idleCount.current < 2 &&
+          p.stage !== "complete" &&
+          p.stage !== "settings"
+        ) {
+          idleCount.current++;
+          void say("请点一下屏幕，我们继续学习。");
+        }
+      }, 30000);
+    };
+    reset();
+    window.addEventListener("pointerdown", reset);
+    return () => {
+      clearTimeout(idleTimer.current);
+      window.removeEventListener("pointerdown", reset);
+    };
+  }, [p.stage, say]);
+  useEffect(() => {
+    const onVisibility = () => {
+      if (document.hidden) {
+        stopSpeech();
+        saveProgress(p);
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => document.removeEventListener("visibilitychange", onVisibility);
+  }, [p]);
+  useEffect(() => {
+    const platform = Capacitor.getPlatform();
+    document.documentElement.dataset.platform = platform;
+    let active = true;
+    const removers: Array<() => Promise<void>> = [];
+
+    const setup = async () => {
+      const status = await Network.getStatus();
+      if (active) setIsOffline(!status.connected);
+      const networkListener = await Network.addListener(
+        "networkStatusChange",
+        (next) => active && setIsOffline(!next.connected),
+      );
+      removers.push(() => networkListener.remove());
+
+      if (!Capacitor.isNativePlatform()) return;
+      await StatusBar.setOverlaysWebView({ overlay: false });
+      await StatusBar.setStyle({ style: Style.Dark });
+      if (platform === "android") {
+        await StatusBar.setBackgroundColor({ color: "#f6f1e7" });
+      }
+      await SplashScreen.hide();
+
+      const stateListener = await NativeApp.addListener(
+        "appStateChange",
+        ({ isActive }) => {
+          document.documentElement.classList.toggle("app-background", !isActive);
+          if (!isActive) {
+            soundAttempt.current += 1;
+            stopSpeech();
+            saveProgress(progressRef.current);
+          }
+        },
+      );
+      removers.push(() => stateListener.remove());
+
+      if (platform === "android") {
+        const backListener = await NativeApp.addListener("backButton", () => {
+          const now = Date.now();
+          if (now - lastBackAt.current < 500) return;
+          lastBackAt.current = now;
+          const current = progressRef.current;
+          soundAttempt.current += 1;
+          stopSpeech();
+          if (current.stage === "home" || current.stage === "welcome") {
+            void NativeApp.exitApp();
+            return;
+          }
+          const next: Progress = {
+            ...current,
+            stage: "home",
+            characterIndex: 0,
+            reviewIndex: 0,
+          };
+          setP(next);
+          saveProgress(next);
+        });
+        removers.push(() => backListener.remove());
+      }
+    };
+    void setup();
+    return () => {
+      active = false;
+      removers.forEach((remove) => void remove());
+    };
+  }, []);
+  const start = () =>
+    go("goal", {
+      courseIndex: Math.min(p.nextCourseIndex, courses.length - 1),
+      characterIndex: 0,
+      reviewIndex: 0,
+    });
+  const goHome = () => go("home", { characterIndex: 0, reviewIndex: 0 });
+  const startNextGroup = (afterRest = false) => {
+    if (!hasMoreCourses || maxReached) return goHome();
+    if (
+      !afterRest &&
+      p.todayExtraGroupCount > 0 &&
+      p.currentExtraGroupProgress >= 2
+    ) {
+      go("rest");
+      return;
+    }
+    go("goal", {
+      courseIndex: p.nextCourseIndex,
+      characterIndex: 0,
+      reviewIndex: 0,
+      reviewIds: [],
+      currentExtraGroupProgress: afterRest ? 0 : p.currentExtraGroupProgress,
+    });
+  };
+  const begin = () =>
+    priorItems.length
+      ? go("review", { characterIndex: -1, reviewIndex: 0 })
+      : go("learn", { characterIndex: 0 });
+  const afterLearn = () => go("quiz");
+  const finishCurrentGroup = (nextStats: Progress["answerStats"]) => {
+    const oldTotal = new Set(p.totalLearnedCharacterIds);
+    const newIds = dailyItems
+      .map((entry) => entry.id)
+      .filter((id) => !oldTotal.has(id));
+    const totalIds = [...new Set([...p.totalLearnedCharacterIds, ...newIds])];
+    const todayIds = [...new Set([...p.todayLearnedCharacterIds, ...newIds])];
+    const firstBaseCompletion =
+      !p.dailyBaseGoalCompleted && todayIds.length >= 3;
+    const isExtraGroup = p.dailyBaseGoalCompleted && newIds.length > 0;
+    const baseCompleted = p.dailyBaseGoalCompleted || todayIds.length >= 3;
+    const extraGroups = p.todayExtraGroupCount + (isExtraGroup ? 1 : 0);
+    const nextCourseIndex = findNextCourseIndex(totalIds, p.courseIndex + 1);
+    const completedDates = baseCompleted
+      ? [...new Set([...p.completedDates, p.date])]
+      : p.completedDates;
+    const streak =
+      firstBaseCompletion && p.lastCompletedDate !== p.date
+        ? p.streak + 1
+        : p.streak;
+    go("complete", {
+      reviewIndex: 0,
+      answerStats: nextStats,
+      completedToday: baseCompleted,
+      dailyBaseGoalCompleted: baseCompleted,
+      todayLearnedCharacterIds: todayIds,
+      todayNewCharacterCount: todayIds.length,
+      todayExtraGroupCount: extraGroups,
+      totalLearnedCharacterIds: totalIds,
+      learnedIds: totalIds,
+      nextCourseIndex,
+      currentExtraGroupProgress:
+        p.currentExtraGroupProgress + (isExtraGroup ? 1 : 0),
+      streak,
+      lastCompletedDate: firstBaseCompletion ? p.date : p.lastCompletedDate,
+      completedDates,
+      dailyStats: {
+        ...p.dailyStats,
+        [p.date]: {
+          learnedCharacterIds: todayIds,
+          newCharacterCount: todayIds.length,
+          extraGroupCount: extraGroups,
+          baseGoalCompleted: baseCompleted,
+        },
+      },
+    });
+  };
+  const answer = (choice: string, target = item.char, isReview = false) => {
+    if (locked) return;
+    const reviewItem = activeReviewItems[p.reviewIndex];
+    const id = isReview ? reviewItem.id : item.id;
+    const stats = p.answerStats[id] ?? { correct: 0, wrong: 0 };
+    if (choice === target) {
+      setFeedback("good");
+      void say(
+        `找对了，这个字念${target}。`,
+        (isReview ? reviewItem : item).successAudio,
+      );
+      const nextStats = {
+        ...p.answerStats,
+        [id]: { ...stats, correct: stats.correct + 1 },
+      };
+      window.setTimeout(() => {
+        setFeedback(null);
+        if (isReview) {
+          const next = p.reviewIndex + 1;
+          if (next >= activeReviewItems.length) {
+            if (p.characterIndex === -1)
+              go("learn", {
+                characterIndex: 0,
+                reviewIndex: 0,
+                reviewIds: [],
+                answerStats: nextStats,
+              });
+            else finishCurrentGroup(nextStats);
+          } else go("review", { reviewIndex: next, answerStats: nextStats });
+        } else {
+          const next = p.characterIndex + 1;
+          if (next >= dailyItems.length)
+            go("review", { reviewIndex: 0, answerStats: nextStats });
+          else go("learn", { characterIndex: next, answerStats: nextStats });
+        }
+      }, 1050);
+    } else {
+      setFeedback("retry");
+      commit({
+        ...p,
+        answerStats: {
+          ...p.answerStats,
+          [id]: { ...stats, wrong: stats.wrong + 1 },
+        },
+      });
+      void say(
+        `没关系，我们再看一次。这个字念${target}。`,
+        (isReview ? reviewItem : item).retryAudio,
+      );
+      window.setTimeout(() => setFeedback(null), 1800);
+    }
+  };
+  const answerTodayReview = (choice: string) => {
+    if (locked || !todayItems.length) return;
+    const reviewItem = todayItems[p.reviewIndex];
+    const stats = p.answerStats[reviewItem.id] ?? { correct: 0, wrong: 0 };
+    if (choice === reviewItem.char) {
+      setFeedback("good");
+      void say(`找对了，这个字念${reviewItem.char}。`, reviewItem.successAudio);
+      const answerStats = {
+        ...p.answerStats,
+        [reviewItem.id]: { ...stats, correct: stats.correct + 1 },
+      };
+      window.setTimeout(() => {
+        setFeedback(null);
+        const next = p.reviewIndex + 1;
+        if (next >= todayItems.length)
+          go("home", { reviewIndex: 0, answerStats });
+        else go("todayReview", { reviewIndex: next, answerStats });
+      }, 900);
+    } else {
+      setFeedback("retry");
+      commit({
+        ...p,
+        answerStats: {
+          ...p.answerStats,
+          [reviewItem.id]: { ...stats, wrong: stats.wrong + 1 },
+        },
+      });
+      void say(
+        `没关系，我们再看一次。这个字念${reviewItem.char}。`,
+        reviewItem.retryAudio,
+      );
+      window.setTimeout(() => setFeedback(null), 1500);
+    }
+  };
+  const startTodayReview = () => {
+    if (todayItems.length) go("todayReview", { reviewIndex: 0 });
+  };
+  const options = (target: string, index: number) =>
+    index % 2
+      ? [distractors[(p.courseIndex + index) % distractors.length], target]
+      : [target, distractors[(p.courseIndex + index) % distractors.length]];
+  const familyStart = () => {
+    holdTimer.current = window.setTimeout(() => go("settings"), 3000);
+  };
+  const familyEnd = () => clearTimeout(holdTimer.current);
+  if (p.stage === "settings")
+    return (
+      <Settings
+        progress={p}
+        onSave={(next) =>
+          commit({
+            ...next,
+            stage: p.dailyBaseGoalCompleted ? "home" : "goal",
+          })
+        }
+        onClose={() => go(p.dailyBaseGoalCompleted ? "home" : "goal")}
+        onAction={commit}
+      />
+    );
+  return (
+    <main className={`app stage-${p.stage}`}>
+      {isOffline && (
+        <div className="offline-banner" role="status">
+          当前无网络，本地课程仍可学习
+        </div>
+      )}
+      <button
+        className="family-entry"
+        aria-label="家人设置，长按三秒"
+        onPointerDown={familyStart}
+        onPointerUp={familyEnd}
+        onPointerLeave={familyEnd}
+      >
+        ⌂
+      </button>
+      {!storageOk && (
+        <div className="gentle-warning" role="status">
+          ⚠️ 学习记录暂时没有保存，请保持页面打开
+        </div>
+      )}
+      {soundHelp && (
+        <div className="sound-help-overlay" role="presentation">
+          <button
+            className="sound-help"
+            onClick={() => {
+              setSoundHelp(false);
+              void playCurrentStage();
+            }}
+            aria-label="声音没有播放，点这里开启声音"
+          >
+            <span>🔊</span>
+            <small>点这里听声音</small>
+          </button>
+        </div>
+      )}
+      {(p.stage === "welcome" || p.stage === "home") &&
+        !p.dailyBaseGoalCompleted && (
+          <section className="center">
+            <div className="brand-tree" aria-hidden="true">
+              🌳
+            </div>
+            <h1>每天认3个字</h1>
+            <p>听声音，看图，认生活里的字</p>
+            <button
+              className="start-orb"
+              onClick={start}
+              disabled={locked}
+              aria-label="开始今天的学习"
+            >
+              <span>▶</span>
+            </button>
+            <SpeakerButton
+              onClick={() => void playCurrentStage()}
+              label="听一听"
+            />
+          </section>
+        )}
+      {(p.stage === "welcome" || p.stage === "home") &&
+        p.dailyBaseGoalCompleted && (
+          <section className="center completed-home">
+            <div className="complete-mark" aria-hidden="true">
+              ✓
+            </div>
+            <h1>今天的目标已完成</h1>
+            <p>今天已经认识 {p.todayNewCharacterCount} 个字。</p>
+            {hasMoreCourses && !maxReached ? (
+              <PrimaryButton
+                onClick={() => startNextGroup()}
+                label="继续学3个"
+                icon="➜"
+                disabled={locked}
+              />
+            ) : (
+              <p className="limit-message">
+                {hasMoreCourses
+                  ? "今天已经达到家人设置的学习量。"
+                  : "全部课程已经学完。"}
+              </p>
+            )}
+            <button
+              className="review-today"
+              onClick={startTodayReview}
+              disabled={!todayItems.length || locked}
+              aria-label="复习今天学过的字"
+            >
+              <span aria-hidden="true">↻</span> 复习今天的字
+            </button>
+            <SpeakerButton
+              onClick={() => void playCurrentStage()}
+              label="听一听"
+            />
+          </section>
+        )}
+      {p.stage === "goal" && (
+        <section>
+          <ProgressDots current={0} total={dailyItems.length} />
+          <h1>{course.goal}</h1>
+          <SceneArt
+            icon={course.icon}
+            theme={course.theme}
+            label={course.scene}
+            onClick={() => void playCurrentStage()}
+          />
+          <PrimaryButton
+            onClick={begin}
+            label={priorItems.length ? "先复习昨天" : "开始学习"}
+            disabled={locked}
+          />
+          <SpeakerButton onClick={() => void playCurrentStage()} />
+        </section>
+      )}
+      {p.stage === "learn" && (
+        <section>
+          <ProgressDots current={p.characterIndex} total={dailyItems.length} />
+          <div className="step-label">
+            第 {p.characterIndex + 1} 个，共 {dailyItems.length} 个
+          </div>
+          <SceneArt
+            icon={course.icon}
+            theme={course.theme}
+            label={item.scene}
+            onClick={() => void sayTeaching()}
+          />
+          <button
+            className="character-card"
+            onClick={() => void sayTeaching()}
+            aria-label={`${item.char}，点击重听`}
+          >
+            <strong>{item.char}</strong>
+            <span>{item.pinyin}</span>
+          </button>
+          <p className="example">{item.example}</p>
+          <PrimaryButton
+            onClick={afterLearn}
+            label="我看清了"
+            icon="➜"
+            disabled={locked}
+          />
+          <SpeakerButton onClick={() => void sayTeaching()} />
+        </section>
+      )}
+      {p.stage === "quiz" && (
+        <Quiz
+          title={`请找出“${item.char}”`}
+          target={item.char}
+          choices={options(item.char, p.characterIndex)}
+          feedback={feedback}
+          disabled={locked}
+          onAnswer={(c) => answer(c)}
+          onSpeak={() => void say(stageSpeech, item.questionAudio)}
+        />
+      )}
+      {p.stage === "review" &&
+        (() => {
+          const q = activeReviewItems[p.reviewIndex] ?? dailyItems[0];
+          return (
+            <Quiz
+              title={
+                p.characterIndex === -1
+                  ? "先复习昨天学过的字"
+                  : "听一听，找出刚学的字"
+              }
+              target={q.char}
+              choices={options(q.char, p.reviewIndex + 1)}
+              feedback={feedback}
+              disabled={locked}
+              onAnswer={(c) => answer(c, q.char, true)}
+              onSpeak={() => void say(`请找出${q.char}字。`, q.questionAudio)}
+            />
+          );
+        })()}
+      {p.stage === "todayReview" &&
+        (() => {
+          const q = todayItems[p.reviewIndex] ?? todayItems[0];
+          if (!q) return null;
+          return (
+            <Quiz
+              title={`复习今天的字（${p.reviewIndex + 1}/${todayItems.length}）`}
+              target={q.char}
+              choices={options(q.char, p.reviewIndex + 1)}
+              feedback={feedback}
+              disabled={locked}
+              onAnswer={answerTodayReview}
+              onSpeak={() => void say(`请找出${q.char}字。`, q.questionAudio)}
+            />
+          );
+        })()}
+      {p.stage === "complete" && (
+        <section className="complete">
+          <div className="complete-mark">✓</div>
+          <h1>这3个字学会了</h1>
+          <div className="learned-row">
+            {dailyItems.map((c) => (
+              <div key={c.id}>
+                <span>{c.char}</span>
+                <small>{course.icon}</small>
+              </div>
+            ))}
+          </div>
+          <div className="tree-growth">
+            <span aria-hidden="true">🌳</span>
+            <b>已学习 {p.streak} 天</b>
+          </div>
+          <p>今天共认识 {p.todayNewCharacterCount} 个字</p>
+          {hasMoreCourses && !maxReached && (
+            <PrimaryButton
+              onClick={() => startNextGroup()}
+              label="再学3个新字"
+              icon="➜"
+              disabled={locked}
+            />
+          )}
+          <button
+            className="today-done"
+            onClick={goHome}
+            disabled={locked}
+            aria-label="今天到这里，返回首页"
+          >
+            <span aria-hidden="true">⌂</span> 今天到这里
+          </button>
+          <button
+            className="review-today compact"
+            onClick={startTodayReview}
+            disabled={!todayItems.length || locked}
+            aria-label="复习今天学过的字"
+          >
+            <span aria-hidden="true">↻</span> 复习今天学过的字
+          </button>
+          <SpeakerButton
+            onClick={() => void say(stageSpeech, course.completionAudio)}
+            label="再听一遍"
+          />
+        </section>
+      )}
+      {p.stage === "rest" && (
+        <section className="center rest-page">
+          <div className="rest-icon" aria-hidden="true">
+            🍵
+          </div>
+          <h1>今天学了不少</h1>
+          <p>可以休息一下，明天再学。</p>
+          <PrimaryButton
+            onClick={goHome}
+            label="今天到这里"
+            icon="⌂"
+            disabled={locked}
+          />
+          <button
+            className="continue-secondary"
+            onClick={() => startNextGroup(true)}
+            disabled={locked || maxReached || !hasMoreCourses}
+            aria-label="我还想继续学习三个新字"
+          >
+            <span aria-hidden="true">➜</span> 我还想继续
+          </button>
+          <SpeakerButton
+            onClick={() => void playCurrentStage()}
+            label="再听一遍"
+          />
+        </section>
+      )}
+    </main>
+  );
+}
+function Quiz({
+  title,
+  target,
+  choices,
+  feedback,
+  disabled,
+  onAnswer,
+  onSpeak,
+}: {
+  title: string;
+  target: string;
+  choices: string[];
+  feedback: "good" | "retry" | null;
+  disabled: boolean;
+  onAnswer: (c: string) => void;
+  onSpeak: () => void;
+}) {
+  return (
+    <section className="quiz">
+      <h1>{title}</h1>
+      <div className="choice-grid">
+        {choices.map((c) => (
+          <button
+            key={c}
+            disabled={disabled}
+            onClick={() => onAnswer(c)}
+            className={feedback && c === target ? "highlight" : ""}
+            aria-label={`选择${c}字`}
+          >
+            <span>{c}</span>
+            {feedback === "good" && c === target && <b>✓</b>}
+          </button>
+        ))}
+      </div>
+      <div className="feedback" aria-live="assertive">
+        {feedback === "good"
+          ? "找对了！"
+          : feedback === "retry"
+            ? "没关系，再看一次"
+            : " "}
+      </div>
+      <SpeakerButton onClick={onSpeak} />
+    </section>
+  );
+}
+function Settings({
+  progress,
+  onSave,
+  onClose,
+  onAction,
+}: {
+  progress: Progress;
+  onSave: (p: Progress) => void;
+  onClose: () => void;
+  onAction: (p: Progress) => void;
+}) {
+  const [s, setS] = useState(progress.settings);
+  const [voiceOptions, setVoiceOptions] = useState(() => getChineseVoices());
+  const [previewMessage, setPreviewMessage] = useState("");
+  useEffect(() => {
+    const update = () => setVoiceOptions(getChineseVoices());
+    const cleanupVoices = initializeVoices();
+    const unsubscribe = subscribeVoices(update);
+    update();
+    return () => {
+      unsubscribe();
+      cleanupVoices();
+      stopSpeech();
+    };
+  }, []);
+  const stats = Object.entries(progress.answerStats)
+    .filter(([, v]) => v.wrong > 0)
+    .sort((a, b) => b[1].wrong - a[1].wrong)
+    .slice(0, 8);
+  const reExperienceToday = () => {
+    const currentIds = new Set(
+      courses[progress.courseIndex]?.characters.map((item) => item.id) ?? [],
+    );
+    onAction({
+      ...progress,
+      stage: "goal",
+      characterIndex: 0,
+      reviewIndex: 0,
+      reviewIds: [],
+      answerStats: Object.fromEntries(
+        Object.entries(progress.answerStats).filter(
+          ([id]) => !currentIds.has(id),
+        ),
+      ),
+      settings: s,
+    });
+  };
+  const clearToday = () => {
+    if (!confirm("确定清除今天的学习记录吗？长期历史和家人设置会保留。"))
+      return;
+    const todaySet = new Set(progress.todayLearnedCharacterIds);
+    const totalIds = progress.totalLearnedCharacterIds.filter(
+      (id) => !todaySet.has(id),
+    );
+    const earliestTodayCourse = progress.todayLearnedCharacterIds.length
+      ? Math.max(
+          0,
+          Math.min(
+            ...progress.todayLearnedCharacterIds.map(
+              (id) => Number(id.match(/^d(\d+)-/)?.[1] ?? 1) - 1,
+            ),
+          ),
+        )
+      : progress.nextCourseIndex;
+    const completedDates = progress.completedDates.filter(
+      (date) => date !== progress.date,
+    );
+    const dailyStats = { ...progress.dailyStats };
+    delete dailyStats[progress.date];
+    onAction({
+      ...progress,
+      stage: "welcome",
+      courseIndex: earliestTodayCourse,
+      characterIndex: 0,
+      reviewIndex: 0,
+      answerStats: Object.fromEntries(
+        Object.entries(progress.answerStats).filter(
+          ([id]) => !todaySet.has(id),
+        ),
+      ),
+      reviewIds: [],
+      learnedIds: totalIds,
+      totalLearnedCharacterIds: totalIds,
+      nextCourseIndex: findNextCourseIndex(totalIds, earliestTodayCourse),
+      completedToday: false,
+      dailyBaseGoalCompleted: false,
+      todayLearnedCharacterIds: [],
+      todayNewCharacterCount: 0,
+      todayExtraGroupCount: 0,
+      currentExtraGroupProgress: 0,
+      streak:
+        progress.lastCompletedDate === progress.date
+          ? Math.max(0, progress.streak - 1)
+          : progress.streak,
+      lastCompletedDate: completedDates.at(-1) ?? "",
+      completedDates,
+      dailyStats,
+      settings: s,
+    });
+  };
+  const skipToNextGroup = () => {
+    const next = Math.min(progress.nextCourseIndex + 1, courses.length - 1);
+    onAction({
+      ...progress,
+      stage: "goal",
+      courseIndex: next,
+      nextCourseIndex: next,
+      characterIndex: 0,
+      reviewIndex: 0,
+      reviewIds: [],
+      settings: s,
+    });
+  };
+  const restoreAll = () => {
+    if (!confirm("确定恢复全部课程吗？所有学习记录都会清除，家人设置会保留。"))
+      return;
+    onAction({ ...freshProgress(), settings: s });
+  };
+  return (
+    <main className="settings">
+      <header>
+        <h1>家人设置</h1>
+        <button onClick={onClose} aria-label="关闭家人设置">
+          关闭
+        </button>
+      </header>
+      <label>
+        每天基础目标
+        <strong>3 个字</strong>
+      </label>
+      <label>
+        每天最多学习量
+        <select
+          value={s.maxDailyCharacters ?? "unlimited"}
+          onChange={(e) =>
+            setS({
+              ...s,
+              maxDailyCharacters:
+                e.target.value === "unlimited"
+                  ? null
+                  : (Number(e.target.value) as 3 | 6 | 9 | 15),
+            })
+          }
+        >
+          <option value="3">只完成基础3个字</option>
+          <option value="6">最多6个字</option>
+          <option value="9">最多9个字</option>
+          <option value="15">最多15个字</option>
+          <option value="unlimited">不限制</option>
+        </select>
+      </label>
+      <label>
+        语音速度
+        <input
+          type="range"
+          min="0.55"
+          max="1"
+          step="0.05"
+          value={s.speechRate}
+          onChange={(e) => setS({ ...s, speechRate: Number(e.target.value) })}
+        />
+      </label>
+      <label>
+        中文声音
+        <select
+          value={
+            voiceOptions.some((voice) => voice.name === s.voiceName)
+              ? s.voiceName
+              : (voiceOptions[0]?.name ?? "")
+          }
+          onChange={(e) => setS({ ...s, voiceName: e.target.value })}
+          disabled={!voiceOptions.length}
+        >
+          {!voiceOptions.length && <option value="">系统默认声音</option>}
+          {voiceOptions.map((voice) => (
+            <option key={`${voice.name}-${voice.lang}`} value={voice.name}>
+              {voice.label}
+            </option>
+          ))}
+        </select>
+      </label>
+      <div className="voice-preview">
+        <button
+          type="button"
+          onClick={async () => {
+            const voiceName = voiceOptions.some(
+              (voice) => voice.name === s.voiceName,
+            )
+              ? s.voiceName
+              : (voiceOptions[0]?.name ?? "");
+            const result = await speak("您好，这是现在选择的声音。", {
+              rate: s.speechRate,
+              voiceName,
+            });
+            setPreviewMessage(
+              result.ok ? `正在使用：${result.voiceName}` : "声音暂时无法播放",
+            );
+          }}
+        >
+          🔊 试听声音
+        </button>
+        <p role="status">
+          {previewMessage ||
+            (voiceOptions.length
+              ? `当前设备找到 ${voiceOptions.length} 个中文声音`
+              : "当前设备没有中文声音，将使用系统默认声音")}
+        </p>
+      </div>
+      <label>
+        目标字前停顿
+        <select
+          value={s.introPauseMs}
+          onChange={(e) => setS({ ...s, introPauseMs: Number(e.target.value) })}
+        >
+          <option value="400">短（0.4秒）</option>
+          <option value="600">标准（0.6秒）</option>
+          <option value="800">长（0.8秒）</option>
+        </select>
+      </label>
+      <label>
+        目标字后停顿
+        <select
+          value={s.characterPauseMs}
+          onChange={(e) =>
+            setS({ ...s, characterPauseMs: Number(e.target.value) })
+          }
+        >
+          <option value="700">短（0.7秒）</option>
+          <option value="900">标准（0.9秒）</option>
+          <option value="1200">长（1.2秒）</option>
+        </select>
+      </label>
+      <label>
+        字体大小
+        <input
+          type="range"
+          min="1"
+          max="1.3"
+          step="0.1"
+          value={s.fontScale}
+          onChange={(e) => setS({ ...s, fontScale: Number(e.target.value) })}
+        />
+      </label>
+      <label className="check">
+        <input
+          type="checkbox"
+          checked={s.autoPlay}
+          onChange={(e) => setS({ ...s, autoPlay: e.target.checked })}
+        />
+        自动播放语音
+      </label>
+      <label>
+        每日提醒时间
+        <input
+          type="time"
+          value={s.reminderTime}
+          onChange={(e) => setS({ ...s, reminderTime: e.target.value })}
+        />
+      </label>
+      <section className="records">
+        <h2>最近学习</h2>
+        <p>
+          完成 {progress.completedDates.length} 天 · 认识{" "}
+          {progress.totalLearnedCharacterIds.length} 个字
+        </p>
+        <h2>需要多复习</h2>
+        <p>
+          {stats.length
+            ? stats
+                .map(
+                  ([id]) =>
+                    courses
+                      .flatMap((c) => c.characters)
+                      .find((x) => x.id === id)?.char,
+                )
+                .join("、")
+            : "暂时没有"}
+        </p>
+      </section>
+      <button
+        className="save-settings"
+        onClick={() => {
+          onSave({ ...progress, settings: s });
+        }}
+      >
+        保存设置
+      </button>
+      <section className="test-tools">
+        <h2>测试工具</h2>
+        <p>以下入口只供家人和开发测试使用。</p>
+        <button onClick={reExperienceToday}>重新体验今天课程</button>
+        <button onClick={clearToday}>清除今日学习记录</button>
+        <button onClick={skipToNextGroup}>跳到下一组课程</button>
+        <button className="danger" onClick={restoreAll}>
+          恢复全部课程
+        </button>
+      </section>
+    </main>
+  );
+}
+export default App;

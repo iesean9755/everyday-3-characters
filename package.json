@@ -1,0 +1,49 @@
+{
+  "name": "everyday-3-characters",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview --host 0.0.0.0",
+    "test": "vitest run",
+    "audio:script": "node scripts/generate-audio-script.mjs",
+    "qa:browser": "node scripts/reproduce-sound-overlay.mjs",
+    "qa:pwa": "node scripts/qa-pwa-offline.mjs",
+    "mobile:build": "pnpm build && cap sync android && cap sync ios && node scripts/fix-ios-spm.mjs",
+    "mobile:sync": "pnpm mobile:build",
+    "android:open": "cap open android",
+    "android:run": "pnpm build && cap sync android && cap run android",
+    "android:apk": "pnpm build && cap sync android && node scripts/build-android.mjs",
+    "ios:open": "cap open ios"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.4.1",
+    "@capacitor/app": "^8.1.0",
+    "@capacitor/core": "^8.4.1",
+    "@capacitor/ios": "^8.4.1",
+    "@capacitor/network": "^8.0.1",
+    "@capacitor/preferences": "^8.0.1",
+    "@capacitor/splash-screen": "^8.0.1",
+    "@capacitor/status-bar": "^8.0.2",
+    "@testing-library/jest-dom": "latest",
+    "@testing-library/react": "latest",
+    "@vitejs/plugin-react": "latest",
+    "jsdom": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "typescript": "latest",
+    "vite": "latest",
+    "vite-plugin-pwa": "latest",
+    "vitest": "latest",
+    "workbox-window": "^7.4.1"
+  },
+  "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
+    "@capacitor/cli": "^8.4.1",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "playwright-core": "^1.61.1"
+  }
+}
