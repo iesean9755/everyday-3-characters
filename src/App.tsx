@@ -55,6 +55,7 @@ const distractors = [
 function App({ initialProgress }: { initialProgress?: Progress } = {}) {
   const [p, setP] = useState<Progress>(() => initialProgress ?? loadProgress());
   const [locked, setLocked] = useState(false);
+  const [answerLocked, setAnswerLocked] = useState(false);
   const [feedback, setFeedback] = useState<"good" | "retry" | null>(null);
   const [soundHelp, setSoundHelp] = useState(false);
   const [voiceRevision, setVoiceRevision] = useState(0);
@@ -62,11 +63,50 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
   const idleCount = useRef(0);
   const idleTimer = useRef<number | undefined>(undefined);
   const holdTimer = useRef<number | undefined>(undefined);
+  const timerIds = useRef<Set<number>>(new Set());
+  const answerLockRef = useRef(false);
+  const navigationLockRef = useRef(false);
+  const answerSequence = useRef(0);
   const soundAttempt = useRef(0);
   const progressRef = useRef(p);
   const lastBackAt = useRef(0);
   const [isOffline, setIsOffline] = useState(!navigator.onLine);
   progressRef.current = p;
+  const scheduleTimeout = useCallback(
+    (callback: () => void, delay: number) => {
+      const id = window.setTimeout(() => {
+        timerIds.current.delete(id);
+        callback();
+      }, delay);
+      timerIds.current.add(id);
+      return id;
+    },
+    [],
+  );
+  const clearScheduledTimeout = useCallback((id: number | undefined) => {
+    if (id === undefined) return;
+    window.clearTimeout(id);
+    timerIds.current.delete(id);
+  }, []);
+  const clearAllScheduledTimeouts = useCallback(() => {
+    timerIds.current.forEach((id) => window.clearTimeout(id));
+    timerIds.current.clear();
+    answerSequence.current += 1;
+  }, []);
+  const releaseAnswerLock = useCallback(() => {
+    answerLockRef.current = false;
+    setAnswerLocked(false);
+  }, []);
+  const acquireAnswerLock = useCallback(() => {
+    if (navigationLockRef.current || answerLockRef.current) return false;
+    answerLockRef.current = true;
+    setAnswerLocked(true);
+    return true;
+  }, []);
+  const releaseNavigationLock = useCallback(() => {
+    navigationLockRef.current = false;
+    setLocked(false);
+  }, []);
   const course = courses[p.courseIndex % courses.length];
   const allItems = useMemo(() => courses.flatMap((c) => c.characters), []);
   const dailyItems = course.characters;
@@ -136,21 +176,37 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
     });
     return attempt === soundAttempt.current ? handlePlayback(result) : result;
   }, [handlePlayback, item, p.settings]);
-  const commit = useCallback((next: Progress) => {
+  const commit = useCallback((createNext: Progress | ((current: Progress) => Progress)) => {
+    const next =
+      typeof createNext === "function"
+        ? createNext(progressRef.current)
+        : createNext;
+    progressRef.current = next;
     setP(next);
     setStorageOk(saveProgress(next));
+    return next;
   }, []);
   const go = useCallback(
     (stage: Stage, extra: Partial<Progress> = {}) => {
-      if (locked) return;
+      if (navigationLockRef.current) return;
+      clearAllScheduledTimeouts();
+      navigationLockRef.current = true;
       setLocked(true);
+      releaseAnswerLock();
+      setFeedback(null);
       soundAttempt.current += 1;
       setSoundHelp(false);
       stopSpeech();
-      commit({ ...p, ...extra, stage });
-      window.setTimeout(() => setLocked(false), 650);
+      commit((current) => ({ ...current, ...extra, stage }));
+      scheduleTimeout(releaseNavigationLock, 650);
     },
-    [commit, locked, p],
+    [
+      clearAllScheduledTimeouts,
+      commit,
+      releaseAnswerLock,
+      releaseNavigationLock,
+      scheduleTimeout,
+    ],
   );
   const stageSpeech = useMemo(() => {
     switch (p.stage) {
@@ -258,14 +314,21 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
       stopSpeech();
     };
   }, []);
+  useEffect(
+    () => () => {
+      clearAllScheduledTimeouts();
+    },
+    [clearAllScheduledTimeouts],
+  );
   useEffect(() => {
     const available = getChineseVoices();
     if (!available.length) return;
-    if (!available.some((voice) => voice.name === p.settings.voiceName)) {
-      commit({
-        ...p,
-        settings: { ...p.settings, voiceName: available[0].name },
-      });
+    const current = progressRef.current;
+    if (!available.some((voice) => voice.name === current.settings.voiceName)) {
+      commit((latest) => ({
+        ...latest,
+        settings: { ...latest.settings, voiceName: available[0].name },
+      }));
     }
     // voiceRevision 仅用于 voiceschanged 后重新检查设备音色。
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -292,9 +355,9 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
       String(p.settings.fontScale),
     );
     if (p.settings.autoPlay && stageSpeech) {
-      const id = window.setTimeout(() => void playCurrentStage(), 350);
+      const id = scheduleTimeout(() => void playCurrentStage(), 350);
       return () => {
-        clearTimeout(id);
+        clearScheduledTimeout(id);
         stopSpeech();
       };
     }
@@ -302,13 +365,15 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
     p.settings.autoPlay,
     p.settings.fontScale,
     playCurrentStage,
+    clearScheduledTimeout,
+    scheduleTimeout,
     stageSpeech,
   ]);
   useEffect(() => {
     const reset = () => {
       idleCount.current = 0;
-      clearTimeout(idleTimer.current);
-      idleTimer.current = window.setTimeout(() => {
+      clearScheduledTimeout(idleTimer.current);
+      idleTimer.current = scheduleTimeout(() => {
         if (
           idleCount.current < 2 &&
           p.stage !== "complete" &&
@@ -322,20 +387,28 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
     reset();
     window.addEventListener("pointerdown", reset);
     return () => {
-      clearTimeout(idleTimer.current);
+      clearScheduledTimeout(idleTimer.current);
       window.removeEventListener("pointerdown", reset);
     };
-  }, [p.stage, say]);
+  }, [clearScheduledTimeout, p.stage, say, scheduleTimeout]);
   useEffect(() => {
     const onVisibility = () => {
       if (document.hidden) {
+        clearAllScheduledTimeouts();
+        setFeedback(null);
+        releaseAnswerLock();
+        releaseNavigationLock();
         stopSpeech();
-        saveProgress(p);
+        saveProgress(progressRef.current);
       }
     };
     document.addEventListener("visibilitychange", onVisibility);
     return () => document.removeEventListener("visibilitychange", onVisibility);
-  }, [p]);
+  }, [
+    clearAllScheduledTimeouts,
+    releaseAnswerLock,
+    releaseNavigationLock,
+  ]);
   useEffect(() => {
     const platform = Capacitor.getPlatform();
     document.documentElement.dataset.platform = platform;
@@ -364,6 +437,10 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
         ({ isActive }) => {
           document.documentElement.classList.toggle("app-background", !isActive);
           if (!isActive) {
+            clearAllScheduledTimeouts();
+            setFeedback(null);
+            releaseAnswerLock();
+            releaseNavigationLock();
             soundAttempt.current += 1;
             stopSpeech();
             saveProgress(progressRef.current);
@@ -378,6 +455,10 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
           if (now - lastBackAt.current < 500) return;
           lastBackAt.current = now;
           const current = progressRef.current;
+          clearAllScheduledTimeouts();
+          setFeedback(null);
+          releaseAnswerLock();
+          releaseNavigationLock();
           soundAttempt.current += 1;
           stopSpeech();
           if (current.stage === "home" || current.stage === "welcome") {
@@ -390,8 +471,7 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
             characterIndex: 0,
             reviewIndex: 0,
           };
-          setP(next);
-          saveProgress(next);
+          commit(next);
         });
         removers.push(() => backListener.remove());
       }
@@ -401,7 +481,12 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
       active = false;
       removers.forEach((remove) => void remove());
     };
-  }, []);
+  }, [
+    clearAllScheduledTimeouts,
+    commit,
+    releaseAnswerLock,
+    releaseNavigationLock,
+  ]);
   const start = () => {
     void unlockSpeechFromUserGesture();
     go("goal", {
@@ -437,95 +522,112 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
       : go("learn", { characterIndex: 0 });
   };
   const afterLearn = () => go("quiz");
-  const finishCurrentGroup = (answeredProgress: Progress) => {
+  const finishCurrentGroup = () => {
+    const current = progressRef.current;
     go(
       "complete",
       completeCourseGroup(
-        answeredProgress,
+        current,
         course,
-        answeredProgress.answerStats,
+        current.answerStats,
       ),
     );
   };
   const answer = (choice: string, target = item.char, isReview = false) => {
-    if (locked) return;
+    if (!acquireAnswerLock()) return;
+    const sequence = ++answerSequence.current;
     void unlockSpeechFromUserGesture();
-    const reviewItem = activeReviewItems[p.reviewIndex];
+    const current = progressRef.current;
+    const reviewItem = activeReviewItems[current.reviewIndex];
     const id = isReview ? reviewItem.id : item.id;
     const answered = recordCharacterAnswer(
-      p,
+      current,
       (isReview ? reviewItem : item).characterKey,
       choice === target,
       id,
-      isReview && p.characterIndex === -1 ? "scheduled" : "none",
+      isReview && current.characterIndex === -1 ? "scheduled" : "none",
     );
+    commit(answered);
     if (choice === target) {
       setFeedback("good");
       void say(
         `找对了，这个字念${target}。`,
         (isReview ? reviewItem : item).successAudio,
       );
-      window.setTimeout(() => {
-        setFeedback(null);
+      scheduleTimeout(() => {
+        if (sequence !== answerSequence.current) return;
+        const latest = progressRef.current;
         if (isReview) {
-          const next = p.reviewIndex + 1;
+          const next = latest.reviewIndex + 1;
           if (next >= activeReviewItems.length) {
-            if (p.characterIndex === -1)
+            if (latest.characterIndex === -1)
               go("learn", {
-                ...answered,
                 characterIndex: 0,
                 reviewIndex: 0,
                 reviewIds: [],
                 reviewQueue: [],
               });
-            else finishCurrentGroup(answered);
-          } else go("review", { ...answered, reviewIndex: next });
+            else finishCurrentGroup();
+          } else go("review", { reviewIndex: next });
         } else {
-          const next = p.characterIndex + 1;
+          const next = latest.characterIndex + 1;
           if (next >= dailyItems.length)
-            go("review", { ...answered, reviewIndex: 0 });
-          else go("learn", { ...answered, characterIndex: next });
+            go("review", { reviewIndex: 0 });
+          else go("learn", { characterIndex: next });
         }
       }, 1050);
     } else {
       setFeedback("retry");
-      commit(answered);
-      void say(
+      const feedbackPlayback = say(
         `没关系，我们再看一次。这个字念${target}。`,
         (isReview ? reviewItem : item).retryAudio,
       );
-      window.setTimeout(() => setFeedback(null), 1800);
+      scheduleTimeout(() => {
+        void feedbackPlayback.finally(() => {
+          if (sequence !== answerSequence.current) return;
+          setFeedback(null);
+          releaseAnswerLock();
+        });
+      }, 1800);
     }
   };
   const answerTodayReview = (choice: string) => {
-    if (locked || !todayItems.length) return;
+    if (!todayItems.length || !acquireAnswerLock()) return;
+    const sequence = ++answerSequence.current;
     void unlockSpeechFromUserGesture();
-    const reviewItem = todayItems[p.reviewIndex];
+    const current = progressRef.current;
+    const reviewItem = todayItems[current.reviewIndex];
     const answered = recordCharacterAnswer(
-      p,
+      current,
       reviewItem.characterKey,
       choice === reviewItem.char,
       reviewItem.id,
       "practice",
     );
+    commit(answered);
     if (choice === reviewItem.char) {
       setFeedback("good");
       void say(`找对了，这个字念${reviewItem.char}。`, reviewItem.successAudio);
-      window.setTimeout(() => {
-        setFeedback(null);
-        const next = p.reviewIndex + 1;
+      scheduleTimeout(() => {
+        if (sequence !== answerSequence.current) return;
+        const next = progressRef.current.reviewIndex + 1;
         if (next >= todayItems.length)
-          go("home", { ...answered, reviewIndex: 0 });
-        else go("todayReview", { ...answered, reviewIndex: next });
+          go("home", { reviewIndex: 0 });
+        else go("todayReview", { reviewIndex: next });
       }, 900);
     } else {
       setFeedback("retry");
-      commit(answered);
-      void say(
+      const feedbackPlayback = say(
         `没关系，我们再看一次。这个字念${reviewItem.char}。`,
         reviewItem.retryAudio,
       );
-      window.setTimeout(() => setFeedback(null), 1500);
+      scheduleTimeout(() => {
+        void feedbackPlayback.finally(() => {
+          if (sequence !== answerSequence.current) return;
+          setFeedback(null);
+          releaseAnswerLock();
+        });
+      }, 1500);
     }
   };
   const startTodayReview = () => {
@@ -542,46 +644,55 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
     });
   };
   const answerLongTermReview = (choice: string) => {
-    if (locked || !longTermReviewItems.length) return;
+    if (!longTermReviewItems.length || !acquireAnswerLock()) return;
+    const sequence = ++answerSequence.current;
     void unlockSpeechFromUserGesture();
-    const reviewItem = longTermReviewItems[p.reviewIndex];
+    const current = progressRef.current;
+    const reviewItem = longTermReviewItems[current.reviewIndex];
     const correct = choice === reviewItem.char;
     const reviewMode = hasDueReview(
-      p.reviewPlan[reviewItem.characterKey],
-      p.date,
+      current.reviewPlan[reviewItem.characterKey],
+      current.date,
     )
       ? "scheduled"
       : "practice";
     const answered = recordCharacterAnswer(
-      p,
+      current,
       reviewItem.characterKey,
       correct,
       reviewItem.id,
       reviewMode,
     );
+    commit(answered);
     if (correct) {
       setFeedback("good");
       void say(`找对了，这个字念${reviewItem.char}。`, reviewItem.successAudio);
-      window.setTimeout(() => {
-        setFeedback(null);
-        const next = p.reviewIndex + 1;
+      scheduleTimeout(() => {
+        if (sequence !== answerSequence.current) return;
+        const latest = progressRef.current;
+        const next = latest.reviewIndex + 1;
         if (next >= longTermReviewItems.length) {
           go(
             "reviewComplete",
-            completeLongTermReview(answered, p.reviewQueue),
+            completeLongTermReview(latest, latest.reviewQueue),
           );
         } else {
-          go("longTermReview", { ...answered, reviewIndex: next });
+          go("longTermReview", { reviewIndex: next });
         }
       }, 900);
     } else {
       setFeedback("retry");
-      commit(answered);
-      void say(
+      const feedbackPlayback = say(
         `没关系，我们再看一次。这个字念${reviewItem.char}。`,
         reviewItem.retryAudio,
       );
-      window.setTimeout(() => setFeedback(null), 1500);
+      scheduleTimeout(() => {
+        void feedbackPlayback.finally(() => {
+          if (sequence !== answerSequence.current) return;
+          setFeedback(null);
+          releaseAnswerLock();
+        });
+      }, 1500);
     }
   };
   const options = (target: string, index: number) =>
@@ -589,30 +700,35 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
       ? [distractors[(p.courseIndex + index) % distractors.length], target]
       : [target, distractors[(p.courseIndex + index) % distractors.length]];
   const familyStart = () => {
-    holdTimer.current = window.setTimeout(() => go("settings"), 3000);
+    holdTimer.current = scheduleTimeout(() => go("settings"), 3000);
   };
-  const familyEnd = () => clearTimeout(holdTimer.current);
+  const familyEnd = () => clearScheduledTimeout(holdTimer.current);
   if (p.stage === "settings")
     return (
       <Settings
         progress={p}
-        onSave={(next) =>
-          commit({
-            ...next,
-            stage:
-              p.allNewCoursesCompleted || p.dailyBaseGoalCompleted
-                ? "home"
-                : "goal",
-          })
-        }
-        onClose={() =>
+        onSave={(next) => {
+          releaseNavigationLock();
           go(
             p.allNewCoursesCompleted || p.dailyBaseGoalCompleted
               ? "home"
               : "goal",
-          )
-        }
-        onAction={commit}
+            next,
+          );
+        }}
+        onClose={() => {
+          releaseNavigationLock();
+          go(
+            p.allNewCoursesCompleted || p.dailyBaseGoalCompleted
+              ? "home"
+              : "goal",
+          );
+        }}
+        onAction={(next) => {
+          if (next.stage === p.stage) return void commit(next);
+          releaseNavigationLock();
+          go(next.stage, next);
+        }}
       />
     );
   return (
@@ -797,7 +913,8 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
           target={item.char}
           choices={options(item.char, p.characterIndex)}
           feedback={feedback}
-          disabled={locked}
+          disabled={locked || answerLocked}
+          busy={answerLocked}
           onAnswer={(c) => answer(c)}
           onSpeak={() => void sayFromGesture(stageSpeech, item.questionAudio)}
         />
@@ -815,7 +932,8 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
               target={q.char}
               choices={options(q.char, p.reviewIndex + 1)}
               feedback={feedback}
-              disabled={locked}
+              disabled={locked || answerLocked}
+              busy={answerLocked}
               onAnswer={(c) => answer(c, q.char, true)}
               onSpeak={() =>
                 void sayFromGesture(`请找出${q.char}字。`, q.questionAudio)
@@ -833,7 +951,8 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
               target={q.char}
               choices={options(q.char, p.reviewIndex + 1)}
               feedback={feedback}
-              disabled={locked}
+              disabled={locked || answerLocked}
+              busy={answerLocked}
               onAnswer={answerTodayReview}
               onSpeak={() =>
                 void sayFromGesture(`请找出${q.char}字。`, q.questionAudio)
@@ -851,7 +970,8 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
               target={q.char}
               choices={options(q.char, p.reviewIndex + 1)}
               feedback={feedback}
-              disabled={locked}
+              disabled={locked || answerLocked}
+              busy={answerLocked}
               onAnswer={answerLongTermReview}
               onSpeak={() =>
                 void sayFromGesture(`请找出${q.char}字。`, q.questionAudio)
@@ -984,6 +1104,7 @@ function Quiz({
   choices,
   feedback,
   disabled,
+  busy,
   onAnswer,
   onSpeak,
 }: {
@@ -992,11 +1113,12 @@ function Quiz({
   choices: string[];
   feedback: "good" | "retry" | null;
   disabled: boolean;
+  busy: boolean;
   onAnswer: (c: string) => void;
   onSpeak: () => void;
 }) {
   return (
-    <section className="quiz">
+    <section className="quiz" aria-busy={busy}>
       <h1>{title}</h1>
       <div className="choice-grid">
         {choices.map((c) => (

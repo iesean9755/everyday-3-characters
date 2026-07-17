@@ -10,6 +10,13 @@ import App from "./App";
 import { courses } from "./data/courses";
 import { completeCourseGroup, freshProgress } from "./lib/storage";
 describe("核心学习流程", () => {
+  const quizProgress = () => ({
+    ...freshProgress(),
+    stage: "quiz" as const,
+    settings: { ...freshProgress().settings, autoPlay: false },
+  });
+  const savedProgress = () =>
+    JSON.parse(localStorage.getItem("everyday-3-characters-v1")!);
   beforeEach(() => {
     localStorage.clear();
     vi.useFakeTimers();
@@ -334,5 +341,159 @@ describe("核心学习流程", () => {
     fireEvent.click(screen.getByRole("button", { name: "听一听" }));
     await act(async () => vi.advanceTimersByTimeAsync(50));
     expect(spokenTexts.some((text) => text.trim().length > 0)).toBe(true);
+  });
+
+  it("连续点击正确答案10次只记录一次并立即锁定全部答案", () => {
+    const target = courses[0].characters[0];
+    const { container } = render(<App initialProgress={quizProgress()} />);
+    const correct = screen.getByRole("button", {
+      name: `选择${target.char}字`,
+    });
+
+    for (let index = 0; index < 10; index += 1) fireEvent.click(correct);
+
+    expect(savedProgress().answerStats[target.id]).toEqual({
+      correct: 1,
+      wrong: 0,
+    });
+    expect(container.querySelector(".quiz")).toHaveAttribute(
+      "aria-busy",
+      "true",
+    );
+    container
+      .querySelectorAll<HTMLButtonElement>(".choice-grid button")
+      .forEach((button) => expect(button).toBeDisabled());
+  });
+
+  it("先点错再立刻点对时只执行第一次点击", () => {
+    const target = courses[0].characters[0];
+    const { container } = render(<App initialProgress={quizProgress()} />);
+    const [correct, wrong] = Array.from(
+      container.querySelectorAll<HTMLButtonElement>(".choice-grid button"),
+    );
+
+    fireEvent.click(wrong);
+    fireEvent.click(correct);
+
+    expect(savedProgress().answerStats[target.id]).toEqual({
+      correct: 0,
+      wrong: 1,
+    });
+    expect(screen.getByText("没关系，再看一次")).toBeInTheDocument();
+  });
+
+  it("正确反馈期间点击另一个答案无效", () => {
+    const target = courses[0].characters[0];
+    const { container } = render(<App initialProgress={quizProgress()} />);
+    const [correct, wrong] = Array.from(
+      container.querySelectorAll<HTMLButtonElement>(".choice-grid button"),
+    );
+
+    fireEvent.click(correct);
+    fireEvent.click(wrong);
+
+    expect(savedProgress().answerStats[target.id]).toEqual({
+      correct: 1,
+      wrong: 0,
+    });
+    expect(screen.getByText("找对了！")).toBeInTheDocument();
+  });
+
+  it("快速离开答题页后旧计时器不会跳转新页面", async () => {
+    const target = courses[0].characters[0];
+    const first = render(<App initialProgress={quizProgress()} />);
+    fireEvent.click(
+      screen.getByRole("button", { name: `选择${target.char}字` }),
+    );
+    await act(async () => vi.advanceTimersByTimeAsync(5));
+    first.unmount();
+    expect(vi.getTimerCount()).toBe(0);
+
+    render(
+      <App
+        initialProgress={{
+          ...freshProgress(),
+          stage: "home",
+          settings: { ...freshProgress().settings, autoPlay: false },
+        }}
+      />,
+    );
+    await act(async () => vi.advanceTimersByTimeAsync(2000));
+    expect(
+      screen.getByRole("button", { name: "开始今天的学习" }),
+    ).toBeInTheDocument();
+  });
+
+  it("快速连点只播放一次答题反馈语音", async () => {
+    const audible: string[] = [];
+    Object.defineProperty(window, "speechSynthesis", {
+      configurable: true,
+      value: {
+        paused: false,
+        pending: false,
+        speaking: false,
+        cancel: vi.fn(),
+        resume: vi.fn(),
+        getVoices: () => [
+          { name: "测试中文声音", lang: "zh-CN", localService: true },
+        ],
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+        speak: (utterance: SpeechSynthesisUtterance) => {
+          if (utterance.text.trim()) audible.push(utterance.text);
+          window.setTimeout(
+            () => utterance.onend?.(new Event("end") as SpeechSynthesisEvent),
+            1,
+          );
+        },
+      },
+    });
+    const target = courses[0].characters[0];
+    render(<App initialProgress={quizProgress()} />);
+    const correct = screen.getByRole("button", {
+      name: `选择${target.char}字`,
+    });
+    for (let index = 0; index < 10; index += 1) fireEvent.click(correct);
+    await act(async () => vi.advanceTimersByTimeAsync(1600));
+
+    expect(audible).toHaveLength(1);
+  });
+
+  it("答错解锁后再答对会合并统计而不会被旧状态覆盖", async () => {
+    const target = courses[0].characters[0];
+    const { container } = render(<App initialProgress={quizProgress()} />);
+    let [correct, wrong] = Array.from(
+      container.querySelectorAll<HTMLButtonElement>(".choice-grid button"),
+    );
+    fireEvent.click(wrong);
+    await act(async () => vi.advanceTimersByTimeAsync(1805));
+
+    [correct, wrong] = Array.from(
+      container.querySelectorAll<HTMLButtonElement>(".choice-grid button"),
+    );
+    fireEvent.click(correct);
+
+    expect(savedProgress().answerStats[target.id]).toEqual({
+      correct: 1,
+      wrong: 1,
+    });
+  });
+
+  it("组件卸载会清理答题与页面计时器且不产生卸载警告", async () => {
+    const error = vi.spyOn(console, "error").mockImplementation(() => {});
+    const target = courses[0].characters[0];
+    const view = render(<App initialProgress={quizProgress()} />);
+    fireEvent.click(
+      screen.getByRole("button", { name: `选择${target.char}字` }),
+    );
+    await act(async () => vi.advanceTimersByTimeAsync(5));
+    view.unmount();
+
+    expect(vi.getTimerCount()).toBe(0);
+    expect(
+      error.mock.calls.some((call) =>
+        call.some((value) => String(value).includes("unmounted component")),
+      ),
+    ).toBe(false);
   });
 });
