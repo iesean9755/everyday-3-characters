@@ -32,7 +32,9 @@ describe("唯一语音文案来源", () => {
       intro: "这个字念",
       character: "件",
       explanation: "快递件的件",
+      example: item.example,
     });
+    expect(item.example.length).toBeGreaterThan(0);
     expect(getQuestionSpeech(item)).toBe("请找出件字。");
   });
 });
