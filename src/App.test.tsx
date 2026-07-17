@@ -161,4 +161,70 @@ describe("核心学习流程", () => {
     expect(saved.lastCompletedDate).toBe("2026-07-10");
     expect(saved.completedDates).toEqual(["2026-07-10"]);
   });
+  it("新字课程全部完成的首页不再显示继续学习新字", () => {
+    const key = courses[0].characters[0].characterKey;
+    const progress = {
+      ...freshProgress(),
+      stage: "home" as const,
+      nextCourseIndex: courses.length,
+      allNewCoursesCompleted: true,
+      totalLearnedCharacterKeys: [key],
+      reviewQueue: [key],
+      lifetimeAnswerStats: {
+        [key]: { correct: 1, wrong: 2, lastAnsweredDate: "2026-07-16" },
+      },
+    };
+    render(<App initialProgress={progress} />);
+
+    expect(
+      screen.getByRole("heading", { name: "新字课程已经全部学完" }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("接下来继续复习，记得更牢"))
+      .toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "开始今日复习" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "复习容易答错的字" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "听一遍提示" }),
+    ).toBeInTheDocument();
+    expect(screen.queryByText("继续学3个")).not.toBeInTheDocument();
+  });
+
+  it("没有已学汉字时不能进入空的长期复习页", () => {
+    render(
+      <App
+        initialProgress={{
+          ...freshProgress(),
+          stage: "home",
+          nextCourseIndex: courses.length,
+          allNewCoursesCompleted: true,
+        }}
+      />,
+    );
+    expect(screen.getByRole("button", { name: "开始今日复习" }))
+      .toBeDisabled();
+  });
+  it("只有一个已学汉字时也能进入长期复习", () => {
+    const key = courses[0].characters[0].characterKey;
+    render(
+      <App
+        initialProgress={{
+          ...freshProgress(),
+          stage: "home",
+          nextCourseIndex: courses.length,
+          allNewCoursesCompleted: true,
+          totalLearnedCharacterKeys: [key],
+          reviewQueue: [key],
+        }}
+      />,
+    );
+    fireEvent.click(screen.getByRole("button", { name: "开始今日复习" }));
+    act(() => vi.advanceTimersByTime(700));
+    expect(
+      screen.getByRole("heading", { name: "今日复习（1/1）" }),
+    ).toBeInTheDocument();
+  });
 });

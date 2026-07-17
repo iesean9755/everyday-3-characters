@@ -13,11 +13,14 @@ import {
 import { SceneArt } from "./components/SceneArt";
 import {
   completeCourseGroup,
+  completeLongTermReview,
   findNextCourseIndex,
   freshProgress,
   loadProgress,
   recordCharacterAnswer,
   saveProgress,
+  selectDifficultReviewKeys,
+  selectLongTermReviewKeys,
 } from "./lib/storage";
 import { calculateActiveStreakFromDates } from "./lib/date";
 import {
@@ -76,6 +79,24 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
         .filter((x): x is NonNullable<typeof x> => !!x),
     [allItems, p.reviewQueue],
   );
+  const longTermReviewKeys = useMemo(
+    () =>
+      p.reviewQueue.length
+        ? p.reviewQueue
+        : selectLongTermReviewKeys(p, p.date),
+    [p],
+  );
+  const longTermReviewItems = useMemo(
+    () =>
+      longTermReviewKeys
+        .map((key) => allItems.find((entry) => entry.characterKey === key))
+        .filter((entry): entry is NonNullable<typeof entry> => !!entry),
+    [allItems, longTermReviewKeys],
+  );
+  const difficultReviewKeys = useMemo(
+    () => selectDifficultReviewKeys(p),
+    [p],
+  );
   const item =
     dailyItems[Math.min(Math.max(p.characterIndex, 0), dailyItems.length - 1)];
   const activeReviewItems = p.characterIndex === -1 ? priorItems : dailyItems;
@@ -130,6 +151,8 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
     switch (p.stage) {
       case "welcome":
       case "home":
+        if (p.allNewCoursesCompleted)
+          return "新字课程已经全部学完。接下来继续复习，记得更牢。";
         return p.dailyBaseGoalCompleted
           ? "您今天已经完成任务。想继续学习，请点中间的大按钮。"
           : "您好，今天我们认识三个字。请点一下屏幕中间的大圆按钮。";
@@ -143,8 +166,14 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
         return `请找出${activeReviewItems[p.reviewIndex]?.char ?? dailyItems[0].char}字。`;
       case "todayReview":
         return `请找出${todayItems[p.reviewIndex]?.char ?? todayItems[0]?.char ?? "刚学过的"}字。`;
+      case "longTermReview":
+        return `请找出${longTermReviewItems[p.reviewIndex]?.char ?? "要复习的"}字。`;
+      case "reviewComplete":
+        return "今天的复习已经完成，记得更牢了。";
       case "complete":
-        return "今天的三个字已经学会了。您可以今天学到这里，也可以再学三个新字。";
+        return p.allNewCoursesCompleted
+          ? "新字课程已经全部学完。接下来继续复习，记得更牢。"
+          : "今天的三个字已经学会了。您可以今天学到这里，也可以再学三个新字。";
       case "rest":
         return "您今天已经学了不少，可以休息一下，明天再学。";
       default:
@@ -155,6 +184,8 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
     course,
     dailyItems,
     item,
+    longTermReviewItems,
+    p.allNewCoursesCompleted,
     p.dailyBaseGoalCompleted,
     p.reviewIndex,
     p.stage,
@@ -164,7 +195,9 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
     switch (p.stage) {
       case "welcome":
       case "home":
-        return "/audio/system/welcome.mp3";
+        return p.allNewCoursesCompleted
+          ? undefined
+          : "/audio/system/welcome.mp3";
       case "goal":
         return course.openingAudio;
       case "quiz":
@@ -173,12 +206,23 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
         return activeReviewItems[p.reviewIndex]?.questionAudio;
       case "todayReview":
         return todayItems[p.reviewIndex]?.questionAudio;
+      case "longTermReview":
+        return longTermReviewItems[p.reviewIndex]?.questionAudio;
       case "complete":
-        return course.completionAudio;
+        return p.allNewCoursesCompleted ? undefined : course.completionAudio;
       default:
         return undefined;
     }
-  }, [activeReviewItems, course, item, p.reviewIndex, p.stage, todayItems]);
+  }, [
+    activeReviewItems,
+    course,
+    item,
+    longTermReviewItems,
+    p.allNewCoursesCompleted,
+    p.reviewIndex,
+    p.stage,
+    todayItems,
+  ]);
   const playCurrentStage = useCallback(
     () => (p.stage === "learn" ? sayTeaching() : say(stageSpeech, stageAudio)),
     [p.stage, say, sayTeaching, stageAudio, stageSpeech],
@@ -460,6 +504,51 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
   const startTodayReview = () => {
     if (todayItems.length) go("todayReview", { reviewIndex: 0 });
   };
+  const startLongTermReview = (keys = longTermReviewKeys) => {
+    const queue = [...new Set(keys)].slice(0, 3);
+    if (!queue.length) return;
+    go("longTermReview", {
+      reviewQueue: queue,
+      reviewIndex: 0,
+      characterIndex: -1,
+    });
+  };
+  const answerLongTermReview = (choice: string) => {
+    if (locked || !longTermReviewItems.length) return;
+    const reviewItem = longTermReviewItems[p.reviewIndex];
+    const correct = choice === reviewItem.char;
+    const answered = recordCharacterAnswer(
+      p,
+      reviewItem.characterKey,
+      correct,
+      reviewItem.id,
+      true,
+    );
+    if (correct) {
+      setFeedback("good");
+      void say(`找对了，这个字念${reviewItem.char}。`, reviewItem.successAudio);
+      window.setTimeout(() => {
+        setFeedback(null);
+        const next = p.reviewIndex + 1;
+        if (next >= longTermReviewItems.length) {
+          go(
+            "reviewComplete",
+            completeLongTermReview(answered, p.reviewQueue),
+          );
+        } else {
+          go("longTermReview", { ...answered, reviewIndex: next });
+        }
+      }, 900);
+    } else {
+      setFeedback("retry");
+      commit(answered);
+      void say(
+        `没关系，我们再看一次。这个字念${reviewItem.char}。`,
+        reviewItem.retryAudio,
+      );
+      window.setTimeout(() => setFeedback(null), 1500);
+    }
+  };
   const options = (target: string, index: number) =>
     index % 2
       ? [distractors[(p.courseIndex + index) % distractors.length], target]
@@ -475,10 +564,19 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
         onSave={(next) =>
           commit({
             ...next,
-            stage: p.dailyBaseGoalCompleted ? "home" : "goal",
+            stage:
+              p.allNewCoursesCompleted || p.dailyBaseGoalCompleted
+                ? "home"
+                : "goal",
           })
         }
-        onClose={() => go(p.dailyBaseGoalCompleted ? "home" : "goal")}
+        onClose={() =>
+          go(
+            p.allNewCoursesCompleted || p.dailyBaseGoalCompleted
+              ? "home"
+              : "goal",
+          )
+        }
         onAction={commit}
       />
     );
@@ -519,6 +617,35 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
         </div>
       )}
       {(p.stage === "welcome" || p.stage === "home") &&
+        p.allNewCoursesCompleted && (
+          <section className="center completed-home curriculum-complete">
+            <div className="complete-mark" aria-hidden="true">
+              ✓
+            </div>
+            <h1>新字课程已经全部学完</h1>
+            <p>接下来继续复习，记得更牢</p>
+            <PrimaryButton
+              onClick={() => startLongTermReview()}
+              label="开始今日复习"
+              icon="↻"
+              disabled={locked || !longTermReviewItems.length}
+            />
+            <button
+              className="review-today"
+              onClick={() => startLongTermReview(difficultReviewKeys)}
+              disabled={locked || !difficultReviewKeys.length}
+              aria-label="复习容易答错的字"
+            >
+              <span aria-hidden="true">★</span> 复习容易答错的字
+            </button>
+            <SpeakerButton
+              onClick={() => void playCurrentStage()}
+              label="听一遍提示"
+            />
+          </section>
+        )}
+      {(p.stage === "welcome" || p.stage === "home") &&
+        !p.allNewCoursesCompleted &&
         !p.dailyBaseGoalCompleted && (
           <section className="center">
             <div className="brand-tree" aria-hidden="true">
@@ -541,6 +668,7 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
           </section>
         )}
       {(p.stage === "welcome" || p.stage === "home") &&
+        !p.allNewCoursesCompleted &&
         p.dailyBaseGoalCompleted && (
           <section className="center completed-home">
             <div className="complete-mark" aria-hidden="true">
@@ -674,6 +802,45 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
             />
           );
         })()}
+      {p.stage === "longTermReview" &&
+        (() => {
+          const q = longTermReviewItems[p.reviewIndex];
+          if (!q) return null;
+          return (
+            <Quiz
+              title={`今日复习（${p.reviewIndex + 1}/${longTermReviewItems.length}）`}
+              target={q.char}
+              choices={options(q.char, p.reviewIndex + 1)}
+              feedback={feedback}
+              disabled={locked}
+              onAnswer={answerLongTermReview}
+              onSpeak={() => void say(`请找出${q.char}字。`, q.questionAudio)}
+            />
+          );
+        })()}
+      {p.stage === "reviewComplete" && (
+        <section className="complete">
+          <div className="complete-mark">✓</div>
+          <h1>今天的复习完成了</h1>
+          <p>今天复习了 {p.todayPracticedCharacterKeys.length} 个字</p>
+          <p>没有增加新的汉字</p>
+          <div className="tree-growth">
+            <span aria-hidden="true">🌳</span>
+            <b>连续学习 {p.streak} 天</b>
+            <small>累计完成 {p.completedDates.length} 天</small>
+          </div>
+          <PrimaryButton
+            onClick={goHome}
+            label="返回首页"
+            icon="⌂"
+            disabled={locked}
+          />
+          <SpeakerButton
+            onClick={() => void playCurrentStage()}
+            label="再听一遍"
+          />
+        </section>
+      )}
       {p.stage === "complete" && (
         <section className="complete">
           <div className="complete-mark">✓</div>
@@ -730,7 +897,12 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
             <span aria-hidden="true">↻</span> 复习今天学过的字
           </button>
           <SpeakerButton
-            onClick={() => void say(stageSpeech, course.completionAudio)}
+            onClick={() =>
+              void say(
+                stageSpeech,
+                p.allNewCoursesCompleted ? undefined : course.completionAudio,
+              )
+            }
             label="再听一遍"
           />
         </section>
@@ -850,6 +1022,16 @@ function Settings({
     })
     .slice(0, 8);
   const reExperienceToday = () => {
+    if (progress.allNewCoursesCompleted) {
+      onAction({
+        ...progress,
+        stage: "home",
+        reviewIndex: 0,
+        reviewQueue: selectLongTermReviewKeys(progress, progress.date),
+        settings: s,
+      });
+      return;
+    }
     const currentIds = new Set(
       courses[progress.courseIndex]?.characters.map((item) => item.id) ?? [],
     );
@@ -870,15 +1052,23 @@ function Settings({
   const clearToday = () => {
     if (!confirm("确定清除今天的学习记录吗？长期历史和家人设置会保留。"))
       return;
-    const todaySet = new Set(progress.todayLearnedCharacterIds);
+    const todayNewKeySet = new Set(progress.todayNewCharacterKeys);
+    const todayNewItemIds = progress.todayLearnedCharacterIds.filter((id) =>
+      courses
+        .flatMap((entry) => entry.characters)
+        .some(
+          (item) => item.id === id && todayNewKeySet.has(item.characterKey),
+        ),
+    );
+    const todaySet = new Set(todayNewItemIds);
     const totalIds = progress.totalLearnedCharacterIds.filter(
       (id) => !todaySet.has(id),
     );
-    const earliestTodayCourse = progress.todayLearnedCharacterIds.length
+    const earliestTodayCourse = todayNewItemIds.length
       ? Math.max(
           0,
           Math.min(
-            ...progress.todayLearnedCharacterIds.map(
+            ...todayNewItemIds.map(
               (id) => Number(id.match(/^d(\d+)-/)?.[1] ?? 1) - 1,
             ),
           ),
@@ -887,20 +1077,24 @@ function Settings({
     const completedDates = progress.completedDates
       .filter((date) => date !== progress.date)
       .sort();
-    const todayNewKeys = new Set(progress.todayNewCharacterKeys);
     const totalKeys = progress.totalLearnedCharacterKeys.filter(
-      (key) => !todayNewKeys.has(key),
+      (key) => !todayNewKeySet.has(key),
     );
     const reviewPlan = Object.fromEntries(
       Object.entries(progress.reviewPlan).filter(
-        ([key]) => !todayNewKeys.has(key),
+        ([key]) => !todayNewKeySet.has(key),
       ),
     );
+    const nextCourseIndex = findNextCourseIndex(
+      totalIds,
+      earliestTodayCourse,
+    );
+    const allNewCoursesCompleted = nextCourseIndex >= courses.length;
     const dailyStats = { ...progress.dailyStats };
     delete dailyStats[progress.date];
     onAction({
       ...progress,
-      stage: "welcome",
+      stage: allNewCoursesCompleted ? "home" : "welcome",
       courseIndex: earliestTodayCourse,
       characterIndex: 0,
       reviewIndex: 0,
@@ -916,7 +1110,8 @@ function Settings({
       learnedIds: totalIds,
       totalLearnedCharacterIds: totalIds,
       totalLearnedCharacterKeys: totalKeys,
-      nextCourseIndex: findNextCourseIndex(totalIds, earliestTodayCourse),
+      nextCourseIndex,
+      allNewCoursesCompleted,
       completedToday: false,
       dailyBaseGoalCompleted: false,
       todayLearnedCharacterIds: [],
@@ -933,6 +1128,10 @@ function Settings({
     });
   };
   const skipToNextGroup = () => {
+    if (progress.allNewCoursesCompleted) {
+      onAction({ ...progress, stage: "home", settings: s });
+      return;
+    }
     const next = Math.min(progress.nextCourseIndex + 1, courses.length - 1);
     onAction({
       ...progress,

@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import {
   completeCourseGroup,
+  completeLongTermReview,
   findNextCourseIndex,
   freshProgress,
   getDueReviewKeys,
@@ -9,6 +10,7 @@ import {
   recordCharacterAnswer,
   rollToToday,
   saveProgress,
+  selectLongTermReviewKeys,
 } from "./storage";
 import { courses } from "../data/courses";
 import { addDays, todayKey } from "./date";
@@ -315,5 +317,156 @@ describe("学习记录容错与迁移", () => {
       lastAnsweredDate: fresh.date,
     });
     expect(migrated.answerStats["d1-1"]).toEqual({ correct: 1, wrong: 2 });
+  });
+
+  it("学完全部新字课程后指针保持courses.length并标记完成", () => {
+    const newCourses = courses.filter((course) => course.courseType === "new");
+    const lastCourse = newCourses.at(-1)!;
+    const previousIds = newCourses
+      .slice(0, -1)
+      .flatMap((course) => course.characters.map((item) => item.id));
+    const progress = completeCourseGroup(
+      {
+        ...freshProgress(),
+        courseIndex: lastCourse.id - 1,
+        totalLearnedCharacterIds: previousIds,
+        learnedIds: previousIds,
+      },
+      lastCourse,
+    );
+
+    expect(progress.nextCourseIndex).toBe(courses.length);
+    expect(progress.allNewCoursesCompleted).toBe(true);
+    expect(
+      findNextCourseIndex(
+        newCourses.flatMap((course) =>
+          course.characters.map((item) => item.id),
+        ),
+      ),
+    ).toBe(courses.length);
+  });
+
+  it("全部新字完成后跨日进入首页而不是重复最后一课", () => {
+    const today = todayKey();
+    const lastNewCourse = courses.filter(
+      (course) => course.courseType === "new",
+    ).at(-1)!;
+    const key = lastNewCourse.characters[0].characterKey;
+    const rolled = rollToToday({
+      ...freshProgress(),
+      date: addDays(today, -1),
+      stage: "complete",
+      courseIndex: lastNewCourse.id - 1,
+      nextCourseIndex: courses.length,
+      allNewCoursesCompleted: true,
+      totalLearnedCharacterKeys: [key],
+    });
+
+    expect(rolled.stage).toBe("home");
+    expect(rolled.nextCourseIndex).toBe(courses.length);
+    expect(rolled.allNewCoursesCompleted).toBe(true);
+  });
+
+  it("长期复习不增加新字和总认识字数", () => {
+    const keys = courses[0].characters.map((item) => item.characterKey);
+    const progress = {
+      ...freshProgress(),
+      allNewCoursesCompleted: true,
+      nextCourseIndex: courses.length,
+      totalLearnedCharacterKeys: keys,
+    };
+    const completed = completeLongTermReview(progress, keys);
+
+    expect(completed.todayNewCharacterKeys).toEqual([]);
+    expect(completed.todayNewCharacterCount).toBe(0);
+    expect(completed.totalLearnedCharacterKeys).toEqual(keys);
+    expect(completed.todayPracticedCharacterKeys).toEqual(keys);
+  });
+
+  it("长期复习完成后仍完成每日目标并增加连续天数", () => {
+    const key = courses[0].characters[0].characterKey;
+    const completed = completeLongTermReview(
+      {
+        ...freshProgress(),
+        date: "2026-07-17",
+        streak: 1,
+        lastCompletedDate: "2026-07-16",
+        completedDates: ["2026-07-16"],
+        allNewCoursesCompleted: true,
+        nextCourseIndex: courses.length,
+        totalLearnedCharacterKeys: [key],
+      },
+      [key],
+    );
+
+    expect(completed.dailyBaseGoalCompleted).toBe(true);
+    expect(completed.completedToday).toBe(true);
+    expect(completed.streak).toBe(2);
+    expect(completed.completedDates).toContain("2026-07-17");
+  });
+
+  it("长期复习支持1个字、空记录和无到期队列回退", () => {
+    const keys = courses[0].characters.map((item) => item.characterKey);
+    expect(
+      selectLongTermReviewKeys(
+        { ...freshProgress(), totalLearnedCharacterKeys: [keys[0]] },
+      ),
+    ).toEqual([keys[0]]);
+    expect(selectLongTermReviewKeys(freshProgress())).toEqual([]);
+    const fallback = selectLongTermReviewKeys(
+      { ...freshProgress(), totalLearnedCharacterKeys: keys },
+      "2026-07-17",
+      3,
+      () => 0.5,
+    );
+    expect(new Set(fallback)).toEqual(new Set(keys));
+  });
+
+  it("长期复习优先选择到期字，再选择错误率高的字", () => {
+    const [dueKey, hardKey, otherKey] = courses[1].characters.map(
+      (item) => item.characterKey,
+    );
+    const progress = {
+      ...freshProgress(),
+      date: "2026-07-17",
+      totalLearnedCharacterKeys: [dueKey, hardKey, otherKey],
+      reviewPlan: {
+        [dueKey]: {
+          dueDates: ["2026-07-17"],
+          completedDates: [],
+          correctStreak: 0,
+          wrongCount: 0,
+          mastered: false,
+        },
+      },
+      lifetimeAnswerStats: {
+        [hardKey]: {
+          correct: 0,
+          wrong: 4,
+          lastAnsweredDate: "2026-07-16",
+        },
+        [otherKey]: {
+          correct: 4,
+          wrong: 1,
+          lastAnsweredDate: "2026-07-15",
+        },
+      },
+    };
+    const selected = selectLongTermReviewKeys(
+      progress,
+      progress.date,
+      3,
+      () => 0.5,
+    );
+    expect(selected[0]).toBe(dueKey);
+    expect(selected[1]).toBe(hardKey);
+  });
+
+  it("清空全部记录会恢复第一课和未完成状态", () => {
+    const restored = freshProgress();
+    expect(restored.nextCourseIndex).toBe(0);
+    expect(restored.courseIndex).toBe(0);
+    expect(restored.allNewCoursesCompleted).toBe(false);
+    expect(restored.totalLearnedCharacterKeys).toEqual([]);
   });
 });

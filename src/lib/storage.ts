@@ -128,10 +128,73 @@ export function findNextCourseIndex(learnedIds: string[], start = 0): number {
   const learned = new Set(learnedIds);
   for (let offset = 0; offset < courses.length; offset += 1) {
     const index = (Math.max(0, start) + offset) % courses.length;
-    if (courses[index].characters.some((item) => !learned.has(item.id)))
+    if (
+      courses[index].courseType === "new" &&
+      courses[index].characters.some((item) => !learned.has(item.id))
+    )
       return index;
   }
   return courses.length;
+}
+
+export function selectDifficultReviewKeys(
+  progress: Progress,
+  limit = 3,
+): string[] {
+  const learned = new Set(progress.totalLearnedCharacterKeys);
+  return Object.entries(progress.lifetimeAnswerStats)
+    .filter(([key, stat]) => learned.has(key) && stat.wrong > 0)
+    .sort((a, b) => {
+      const errorRate = (stat: CharacterAnswerStat) =>
+        stat.wrong / Math.max(1, stat.correct + stat.wrong);
+      return (
+        errorRate(b[1]) - errorRate(a[1]) ||
+        b[1].wrong - a[1].wrong ||
+        b[1].lastAnsweredDate.localeCompare(a[1].lastAnsweredDate)
+      );
+    })
+    .map(([key]) => key)
+    .slice(0, limit);
+}
+
+export function selectLongTermReviewKeys(
+  progress: Progress,
+  today = progress.date,
+  limit = 3,
+  random: () => number = Math.random,
+): string[] {
+  const learned = unique(progress.totalLearnedCharacterKeys);
+  const learnedSet = new Set(learned);
+  const selected: string[] = [];
+  const add = (keys: string[]) => {
+    for (const key of keys) {
+      if (learnedSet.has(key) && !selected.includes(key)) selected.push(key);
+      if (selected.length >= limit) break;
+    }
+  };
+
+  add(getDueReviewKeys(progress.reviewPlan, today, limit));
+  add(selectDifficultReviewKeys(progress, limit));
+
+  const remainingByAge = learned
+    .filter((key) => !selected.includes(key))
+    .sort((a, b) => {
+      const lastReview = (key: string) =>
+        progress.reviewPlan[key]?.completedDates.at(-1) ??
+        progress.lifetimeAnswerStats[key]?.lastAnsweredDate ??
+        "0000-00-00";
+      return lastReview(a).localeCompare(lastReview(b));
+    });
+  if (remainingByAge.length && selected.length < limit)
+    add([remainingByAge[0]]);
+
+  const randomRemainder = remainingByAge
+    .slice(1)
+    .map((key) => ({ key, order: random() }))
+    .sort((a, b) => a.order - b.order)
+    .map(({ key }) => key);
+  add(randomRemainder);
+  return selected.slice(0, limit);
 }
 
 export const freshProgress = (): Progress => {
@@ -164,6 +227,7 @@ export const freshProgress = (): Progress => {
     totalLearnedCharacterIds: [],
     totalLearnedCharacterKeys: [],
     nextCourseIndex: 0,
+    allNewCoursesCompleted: false,
     currentExtraGroupProgress: 0,
     lastCompletedDate: "",
     dailyStats: {},
@@ -209,8 +273,15 @@ export function migrateProgress(value: unknown): Progress {
   const todayNewKeys = unique(
     old.todayNewCharacterKeys ?? newCourseIdsToCharacterKeys(todayIds),
   );
-  const inferredNext =
-    old.nextCourseIndex ?? findNextCourseIndex(total, oldCourseIndex);
+  const calculatedNext = findNextCourseIndex(
+    total,
+    old.nextCourseIndex ?? oldCourseIndex,
+  );
+  const allNewCoursesCompleted =
+    Boolean(old.allNewCoursesCompleted) || calculatedNext >= courses.length;
+  const inferredNext = allNewCoursesCompleted
+    ? courses.length
+    : calculatedNext;
   const dailyStats = Object.fromEntries(
     Object.entries(old.dailyStats ?? {}).map(([date, stat]) => {
       const learnedCharacterIds = unique(stat.learnedCharacterIds ?? []);
@@ -281,6 +352,10 @@ export function migrateProgress(value: unknown): Progress {
     ...old,
     version: 3,
     settings,
+    stage:
+      allNewCoursesCompleted && old.stage === "goal"
+        ? "home"
+        : (old.stage ?? fresh.stage),
     courseIndex: old.courseIndex ?? Math.min(inferredNext, courses.length - 1),
     learnedIds: total,
     totalLearnedCharacterIds: total,
@@ -300,15 +375,19 @@ export function migrateProgress(value: unknown): Progress {
       old.dailyBaseGoalCompleted ?? old.completedToday ?? false,
     completedToday: old.dailyBaseGoalCompleted ?? old.completedToday ?? false,
     nextCourseIndex: inferredNext,
+    allNewCoursesCompleted,
     currentExtraGroupProgress: old.currentExtraGroupProgress ?? 0,
     lastCompletedDate:
       old.lastCompletedDate ?? (old.completedToday ? (old.date ?? "") : ""),
     dailyStats,
     updatedAt: old.updatedAt ?? Date.now(),
   };
-  migrated.reviewQueue = unique(
-    old.reviewQueue ?? getDueReviewKeys(reviewPlan, migrated.date),
-  ).slice(0, 3);
+  const storedQueue = unique(old.reviewQueue ?? []).slice(0, 3);
+  migrated.reviewQueue = storedQueue.length
+    ? storedQueue
+    : allNewCoursesCompleted
+      ? selectLongTermReviewKeys(migrated, migrated.date)
+      : getDueReviewKeys(reviewPlan, migrated.date);
   return migrated;
 }
 
@@ -422,6 +501,7 @@ export function completeCourseGroup(
     totalIds,
     progress.courseIndex + 1,
   );
+  const allNewCoursesCompleted = nextCourseIndex >= courses.length;
   const completedDates = unique([...progress.completedDates, progress.date]);
   const streak = firstBaseCompletion
     ? calculateNextStreak(
@@ -459,6 +539,7 @@ export function completeCourseGroup(
     reviewPlan,
     learnedIds: totalIds,
     nextCourseIndex,
+    allNewCoursesCompleted,
     currentExtraGroupProgress:
       progress.currentExtraGroupProgress + (isExtraGroup ? 1 : 0),
     streak,
@@ -474,6 +555,68 @@ export function completeCourseGroup(
         practicedCharacterKeys: todayPracticedKeys,
         newCharacterCount: todayNewKeys.length,
         extraGroupCount: extraGroups,
+        baseGoalCompleted: true,
+      },
+    },
+  };
+}
+
+export function completeLongTermReview(
+  progress: Progress,
+  practicedKeys: string[],
+): Progress {
+  const keys = unique(practicedKeys).filter((key) =>
+    progress.totalLearnedCharacterKeys.includes(key),
+  );
+  if (!keys.length) return progress;
+  const practicedIds = keys
+    .map((key) => firstItemIdByCharacterKey.get(key))
+    .filter((id): id is string => Boolean(id));
+  const todayIds = unique([
+    ...progress.todayLearnedCharacterIds,
+    ...practicedIds,
+  ]);
+  const todayPracticedCharacterKeys = unique([
+    ...progress.todayPracticedCharacterKeys,
+    ...keys,
+  ]);
+  const firstBaseCompletion = !progress.dailyBaseGoalCompleted;
+  const isExtraGroup = progress.dailyBaseGoalCompleted;
+  const completedDates = unique([...progress.completedDates, progress.date]);
+  const streak = firstBaseCompletion
+    ? calculateNextStreak(
+        progress.lastCompletedDate,
+        progress.date,
+        progress.streak,
+      )
+    : progress.streak;
+  const extraGroupCount =
+    progress.todayExtraGroupCount + (isExtraGroup ? 1 : 0);
+  return {
+    ...progress,
+    stage: "reviewComplete",
+    reviewIndex: 0,
+    reviewQueue: [],
+    completedToday: true,
+    dailyBaseGoalCompleted: true,
+    todayLearnedCharacterIds: todayIds,
+    todayPracticedCharacterKeys,
+    todayExtraGroupCount: extraGroupCount,
+    currentExtraGroupProgress:
+      progress.currentExtraGroupProgress + (isExtraGroup ? 1 : 0),
+    streak,
+    lastCompletedDate: firstBaseCompletion
+      ? progress.date
+      : progress.lastCompletedDate,
+    completedDates,
+    dailyStats: {
+      ...progress.dailyStats,
+      [progress.date]: {
+        learnedCharacterIds: todayIds,
+        newCharacterKeys: progress.todayNewCharacterKeys,
+        practicedCharacterKeys: todayPracticedCharacterKeys,
+        newCharacterCount: progress.todayNewCharacterKeys.length,
+        extraGroupCount,
         baseGoalCompleted: true,
       },
     },
@@ -496,13 +639,21 @@ export function rollToToday(progress: Progress): Progress {
       baseGoalCompleted: progress.dailyBaseGoalCompleted,
     },
   };
-  const next = Math.min(progress.nextCourseIndex, courses.length - 1);
-  const reviewQueue = getDueReviewKeys(progress.reviewPlan, today, 3);
+  const allNewCoursesCompleted =
+    progress.allNewCoursesCompleted ||
+    progress.nextCourseIndex >= courses.length;
+  const next = allNewCoursesCompleted
+    ? courses.length
+    : progress.nextCourseIndex;
+  const datedProgress = { ...progress, date: today };
+  const reviewQueue = allNewCoursesCompleted
+    ? selectLongTermReviewKeys(datedProgress, today)
+    : getDueReviewKeys(progress.reviewPlan, today, 3);
   return {
     ...progress,
     date: today,
-    courseIndex: next,
-    stage: "goal",
+    courseIndex: allNewCoursesCompleted ? progress.courseIndex : next,
+    stage: allNewCoursesCompleted ? "home" : "goal",
     characterIndex: 0,
     reviewIndex: 0,
     answerStats: {},
@@ -512,6 +663,8 @@ export function rollToToday(progress: Progress): Progress {
       .map((key) => firstItemIdByCharacterKey.get(key))
       .filter((id): id is string => Boolean(id)),
     completedToday: false,
+    allNewCoursesCompleted,
+    nextCourseIndex: next,
     dailyBaseGoalCompleted: false,
     todayLearnedCharacterIds: [],
     todayNewCharacterKeys: [],

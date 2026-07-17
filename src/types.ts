@@ -86,6 +86,8 @@ export type Stage =
   | "learn"
   | "quiz"
   | "review"
+  | "longTermReview"
+  | "reviewComplete"
   | "todayReview"
   | "complete"
   | "rest"
@@ -126,6 +128,7 @@ export interface Progress {
   totalLearnedCharacterIds: string[];
   totalLearnedCharacterKeys: string[];
   nextCourseIndex: number;
+  allNewCoursesCompleted: boolean;
   currentExtraGroupProgress: number;
   lastCompletedDate: string;
   dailyStats: Record<string, DailyLearningStat>;
