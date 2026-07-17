@@ -12,6 +12,26 @@ export interface PlaybackResult {
   source: "local" | "browser" | "none";
   blocked: boolean;
   voiceName: string;
+  reason?: PlaybackFailureReason;
+}
+
+export type PlaybackFailureReason =
+  | "unsupported"
+  | "blocked"
+  | "timeout"
+  | "voice-unavailable"
+  | "playback-error"
+  | "cancelled";
+
+export interface SpeechReadiness {
+  supported: boolean;
+  chineseVoiceCount: number;
+  selectedVoiceName: string;
+}
+
+export interface SpeechDiagnostics extends SpeechReadiness {
+  lastResult: PlaybackResult | null;
+  active: boolean;
 }
 
 export interface SpeechOptions {
@@ -34,16 +54,21 @@ type SpeechSegment = {
 
 let generation = 0;
 let activeAudio: HTMLAudioElement | null = null;
+let activeUtterance: SpeechSynthesisUtterance | null = null;
+let activeSegmentCancel: (() => void) | null = null;
+let speechWatchdog: number | undefined;
 let pauseTimer: number | undefined;
 let voices: SpeechSynthesisVoice[] = [];
 let manifestPromise: Promise<Set<string>> | null = null;
+let readinessPromise: Promise<SpeechReadiness> | null = null;
+let lastPlaybackResult: PlaybackResult | null = null;
 const voiceListeners = new Set<() => void>();
 const handleVoicesChanged = () => refreshVoices(true);
 
 export const speechSupported = () =>
   typeof window !== "undefined" &&
-  "speechSynthesis" in window &&
-  "SpeechSynthesisUtterance" in window;
+  typeof window.speechSynthesis?.speak === "function" &&
+  typeof SpeechSynthesisUtterance === "function";
 
 function scoreVoice(voice: SpeechSynthesisVoice): number {
   const language = voice.lang.toLowerCase().replaceAll("_", "-");
@@ -72,12 +97,10 @@ function scoreVoice(voice: SpeechSynthesisVoice): number {
 function refreshVoices(notify = true) {
   if (!speechSupported()) return;
   const loaded = window.speechSynthesis.getVoices();
-  if (loaded.length) {
-    const before = voices.map((voice) => `${voice.name}|${voice.lang}`).join(";");
-    const after = loaded.map((voice) => `${voice.name}|${voice.lang}`).join(";");
-    voices = loaded;
-    if (notify && before !== after) voiceListeners.forEach((listener) => listener());
-  }
+  const before = voices.map((voice) => `${voice.name}|${voice.lang}`).join(";");
+  const after = loaded.map((voice) => `${voice.name}|${voice.lang}`).join(";");
+  voices = loaded;
+  if (notify && before !== after) voiceListeners.forEach((listener) => listener());
 }
 
 export function initializeVoices() {
@@ -89,6 +112,80 @@ export function initializeVoices() {
       "voiceschanged",
       handleVoicesChanged,
     );
+}
+
+export function ensureSpeechReady(): Promise<SpeechReadiness> {
+  if (!speechSupported())
+    return Promise.resolve({
+      supported: false,
+      chineseVoiceCount: 0,
+      selectedVoiceName: "",
+    });
+  const synth = window.speechSynthesis;
+  if (synth.paused) synth.resume();
+  refreshVoices(false);
+  if (voices.length) {
+    const chinese = getChineseVoices();
+    return Promise.resolve({
+      supported: true,
+      chineseVoiceCount: chinese.length,
+      selectedVoiceName: chinese[0]?.name ?? "",
+    });
+  }
+  if (readinessPromise) return readinessPromise;
+  readinessPromise = new Promise((resolve) => {
+    let settled = false;
+    const finish = () => {
+      if (settled) return;
+      settled = true;
+      window.clearTimeout(timer);
+      synth.removeEventListener?.("voiceschanged", onVoicesChanged);
+      refreshVoices(false);
+      const chinese = getChineseVoices();
+      readinessPromise = null;
+      resolve({
+        supported: true,
+        chineseVoiceCount: chinese.length,
+        selectedVoiceName: chinese[0]?.name ?? "",
+      });
+    };
+    const onVoicesChanged = () => finish();
+    const timer = window.setTimeout(finish, 1500);
+    synth.addEventListener?.("voiceschanged", onVoicesChanged);
+    refreshVoices(false);
+    if (voices.length) finish();
+  });
+  return readinessPromise;
+}
+
+export function unlockSpeechFromUserGesture(): Promise<SpeechReadiness> {
+  if (!speechSupported()) return ensureSpeechReady();
+  const synth = window.speechSynthesis;
+  if (synth.paused) synth.resume();
+  try {
+    const unlock = new SpeechSynthesisUtterance(" ");
+    unlock.lang = "zh-CN";
+    unlock.volume = 0;
+    unlock.rate = 10;
+    synth.speak(unlock);
+  } catch {
+    // resume()仍然完成了同步解锁尝试；后续真实播放会返回明确结果。
+  }
+  return ensureSpeechReady();
+}
+
+export function getSpeechDiagnostics(
+  preferredName = "",
+): SpeechDiagnostics {
+  const chinese = getChineseVoices();
+  const selected = getSelectedVoice(preferredName);
+  return {
+    supported: speechSupported(),
+    chineseVoiceCount: chinese.length,
+    selectedVoiceName: selected?.name ?? "系统默认声音",
+    lastResult: lastPlaybackResult,
+    active: activeUtterance !== null || speechWatchdog !== undefined,
+  };
 }
 
 export function subscribeVoices(listener: () => void) {
@@ -173,9 +270,20 @@ async function playLocal(
   });
 }
 
-function playBrowserSegment(
+function failureReason(error: string): PlaybackFailureReason {
+  if (error === "not-allowed" || error === "audio-busy") return "blocked";
+  if (error === "canceled" || error === "interrupted") return "cancelled";
+  if (error === "voice-unavailable") return "voice-unavailable";
+  return "playback-error";
+}
+
+function segmentTimeout(text: string): number {
+  return Math.min(20_000, Math.max(8_000, text.length * 550));
+}
+
+function attemptBrowserSegment(
   segment: SpeechSegment,
-  voiceName: string,
+  selected: SpeechSynthesisVoice | null,
   token: number,
 ): Promise<PlaybackResult> {
   if (!speechSupported() || token !== generation)
@@ -184,10 +292,10 @@ function playBrowserSegment(
       source: "none",
       blocked: false,
       voiceName: "",
+      reason: speechSupported() ? "cancelled" : "unsupported",
     });
   return new Promise((resolve) => {
     const utterance = new SpeechSynthesisUtterance(segment.text);
-    const selected = getSelectedVoice(voiceName);
     utterance.lang = selected?.lang || "zh-CN";
     utterance.voice = selected;
     utterance.rate = segment.rate;
@@ -197,24 +305,81 @@ function playBrowserSegment(
     const finish = (result: PlaybackResult) => {
       if (settled) return;
       settled = true;
+      if (speechWatchdog !== undefined) {
+        window.clearTimeout(speechWatchdog);
+        speechWatchdog = undefined;
+      }
+      if (activeUtterance === utterance) activeUtterance = null;
+      if (activeSegmentCancel === cancelActive) activeSegmentCancel = null;
+      lastPlaybackResult = result;
       resolve(result);
     };
-    utterance.onend = () =>
-      finish({
-        ok: token === generation,
-        source: "browser",
-        blocked: false,
-        voiceName: selected?.name ?? "系统默认声音",
-      });
-    utterance.onerror = (event) =>
+    const cancelActive = () =>
       finish({
         ok: false,
         source: "none",
-        blocked: event.error === "not-allowed" || event.error === "audio-busy",
-        voiceName: selected?.name ?? "",
+        blocked: false,
+        voiceName: selected?.name ?? "系统默认声音",
+        reason: "cancelled",
       });
+    utterance.onend = () =>
+      finish({
+        ok: token === generation,
+        source: token === generation ? "browser" : "none",
+        blocked: false,
+        voiceName: selected?.name ?? "系统默认声音",
+        reason: token === generation ? undefined : "cancelled",
+      });
+    utterance.onerror = (event) => {
+      const reason = failureReason(event.error);
+      finish({
+        ok: false,
+        source: "none",
+        blocked: reason === "blocked",
+        voiceName: selected?.name ?? "系统默认声音",
+        reason,
+      });
+    };
+    activeUtterance = utterance;
+    activeSegmentCancel = cancelActive;
+    speechWatchdog = window.setTimeout(() => {
+      finish({
+        ok: false,
+        source: "none",
+        blocked: false,
+        voiceName: selected?.name ?? "系统默认声音",
+        reason: "timeout",
+      });
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.resume();
+    }, segmentTimeout(segment.text));
     window.speechSynthesis.speak(utterance);
   });
+}
+
+async function playBrowserSegment(
+  segment: SpeechSegment,
+  voiceName: string,
+  token: number,
+): Promise<PlaybackResult> {
+  const readiness = await ensureSpeechReady();
+  if (!readiness.supported || token !== generation) {
+    const result: PlaybackResult = {
+      ok: false,
+      source: "none",
+      blocked: false,
+      voiceName: "",
+      reason: readiness.supported ? "cancelled" : "unsupported",
+    };
+    lastPlaybackResult = result;
+    return result;
+  }
+  const selected = getSelectedVoice(voiceName);
+  const first = await attemptBrowserSegment(segment, selected, token);
+  if (first.reason !== "timeout" || token !== generation) return first;
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.resume();
+  return attemptBrowserSegment(segment, null, token);
 }
 
 async function playSegments(
@@ -228,6 +393,7 @@ async function playSegments(
     source: "none",
     blocked: false,
     voiceName: "",
+    reason: "playback-error",
   };
   for (const segment of segments) {
     if (token !== generation) return lastResult;
@@ -239,6 +405,7 @@ async function playSegments(
         blocked: false,
         voiceName: "本地自然语音",
       };
+      lastPlaybackResult = lastResult;
     } else {
       lastResult = await playBrowserSegment(segment, voiceName, token);
       if (!lastResult.ok) return lastResult;
@@ -252,6 +419,11 @@ export function stopSpeech() {
   generation += 1;
   if (pauseTimer !== undefined) window.clearTimeout(pauseTimer);
   pauseTimer = undefined;
+  activeSegmentCancel?.();
+  activeSegmentCancel = null;
+  if (speechWatchdog !== undefined) window.clearTimeout(speechWatchdog);
+  speechWatchdog = undefined;
+  activeUtterance = null;
   if (activeAudio) {
     activeAudio.pause();
     activeAudio.currentTime = 0;
@@ -295,12 +467,14 @@ export async function speakTeaching(
   stopSpeech();
   const token = generation;
   if (await playLocal(item.teachingAudio, token)) {
-    return {
+    const result: PlaybackResult = {
       ok: true,
       source: "local",
       blocked: false,
       voiceName: "本地自然语音",
     };
+    lastPlaybackResult = result;
+    return result;
   }
   return playSegments(
     [

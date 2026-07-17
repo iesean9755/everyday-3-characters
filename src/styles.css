@@ -476,11 +476,10 @@ section h1 {
 }
 .voice-preview {
   display: grid;
-  grid-template-columns: minmax(150px, 220px) 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   align-items: center;
   gap: 14px;
   padding: 14px 0;
-  border-bottom: 1px solid #aaa;
 }
 .voice-preview button {
   min-height: 62px;
@@ -491,10 +490,39 @@ section h1 {
   font-size: 21px;
   font-weight: 700;
 }
-.voice-preview p {
+.sound-diagnostics {
+  margin: 18px 0;
+  padding: 18px;
+  border: 2px solid #8ca89a;
+  border-radius: 18px;
+  background: #eef4f0;
+}
+.sound-diagnostics h2 {
+  margin: 0 0 12px;
+  font-size: 28px;
+}
+.sound-diagnostics dl {
   margin: 0;
+}
+.sound-diagnostics dl > div {
+  display: grid;
+  grid-template-columns: minmax(120px, 0.8fr) minmax(0, 1.4fr);
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid #c1d0c8;
   font-size: 19px;
-  line-height: 1.4;
+}
+.sound-diagnostics dt {
+  font-weight: 700;
+}
+.sound-diagnostics dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.sound-diagnostics > p {
+  margin: 4px 0 0;
+  font-size: 19px;
+  line-height: 1.45;
 }
 .settings input[type="range"] {
   width: 45%;

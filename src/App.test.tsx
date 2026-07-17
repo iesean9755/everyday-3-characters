@@ -227,4 +227,112 @@ describe("核心学习流程", () => {
       screen.getByRole("heading", { name: "今日复习（1/1）" }),
     ).toBeInTheDocument();
   });
+
+  it("自动播放失败后显示声音开启遮罩", async () => {
+    Object.defineProperty(window, "speechSynthesis", {
+      configurable: true,
+      value: {
+        paused: false,
+        pending: false,
+        speaking: false,
+        cancel: vi.fn(),
+        resume: vi.fn(),
+        getVoices: () => [
+          { name: "测试中文声音", lang: "zh-CN", localService: true },
+        ],
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+        speak: (utterance: SpeechSynthesisUtterance) =>
+          window.setTimeout(
+            () => utterance.onerror?.({ error: "not-allowed" } as SpeechSynthesisErrorEvent),
+            1,
+          ),
+      },
+    });
+    render(<App />);
+    await act(async () => vi.advanceTimersByTimeAsync(500));
+    expect(
+      screen.getByRole("button", { name: "声音没有播放，点这里开启声音" }),
+    ).toBeInTheDocument();
+  });
+
+  it("手动点击声音遮罩后会解锁并重新尝试播放", async () => {
+    let audibleAttempts = 0;
+    Object.defineProperty(window, "speechSynthesis", {
+      configurable: true,
+      value: {
+        paused: false,
+        pending: false,
+        speaking: false,
+        cancel: vi.fn(),
+        resume: vi.fn(),
+        getVoices: () => [
+          { name: "测试中文声音", lang: "zh-CN", localService: true },
+        ],
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+        speak: (utterance: SpeechSynthesisUtterance) => {
+          if (!utterance.text.trim()) {
+            window.setTimeout(() => utterance.onend?.(new Event("end") as SpeechSynthesisEvent), 1);
+            return;
+          }
+          audibleAttempts += 1;
+          window.setTimeout(() => {
+            if (audibleAttempts === 1)
+              utterance.onerror?.({ error: "not-allowed" } as SpeechSynthesisErrorEvent);
+            else utterance.onend?.(new Event("end") as SpeechSynthesisEvent);
+          }, 1);
+        },
+      },
+    });
+    render(<App />);
+    await act(async () => vi.advanceTimersByTimeAsync(500));
+    fireEvent.click(
+      screen.getByRole("button", { name: "声音没有播放，点这里开启声音" }),
+    );
+    await act(async () => vi.advanceTimersByTimeAsync(50));
+    expect(audibleAttempts).toBe(2);
+    expect(
+      screen.queryByRole("button", { name: "声音没有播放，点这里开启声音" }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("关闭自动播放后手动声音按钮仍然可以朗读", async () => {
+    const spokenTexts: string[] = [];
+    Object.defineProperty(window, "speechSynthesis", {
+      configurable: true,
+      value: {
+        paused: false,
+        pending: false,
+        speaking: false,
+        cancel: vi.fn(),
+        resume: vi.fn(),
+        getVoices: () => [
+          { name: "测试中文声音", lang: "zh-CN", localService: true },
+        ],
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+        speak: (utterance: SpeechSynthesisUtterance) => {
+          spokenTexts.push(utterance.text);
+          window.setTimeout(
+            () => utterance.onend?.(new Event("end") as SpeechSynthesisEvent),
+            1,
+          );
+        },
+      },
+    });
+    render(
+      <App
+        initialProgress={{
+          ...freshProgress(),
+          settings: { ...freshProgress().settings, autoPlay: false },
+        }}
+      />,
+    );
+    await act(async () => vi.advanceTimersByTimeAsync(500));
+    expect(spokenTexts).toEqual([]);
+    fireEvent.click(screen.getByRole("button", { name: "听一听" }));
+    await act(async () => vi.advanceTimersByTimeAsync(50));
+    expect(spokenTexts.some((text) => text.trim().length > 0)).toBe(true);
+  });
 });

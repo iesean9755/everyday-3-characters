@@ -25,14 +25,18 @@ import {
 } from "./lib/storage";
 import { calculateActiveStreakFromDates } from "./lib/date";
 import {
+  ensureSpeechReady,
   getChineseVoices,
+  getSpeechDiagnostics,
   initializeVoices,
   preloadAudio,
   speak,
   speakTeaching,
   stopSpeech,
   subscribeVoices,
+  unlockSpeechFromUserGesture,
   type PlaybackResult,
+  type PlaybackFailureReason,
 } from "./lib/speech";
 import type { Progress, Stage } from "./types";
 
@@ -228,6 +232,21 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
     () => (p.stage === "learn" ? sayTeaching() : say(stageSpeech, stageAudio)),
     [p.stage, say, sayTeaching, stageAudio, stageSpeech],
   );
+  const playCurrentStageFromGesture = useCallback(() => {
+    void unlockSpeechFromUserGesture();
+    return playCurrentStage();
+  }, [playCurrentStage]);
+  const sayFromGesture = useCallback(
+    (text: string, audioPath?: string) => {
+      void unlockSpeechFromUserGesture();
+      return say(text, audioPath);
+    },
+    [say],
+  );
+  const sayTeachingFromGesture = useCallback(() => {
+    void unlockSpeechFromUserGesture();
+    return sayTeaching();
+  }, [sayTeaching]);
   useEffect(() => {
     const cleanupVoices = initializeVoices();
     const unsubscribe = subscribeVoices(() =>
@@ -383,12 +402,14 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
       removers.forEach((remove) => void remove());
     };
   }, []);
-  const start = () =>
+  const start = () => {
+    void unlockSpeechFromUserGesture();
     go("goal", {
       courseIndex: Math.min(p.nextCourseIndex, courses.length - 1),
       characterIndex: 0,
       reviewIndex: 0,
     });
+  };
   const goHome = () => go("home", { characterIndex: 0, reviewIndex: 0 });
   const startNextGroup = (afterRest = false) => {
     if (!hasMoreCourses || maxReached) return goHome();
@@ -409,10 +430,12 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
       currentExtraGroupProgress: afterRest ? 0 : p.currentExtraGroupProgress,
     });
   };
-  const begin = () =>
-    priorItems.length
+  const begin = () => {
+    void unlockSpeechFromUserGesture();
+    return priorItems.length
       ? go("review", { characterIndex: -1, reviewIndex: 0 })
       : go("learn", { characterIndex: 0 });
+  };
   const afterLearn = () => go("quiz");
   const finishCurrentGroup = (answeredProgress: Progress) => {
     go(
@@ -426,6 +449,7 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
   };
   const answer = (choice: string, target = item.char, isReview = false) => {
     if (locked) return;
+    void unlockSpeechFromUserGesture();
     const reviewItem = activeReviewItems[p.reviewIndex];
     const id = isReview ? reviewItem.id : item.id;
     const answered = recordCharacterAnswer(
@@ -475,6 +499,7 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
   };
   const answerTodayReview = (choice: string) => {
     if (locked || !todayItems.length) return;
+    void unlockSpeechFromUserGesture();
     const reviewItem = todayItems[p.reviewIndex];
     const answered = recordCharacterAnswer(
       p,
@@ -509,6 +534,7 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
   const startLongTermReview = (keys = longTermReviewKeys) => {
     const queue = [...new Set(keys)].slice(0, 3);
     if (!queue.length) return;
+    void unlockSpeechFromUserGesture();
     go("longTermReview", {
       reviewQueue: queue,
       reviewIndex: 0,
@@ -517,6 +543,7 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
   };
   const answerLongTermReview = (choice: string) => {
     if (locked || !longTermReviewItems.length) return;
+    void unlockSpeechFromUserGesture();
     const reviewItem = longTermReviewItems[p.reviewIndex];
     const correct = choice === reviewItem.char;
     const reviewMode = hasDueReview(
@@ -615,7 +642,7 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
             className="sound-help"
             onClick={() => {
               setSoundHelp(false);
-              void playCurrentStage();
+              void playCurrentStageFromGesture();
             }}
             aria-label="声音没有播放，点这里开启声音"
           >
@@ -647,7 +674,7 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
               <span aria-hidden="true">★</span> 复习容易答错的字
             </button>
             <SpeakerButton
-              onClick={() => void playCurrentStage()}
+              onClick={() => void playCurrentStageFromGesture()}
               label="听一遍提示"
             />
           </section>
@@ -670,7 +697,7 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
               <span>▶</span>
             </button>
             <SpeakerButton
-              onClick={() => void playCurrentStage()}
+              onClick={() => void playCurrentStageFromGesture()}
               label="听一听"
             />
           </section>
@@ -711,7 +738,7 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
               <span aria-hidden="true">↻</span> 复习今天的字
             </button>
             <SpeakerButton
-              onClick={() => void playCurrentStage()}
+              onClick={() => void playCurrentStageFromGesture()}
               label="听一听"
             />
           </section>
@@ -724,14 +751,14 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
             icon={course.icon}
             theme={course.theme}
             label={course.scene}
-            onClick={() => void playCurrentStage()}
+            onClick={() => void playCurrentStageFromGesture()}
           />
           <PrimaryButton
             onClick={begin}
             label={priorItems.length ? "先复习到期汉字" : "开始学习"}
             disabled={locked}
           />
-          <SpeakerButton onClick={() => void playCurrentStage()} />
+          <SpeakerButton onClick={() => void playCurrentStageFromGesture()} />
         </section>
       )}
       {p.stage === "learn" && (
@@ -744,11 +771,11 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
             icon={course.icon}
             theme={course.theme}
             label={item.scene}
-            onClick={() => void sayTeaching()}
+            onClick={() => void sayTeachingFromGesture()}
           />
           <button
             className="character-card"
-            onClick={() => void sayTeaching()}
+            onClick={() => void sayTeachingFromGesture()}
             aria-label={`${item.char}，点击重听`}
           >
             <strong>{item.char}</strong>
@@ -761,7 +788,7 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
             icon="➜"
             disabled={locked}
           />
-          <SpeakerButton onClick={() => void sayTeaching()} />
+          <SpeakerButton onClick={() => void sayTeachingFromGesture()} />
         </section>
       )}
       {p.stage === "quiz" && (
@@ -772,7 +799,7 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
           feedback={feedback}
           disabled={locked}
           onAnswer={(c) => answer(c)}
-          onSpeak={() => void say(stageSpeech, item.questionAudio)}
+          onSpeak={() => void sayFromGesture(stageSpeech, item.questionAudio)}
         />
       )}
       {p.stage === "review" &&
@@ -790,7 +817,9 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
               feedback={feedback}
               disabled={locked}
               onAnswer={(c) => answer(c, q.char, true)}
-              onSpeak={() => void say(`请找出${q.char}字。`, q.questionAudio)}
+              onSpeak={() =>
+                void sayFromGesture(`请找出${q.char}字。`, q.questionAudio)
+              }
             />
           );
         })()}
@@ -806,7 +835,9 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
               feedback={feedback}
               disabled={locked}
               onAnswer={answerTodayReview}
-              onSpeak={() => void say(`请找出${q.char}字。`, q.questionAudio)}
+              onSpeak={() =>
+                void sayFromGesture(`请找出${q.char}字。`, q.questionAudio)
+              }
             />
           );
         })()}
@@ -822,7 +853,9 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
               feedback={feedback}
               disabled={locked}
               onAnswer={answerLongTermReview}
-              onSpeak={() => void say(`请找出${q.char}字。`, q.questionAudio)}
+              onSpeak={() =>
+                void sayFromGesture(`请找出${q.char}字。`, q.questionAudio)
+              }
             />
           );
         })()}
@@ -844,7 +877,7 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
             disabled={locked}
           />
           <SpeakerButton
-            onClick={() => void playCurrentStage()}
+            onClick={() => void playCurrentStageFromGesture()}
             label="再听一遍"
           />
         </section>
@@ -906,7 +939,7 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
           </button>
           <SpeakerButton
             onClick={() =>
-              void say(
+              void sayFromGesture(
                 stageSpeech,
                 p.allNewCoursesCompleted ? undefined : course.completionAudio,
               )
@@ -937,7 +970,7 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
             <span aria-hidden="true">➜</span> 我还想继续
           </button>
           <SpeakerButton
-            onClick={() => void playCurrentStage()}
+            onClick={() => void playCurrentStageFromGesture()}
             label="再听一遍"
           />
         </section>
@@ -1004,17 +1037,59 @@ function Settings({
   const [s, setS] = useState(progress.settings);
   const [voiceOptions, setVoiceOptions] = useState(() => getChineseVoices());
   const [previewMessage, setPreviewMessage] = useState("");
+  const [lastPlayback, setLastPlayback] = useState<PlaybackResult | null>(
+    () => getSpeechDiagnostics(progress.settings.voiceName).lastResult,
+  );
   useEffect(() => {
     const update = () => setVoiceOptions(getChineseVoices());
     const cleanupVoices = initializeVoices();
     const unsubscribe = subscribeVoices(update);
     update();
+    void ensureSpeechReady().then(update);
     return () => {
       unsubscribe();
       cleanupVoices();
       stopSpeech();
     };
   }, []);
+  const validVoiceName = voiceOptions.some(
+    (voice) => voice.name === s.voiceName,
+  )
+    ? s.voiceName
+    : (voiceOptions[0]?.name ?? "");
+  const diagnostics = getSpeechDiagnostics(validVoiceName);
+  const failureLabels: Record<PlaybackFailureReason, string> = {
+    unsupported: "当前设备不支持浏览器语音",
+    blocked: "浏览器阻止了声音播放",
+    timeout: "朗读等待超时",
+    "voice-unavailable": "选择的声音当前不可用",
+    "playback-error": "浏览器朗读失败",
+    cancelled: "朗读已停止",
+  };
+  const previewSound = async (text: string, voiceName = validVoiceName) => {
+    void unlockSpeechFromUserGesture();
+    const result = await speak(text, {
+      rate: s.speechRate,
+      voiceName,
+    });
+    setLastPlayback(result);
+    setPreviewMessage(
+      result.ok
+        ? `正在使用：${result.voiceName}`
+        : "当前设备没有成功播放声音，请检查媒体音量或更换浏览器。",
+    );
+    return result;
+  };
+  const restoreSound = async () => {
+    const available = getChineseVoices();
+    const voiceName = available.some((voice) => voice.name === s.voiceName)
+      ? s.voiceName
+      : (available[0]?.name ?? "");
+    const settings = { ...s, autoPlay: true, voiceName };
+    setS(settings);
+    onAction({ ...progress, settings });
+    await previewSound("您好，声音已经恢复。", voiceName);
+  };
   const stats = Object.entries(progress.lifetimeAnswerStats)
     .filter(([, v]) => v.wrong > 0)
     .sort((a, b) => {
@@ -1220,33 +1295,62 @@ function Settings({
           ))}
         </select>
       </label>
-      <div className="voice-preview">
-        <button
-          type="button"
-          onClick={async () => {
-            const voiceName = voiceOptions.some(
-              (voice) => voice.name === s.voiceName,
-            )
-              ? s.voiceName
-              : (voiceOptions[0]?.name ?? "");
-            const result = await speak("您好，这是现在选择的声音。", {
-              rate: s.speechRate,
-              voiceName,
-            });
-            setPreviewMessage(
-              result.ok ? `正在使用：${result.voiceName}` : "声音暂时无法播放",
-            );
-          }}
-        >
-          🔊 试听声音
-        </button>
+      <section className="sound-diagnostics" aria-labelledby="sound-check-title">
+        <h2 id="sound-check-title">声音检查</h2>
+        <dl>
+          <div>
+            <dt>浏览器语音</dt>
+            <dd>{diagnostics.supported ? "当前设备支持" : "当前设备不支持"}</dd>
+          </div>
+          <div>
+            <dt>中文声音</dt>
+            <dd>找到 {diagnostics.chineseVoiceCount} 个</dd>
+          </div>
+          <div>
+            <dt>当前选择</dt>
+            <dd>{diagnostics.selectedVoiceName}</dd>
+          </div>
+          <div>
+            <dt>自动播放</dt>
+            <dd>{s.autoPlay ? "已开启" : "已关闭"}</dd>
+          </div>
+          <div>
+            <dt>最近一次使用</dt>
+            <dd>
+              {lastPlayback?.source === "local"
+                ? "本地语音"
+                : lastPlayback?.source === "browser"
+                  ? "浏览器语音"
+                  : "尚未成功播放"}
+            </dd>
+          </div>
+          <div>
+            <dt>最近一次失败原因</dt>
+            <dd>
+              {lastPlayback?.reason
+                ? failureLabels[lastPlayback.reason]
+                : "暂无"}
+            </dd>
+          </div>
+        </dl>
+        <div className="voice-preview">
+          <button
+            type="button"
+            onClick={() => void previewSound("您好，这是现在选择的声音。")}
+          >
+            🔊 试听声音
+          </button>
+          <button type="button" onClick={() => void restoreSound()}>
+            ↻ 一键恢复声音
+          </button>
+        </div>
         <p role="status">
           {previewMessage ||
             (voiceOptions.length
               ? `当前设备找到 ${voiceOptions.length} 个中文声音`
               : "当前设备没有中文声音，将使用系统默认声音")}
         </p>
-      </div>
+      </section>
       <label>
         目标字前停顿
         <select
