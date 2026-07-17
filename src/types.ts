@@ -79,6 +79,7 @@ export interface ReviewPlanEntry {
   wrongCount: number;
   mastered: boolean;
 }
+export type ReviewAnswerMode = "none" | "scheduled" | "practice";
 export type Stage =
   | "welcome"
   | "home"

@@ -16,6 +16,7 @@ import {
   completeLongTermReview,
   findNextCourseIndex,
   freshProgress,
+  hasDueReview,
   loadProgress,
   recordCharacterAnswer,
   saveProgress,
@@ -432,7 +433,7 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
       (isReview ? reviewItem : item).characterKey,
       choice === target,
       id,
-      isReview && p.characterIndex === -1,
+      isReview && p.characterIndex === -1 ? "scheduled" : "none",
     );
     if (choice === target) {
       setFeedback("good");
@@ -480,6 +481,7 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
       reviewItem.characterKey,
       choice === reviewItem.char,
       reviewItem.id,
+      "practice",
     );
     if (choice === reviewItem.char) {
       setFeedback("good");
@@ -517,12 +519,18 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
     if (locked || !longTermReviewItems.length) return;
     const reviewItem = longTermReviewItems[p.reviewIndex];
     const correct = choice === reviewItem.char;
+    const reviewMode = hasDueReview(
+      p.reviewPlan[reviewItem.characterKey],
+      p.date,
+    )
+      ? "scheduled"
+      : "practice";
     const answered = recordCharacterAnswer(
       p,
       reviewItem.characterKey,
       correct,
       reviewItem.id,
-      true,
+      reviewMode,
     );
     if (correct) {
       setFeedback("good");

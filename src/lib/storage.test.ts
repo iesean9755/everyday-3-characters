@@ -5,6 +5,7 @@ import {
   findNextCourseIndex,
   freshProgress,
   getDueReviewKeys,
+  hasDueReview,
   loadProgress,
   migrateProgress,
   recordCharacterAnswer,
@@ -234,7 +235,7 @@ describe("学习记录容错与迁移", () => {
       key,
       true,
       undefined,
-      true,
+      "scheduled",
     );
     expect(getDueReviewKeys(progress.reviewPlan, "2026-07-12")).not.toContain(key);
     expect(getDueReviewKeys(progress.reviewPlan, "2026-07-13")).toContain(key);
@@ -243,7 +244,7 @@ describe("学习记录容错与迁移", () => {
       key,
       true,
       undefined,
-      true,
+      "scheduled",
     );
     expect(getDueReviewKeys(progress.reviewPlan, "2026-07-17")).toContain(key);
   });
@@ -260,7 +261,7 @@ describe("学习记录容错与迁移", () => {
         key,
         true,
         undefined,
-        true,
+        "scheduled",
       );
     }
     expect(progress.reviewPlan[key].correctStreak).toBe(3);
@@ -277,6 +278,145 @@ describe("学习记录容错与迁移", () => {
     progress = recordCharacterAnswer(progress, key, false);
     expect(progress.reviewPlan[key].dueDates).toEqual(["2026-07-11"]);
     expect(getDueReviewKeys(progress.reviewPlan, "2026-07-11")).toEqual([key]);
+  });
+
+  it("未到期的长期普通练习答对不会消耗未来计划复习", () => {
+    const key = courses[0].characters[0].characterKey;
+    const progress = {
+      ...freshProgress(),
+      date: "2026-07-10",
+      totalLearnedCharacterKeys: [key],
+      reviewPlan: {
+        [key]: {
+          dueDates: ["2026-07-11", "2026-07-13", "2026-07-17"],
+          completedDates: [],
+          correctStreak: 0,
+          wrongCount: 0,
+          mastered: false,
+        },
+      },
+    };
+
+    expect(hasDueReview(undefined, progress.date)).toBe(false);
+    expect(hasDueReview(progress.reviewPlan[key], progress.date)).toBe(false);
+    const answered = recordCharacterAnswer(
+      progress,
+      key,
+      true,
+      undefined,
+      "practice",
+    );
+
+    expect(answered.reviewPlan[key].completedDates).toEqual([]);
+    expect(answered.reviewPlan[key].correctStreak).toBe(0);
+    expect(getDueReviewKeys(answered.reviewPlan, "2026-07-11")).toContain(key);
+  });
+
+  it("真正到期的计划复习答对后推进到下一条到期日", () => {
+    const key = courses[0].characters[0].characterKey;
+    const progress = {
+      ...freshProgress(),
+      date: "2026-07-11",
+      totalLearnedCharacterKeys: [key],
+      reviewPlan: {
+        [key]: {
+          dueDates: ["2026-07-11", "2026-07-13", "2026-07-17"],
+          completedDates: [],
+          correctStreak: 0,
+          wrongCount: 0,
+          mastered: false,
+        },
+      },
+    };
+
+    expect(hasDueReview(progress.reviewPlan[key], progress.date)).toBe(true);
+    const answered = recordCharacterAnswer(
+      progress,
+      key,
+      true,
+      undefined,
+      "scheduled",
+    );
+
+    expect(answered.reviewPlan[key].completedDates).toEqual(["2026-07-11"]);
+    expect(getDueReviewKeys(answered.reviewPlan, "2026-07-12")).not.toContain(key);
+    expect(getDueReviewKeys(answered.reviewPlan, "2026-07-13")).toContain(key);
+  });
+
+  it("未到期的普通练习答错只安排一次明日复习并清零连续答对", () => {
+    const key = courses[0].characters[0].characterKey;
+    const progress = {
+      ...freshProgress(),
+      date: "2026-07-10",
+      totalLearnedCharacterKeys: [key],
+      reviewPlan: {
+        [key]: {
+          dueDates: ["2026-07-13", "2026-07-17"],
+          completedDates: [],
+          correctStreak: 2,
+          wrongCount: 0,
+          mastered: false,
+        },
+      },
+    };
+
+    const first = recordCharacterAnswer(
+      progress,
+      key,
+      false,
+      undefined,
+      "practice",
+    );
+    const second = recordCharacterAnswer(
+      first,
+      key,
+      false,
+      undefined,
+      "practice",
+    );
+
+    expect(second.reviewPlan[key].completedDates).toEqual([]);
+    expect(second.reviewPlan[key].correctStreak).toBe(0);
+    expect(
+      second.reviewPlan[key].dueDates.filter((date) => date === "2026-07-11"),
+    ).toHaveLength(1);
+  });
+
+  it("长期复习混合到期、易错和随机字时只有到期字推进计划", () => {
+    const [dueKey, difficultKey, randomKey] = courses[0].characters.map(
+      (item) => item.characterKey,
+    );
+    let progress = {
+      ...freshProgress(),
+      date: "2026-07-11",
+      totalLearnedCharacterKeys: [dueKey, difficultKey, randomKey],
+      reviewPlan: Object.fromEntries(
+        [dueKey, difficultKey, randomKey].map((key, index) => [
+          key,
+          {
+            dueDates: [index === 0 ? "2026-07-11" : "2026-07-13"],
+            completedDates: [] as string[],
+            correctStreak: 0,
+            wrongCount: index === 1 ? 4 : 0,
+            mastered: false,
+          },
+        ]),
+      ),
+    };
+
+    for (const key of [dueKey, difficultKey, randomKey]) {
+      const mode = hasDueReview(progress.reviewPlan[key], progress.date)
+        ? "scheduled"
+        : "practice";
+      progress = recordCharacterAnswer(progress, key, true, undefined, mode);
+    }
+
+    expect(progress.reviewPlan[dueKey].completedDates).toEqual(["2026-07-11"]);
+    expect(progress.reviewPlan[difficultKey].completedDates).toEqual([]);
+    expect(progress.reviewPlan[randomKey].completedDates).toEqual([]);
+    expect(Object.keys(progress.todayAnswerStats)).toEqual(
+      expect.arrayContaining([dueKey, difficultKey, randomKey]),
+    );
   });
 
   it("同一天到期超过三个字时只返回三个且全部去重", () => {

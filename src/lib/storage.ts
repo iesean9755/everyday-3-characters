@@ -3,6 +3,7 @@ import type {
   CharacterAnswerStat,
   Course,
   Progress,
+  ReviewAnswerMode,
   ReviewPlanEntry,
   Settings,
 } from "../types";
@@ -106,15 +107,27 @@ function legacyAnswerStatsToCharacterKeys(
   return result;
 }
 
+const nextDueDate = (entry: ReviewPlanEntry) =>
+  unique(entry.dueDates).sort()[entry.completedDates.length];
+
+export function hasDueReview(
+  entry: ReviewPlanEntry | undefined,
+  today: string,
+): boolean {
+  if (!entry) return false;
+  const dueDate = nextDueDate(entry);
+  return Boolean(dueDate && isDue(dueDate, today));
+}
+
 export function getDueReviewKeys(
   reviewPlan: Progress["reviewPlan"],
   today: string,
   limit = 3,
 ): string[] {
   const firstOutstanding = (entry: ReviewPlanEntry) =>
-    [...entry.dueDates].sort()[entry.completedDates.length] ?? "9999-12-31";
+    nextDueDate(entry) ?? "9999-12-31";
   return Object.entries(reviewPlan)
-    .filter(([, entry]) => isDue(firstOutstanding(entry), today))
+    .filter(([, entry]) => hasDueReview(entry, today))
     .sort(
       (a, b) =>
         firstOutstanding(a[1]).localeCompare(firstOutstanding(b[1])) ||
@@ -396,7 +409,7 @@ export function recordCharacterAnswer(
   characterKey: string,
   correct: boolean,
   lessonItemId?: string,
-  scheduledReview = false,
+  reviewMode: ReviewAnswerMode = "none",
 ): Progress {
   const increment = (
     stats: Record<string, CharacterAnswerStat>,
@@ -416,16 +429,22 @@ export function recordCharacterAnswer(
     };
   };
   const reviewPlan = { ...progress.reviewPlan };
-  if (scheduledReview || !correct) {
-    const entry = reviewPlan[characterKey] ?? emptyReviewPlan();
+  const existingEntry = reviewPlan[characterKey];
+  const scheduled =
+    reviewMode === "scheduled" &&
+    hasDueReview(existingEntry, progress.date);
+  if (scheduled || !correct) {
+    const entry = existingEntry ?? emptyReviewPlan();
     const alreadyReviewedToday = entry.completedDates.includes(progress.date);
-    const completedDates = scheduledReview
+    const completedDates = scheduled
       ? unique([...entry.completedDates, progress.date]).sort()
       : entry.completedDates;
     const correctStreak = correct
-      ? alreadyReviewedToday
-        ? entry.correctStreak
-        : entry.correctStreak + 1
+      ? scheduled
+        ? alreadyReviewedToday
+          ? entry.correctStreak
+          : entry.correctStreak + 1
+        : entry.correctStreak
       : 0;
     reviewPlan[characterKey] = {
       ...entry,
@@ -435,7 +454,11 @@ export function recordCharacterAnswer(
       completedDates,
       correctStreak,
       wrongCount: entry.wrongCount + (correct ? 0 : 1),
-      mastered: correctStreak >= 3,
+      mastered: correct
+        ? scheduled
+          ? correctStreak >= 3
+          : entry.mastered
+        : false,
     };
   }
   const legacy = lessonItemId
