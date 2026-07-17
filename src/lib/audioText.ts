@@ -30,6 +30,7 @@ export function getTeachingParts(item: CharacterItem) {
     intro: "这个字念",
     character: item.char,
     explanation: item.teachingExplanation,
+    example: item.example,
   };
 }
 
