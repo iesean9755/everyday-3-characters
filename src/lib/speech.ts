@@ -1,4 +1,5 @@
 import type { CharacterItem } from "../types";
+import { getTeachingParts } from "./audioText";
 
 export interface VoiceOption {
   name: string;
@@ -450,19 +451,11 @@ export function speak(
   );
 }
 
-export function teachingParts(item: CharacterItem) {
-  const explanation =
-    item.speech
-      .replace(new RegExp(`^这个字念${item.char}[。！!，,]?`), "")
-      .replace(/[。！!]$/, "") || item.meaning;
-  return { intro: "这个字念", character: item.char, explanation };
-}
-
 export async function speakTeaching(
   item: CharacterItem,
   options: TeachingOptions = {},
 ): Promise<PlaybackResult> {
-  const { intro, character, explanation } = teachingParts(item);
+  const { intro, character, explanation } = getTeachingParts(item);
   const normalRate = options.rate ?? 0.8;
   stopSpeech();
   const token = generation;

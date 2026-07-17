@@ -1,5 +1,6 @@
 import {describe,expect,it} from 'vitest';
 import {courses} from './courses';
+import {getGoalSpeech,getTeachingParts} from '../lib/audioText';
 
 describe('课程数据',()=>{
   it('内置30天和90个汉字条目',()=>{
@@ -9,12 +10,15 @@ describe('课程数据',()=>{
   it('每节课都有完整目标、语音和三个字',()=>{
     for(const course of courses){
       expect(course.goal.length).toBeGreaterThan(4);
-      expect(course.openingSpeech.length).toBeGreaterThan(8);
+      expect(getGoalSpeech(course).length).toBeGreaterThan(8);
       expect(course.characters).toHaveLength(3);
       for(const item of course.characters){
         expect(item.characterKey).toBe(item.char);
         expect(item.char).toHaveLength(1);
-        expect(item.speech.length).toBeGreaterThanOrEqual(5);
+        const parts=getTeachingParts(item);
+        expect(parts.intro).toBe('这个字念');
+        expect(parts.character).toBe(item.char);
+        expect(parts.explanation.length).toBeGreaterThanOrEqual(3);
         expect(item.example.length).toBeGreaterThanOrEqual(4);
       }
     }

@@ -186,7 +186,7 @@ describe("核心学习流程", () => {
     expect(
       screen.getByRole("heading", { name: "新字课程已经全部学完" }),
     ).toBeInTheDocument();
-    expect(screen.getByText("接下来继续复习，记得更牢"))
+    expect(screen.getByText("新字课程已经全部学完。以后每天复习几个字，记得更牢。"))
       .toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: "开始今日复习" }),

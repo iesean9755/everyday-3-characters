@@ -25,6 +25,20 @@ import {
 } from "./lib/storage";
 import { calculateActiveStreakFromDates } from "./lib/date";
 import {
+  getAllCoursesCompletedSpeech,
+  getCompletionSpeech,
+  getGoalSpeech,
+  getHomeSpeech,
+  getIdleSpeech,
+  getQuestionSpeech,
+  getRestSpeech,
+  getRetrySpeech,
+  getReviewCompletedSpeech,
+  getSuccessSpeech,
+  getTeachingParts,
+  SYSTEM_AUDIO_PATHS,
+} from "./lib/audioText";
+import {
   ensureSpeechReady,
   getChineseVoices,
   getSpeechDiagnostics,
@@ -212,31 +226,33 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
     switch (p.stage) {
       case "welcome":
       case "home":
-        if (p.allNewCoursesCompleted)
-          return "新字课程已经全部学完。接下来继续复习，记得更牢。";
-        return p.dailyBaseGoalCompleted
-          ? "您今天已经完成任务。想继续学习，请点中间的大按钮。"
-          : "您好，今天我们认识三个字。请点一下屏幕中间的大圆按钮。";
+        return getHomeSpeech(p);
       case "goal":
-        return `今天我们学习${course.goal}，一共认识${dailyItems.length}个字。`;
-      case "learn":
-        return item.speech;
+        return getGoalSpeech(course);
+      case "learn": {
+        const parts = getTeachingParts(item);
+        return `${parts.intro}${parts.character}。${parts.explanation}`;
+      }
       case "quiz":
-        return `请找出${item.char}字。`;
+        return getQuestionSpeech(item);
       case "review":
-        return `请找出${activeReviewItems[p.reviewIndex]?.char ?? dailyItems[0].char}字。`;
+        return getQuestionSpeech(
+          activeReviewItems[p.reviewIndex] ?? dailyItems[0],
+        );
       case "todayReview":
-        return `请找出${todayItems[p.reviewIndex]?.char ?? todayItems[0]?.char ?? "刚学过的"}字。`;
+        return todayItems[p.reviewIndex] || todayItems[0]
+          ? getQuestionSpeech(todayItems[p.reviewIndex] ?? todayItems[0])
+          : "请找出刚学过的字。";
       case "longTermReview":
-        return `请找出${longTermReviewItems[p.reviewIndex]?.char ?? "要复习的"}字。`;
+        return longTermReviewItems[p.reviewIndex]
+          ? getQuestionSpeech(longTermReviewItems[p.reviewIndex])
+          : "请找出要复习的字。";
       case "reviewComplete":
-        return "今天的复习已经完成，记得更牢了。";
+        return getReviewCompletedSpeech();
       case "complete":
-        return p.allNewCoursesCompleted
-          ? "新字课程已经全部学完。接下来继续复习，记得更牢。"
-          : "今天的三个字已经学会了。您可以今天学到这里，也可以再学三个新字。";
+        return getCompletionSpeech(course, p);
       case "rest":
-        return "您今天已经学了不少，可以休息一下，明天再学。";
+        return getRestSpeech();
       default:
         return "";
     }
@@ -257,8 +273,10 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
       case "welcome":
       case "home":
         return p.allNewCoursesCompleted
-          ? undefined
-          : "/audio/system/welcome.mp3";
+          ? SYSTEM_AUDIO_PATHS.allCoursesCompleted
+          : p.dailyBaseGoalCompleted
+            ? SYSTEM_AUDIO_PATHS.homeCompleted
+            : SYSTEM_AUDIO_PATHS.welcome;
       case "goal":
         return course.openingAudio;
       case "quiz":
@@ -270,7 +288,15 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
       case "longTermReview":
         return longTermReviewItems[p.reviewIndex]?.questionAudio;
       case "complete":
-        return p.allNewCoursesCompleted ? undefined : course.completionAudio;
+        return p.allNewCoursesCompleted
+          ? SYSTEM_AUDIO_PATHS.allCoursesCompleted
+          : course.courseType === "review"
+            ? SYSTEM_AUDIO_PATHS.reviewCompleted
+            : SYSTEM_AUDIO_PATHS.baseCompleted;
+      case "reviewComplete":
+        return SYSTEM_AUDIO_PATHS.reviewCompleted;
+      case "rest":
+        return SYSTEM_AUDIO_PATHS.rest;
       default:
         return undefined;
     }
@@ -336,7 +362,7 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
   useEffect(() => {
     void preloadAudio([
       course.openingAudio,
-      course.completionAudio,
+      ...Object.values(SYSTEM_AUDIO_PATHS),
       ...dailyItems.flatMap((entry) => [
         entry.teachingAudio,
         entry.introAudio,
@@ -380,7 +406,7 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
           p.stage !== "settings"
         ) {
           idleCount.current++;
-          void say("请点一下屏幕，我们继续学习。");
+          void say(getIdleSpeech(), SYSTEM_AUDIO_PATHS.idle);
         }
       }, 30000);
     };
@@ -539,10 +565,11 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
     void unlockSpeechFromUserGesture();
     const current = progressRef.current;
     const reviewItem = activeReviewItems[current.reviewIndex];
-    const id = isReview ? reviewItem.id : item.id;
+    const answerItem = isReview ? reviewItem : item;
+    const id = answerItem.id;
     const answered = recordCharacterAnswer(
       current,
-      (isReview ? reviewItem : item).characterKey,
+      answerItem.characterKey,
       choice === target,
       id,
       isReview && current.characterIndex === -1 ? "scheduled" : "none",
@@ -550,10 +577,7 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
     commit(answered);
     if (choice === target) {
       setFeedback("good");
-      void say(
-        `找对了，这个字念${target}。`,
-        (isReview ? reviewItem : item).successAudio,
-      );
+      void say(getSuccessSpeech(answerItem), answerItem.successAudio);
       scheduleTimeout(() => {
         if (sequence !== answerSequence.current) return;
         const latest = progressRef.current;
@@ -579,8 +603,8 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
     } else {
       setFeedback("retry");
       const feedbackPlayback = say(
-        `没关系，我们再看一次。这个字念${target}。`,
-        (isReview ? reviewItem : item).retryAudio,
+        getRetrySpeech(answerItem),
+        answerItem.retryAudio,
       );
       scheduleTimeout(() => {
         void feedbackPlayback.finally(() => {
@@ -607,7 +631,7 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
     commit(answered);
     if (choice === reviewItem.char) {
       setFeedback("good");
-      void say(`找对了，这个字念${reviewItem.char}。`, reviewItem.successAudio);
+      void say(getSuccessSpeech(reviewItem), reviewItem.successAudio);
       scheduleTimeout(() => {
         if (sequence !== answerSequence.current) return;
         const next = progressRef.current.reviewIndex + 1;
@@ -618,7 +642,7 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
     } else {
       setFeedback("retry");
       const feedbackPlayback = say(
-        `没关系，我们再看一次。这个字念${reviewItem.char}。`,
+        getRetrySpeech(reviewItem),
         reviewItem.retryAudio,
       );
       scheduleTimeout(() => {
@@ -666,7 +690,7 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
     commit(answered);
     if (correct) {
       setFeedback("good");
-      void say(`找对了，这个字念${reviewItem.char}。`, reviewItem.successAudio);
+      void say(getSuccessSpeech(reviewItem), reviewItem.successAudio);
       scheduleTimeout(() => {
         if (sequence !== answerSequence.current) return;
         const latest = progressRef.current;
@@ -683,7 +707,7 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
     } else {
       setFeedback("retry");
       const feedbackPlayback = say(
-        `没关系，我们再看一次。这个字念${reviewItem.char}。`,
+        getRetrySpeech(reviewItem),
         reviewItem.retryAudio,
       );
       scheduleTimeout(() => {
@@ -774,7 +798,7 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
               ✓
             </div>
             <h1>新字课程已经全部学完</h1>
-            <p>接下来继续复习，记得更牢</p>
+            <p>{getAllCoursesCompletedSpeech()}</p>
             <PrimaryButton
               onClick={() => startLongTermReview()}
               label="开始今日复习"
@@ -803,7 +827,7 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
               🌳
             </div>
             <h1>每天认3个字</h1>
-            <p>听声音，看图，认生活里的字</p>
+            <p>{getHomeSpeech(p)}</p>
             <button
               className="start-orb"
               onClick={start}
@@ -826,6 +850,7 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
               ✓
             </div>
             <h1>今天的目标已完成</h1>
+            <p>{getHomeSpeech(p)}</p>
             <p>
               {p.todayNewCharacterKeys.length > 0
                 ? `今天新认识${p.todayNewCharacterKeys.length}个字，练习了${p.todayPracticedCharacterKeys.length}个字。`
@@ -862,7 +887,7 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
       {p.stage === "goal" && (
         <section>
           <ProgressDots current={0} total={dailyItems.length} />
-          <h1>{course.goal}</h1>
+          <h1>{getGoalSpeech(course)}</h1>
           <SceneArt
             icon={course.icon}
             theme={course.theme}
@@ -897,7 +922,7 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
             <strong>{item.char}</strong>
             <span>{item.pinyin}</span>
           </button>
-          <p className="example">{item.example}</p>
+          <p className="example">{getTeachingParts(item).explanation}</p>
           <PrimaryButton
             onClick={afterLearn}
             label="我看清了"
@@ -909,7 +934,7 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
       )}
       {p.stage === "quiz" && (
         <Quiz
-          title={`请找出“${item.char}”`}
+          title={getQuestionSpeech(item)}
           target={item.char}
           choices={options(item.char, p.characterIndex)}
           feedback={feedback}
@@ -936,7 +961,7 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
               busy={answerLocked}
               onAnswer={(c) => answer(c, q.char, true)}
               onSpeak={() =>
-                void sayFromGesture(`请找出${q.char}字。`, q.questionAudio)
+                void sayFromGesture(getQuestionSpeech(q), q.questionAudio)
               }
             />
           );
@@ -955,7 +980,7 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
               busy={answerLocked}
               onAnswer={answerTodayReview}
               onSpeak={() =>
-                void sayFromGesture(`请找出${q.char}字。`, q.questionAudio)
+                void sayFromGesture(getQuestionSpeech(q), q.questionAudio)
               }
             />
           );
@@ -974,7 +999,7 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
               busy={answerLocked}
               onAnswer={answerLongTermReview}
               onSpeak={() =>
-                void sayFromGesture(`请找出${q.char}字。`, q.questionAudio)
+                void sayFromGesture(getQuestionSpeech(q), q.questionAudio)
               }
             />
           );
@@ -983,6 +1008,7 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
         <section className="complete">
           <div className="complete-mark">✓</div>
           <h1>今天的复习完成了</h1>
+          <p>{getReviewCompletedSpeech()}</p>
           <p>今天复习了 {p.todayPracticedCharacterKeys.length} 个字</p>
           <p>没有增加新的汉字</p>
           <div className="tree-growth">
@@ -1010,6 +1036,7 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
               ? `今天复习了${new Set(dailyItems.map((item) => item.characterKey)).size}个字`
               : `今天新认识${p.todayNewCharacterKeys.length}个字`}
           </h1>
+          <p>{getCompletionSpeech(course, p)}</p>
           <div className="learned-row">
             {dailyItems.map((c) => (
               <div key={c.id}>
@@ -1058,12 +1085,7 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
             <span aria-hidden="true">↻</span> 复习今天学过的字
           </button>
           <SpeakerButton
-            onClick={() =>
-              void sayFromGesture(
-                stageSpeech,
-                p.allNewCoursesCompleted ? undefined : course.completionAudio,
-              )
-            }
+            onClick={() => void sayFromGesture(stageSpeech, stageAudio)}
             label="再听一遍"
           />
         </section>
@@ -1074,7 +1096,7 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
             🍵
           </div>
           <h1>今天学了不少</h1>
-          <p>可以休息一下，明天再学。</p>
+          <p>{getRestSpeech()}</p>
           <PrimaryButton
             onClick={goHome}
             label="今天到这里"

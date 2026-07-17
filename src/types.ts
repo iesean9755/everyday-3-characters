@@ -17,9 +17,9 @@ export interface CharacterItem {
   char: string;
   pinyin: string;
   meaning: string;
+  teachingExplanation: string;
   scene: string;
   example: string;
-  speech: string;
   teachingAudio: string;
   introAudio: string;
   characterAudio: string;
@@ -45,10 +45,7 @@ export interface Course {
   icon: string;
   theme: Theme;
   characters: CharacterItem[];
-  openingSpeech: string;
-  completionSpeech: string;
   openingAudio: string;
-  completionAudio: string;
   reviewSchedule: number[];
 }
 export interface Settings {

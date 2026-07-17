@@ -108,7 +108,20 @@ public/audio/feedback/     答对与重试提示
 public/audio/system/       启动、课程开场和完成语音
 ```
 
-文件名和完整文案见 `scripts/audio-script.json` 或 `scripts/audio-script.csv`。把生成好的 MP3 按清单的 `saveDirectory` 和 `suggestedFileName` 放入对应目录，然后运行：
+唯一语音文案来源是 `src/lib/audioText.ts`，页面朗读和音频清单都调用这里的函数，避免页面文字与音频文案冲突。文件名和完整文案见 `scripts/audio-script.json` 或 `scripts/audio-script.csv`，缺失报告见 `scripts/audio-missing.json`。
+
+开发期可使用 edge-tts 生成前 7 天课程与全部系统提示：
+
+```bash
+python -m pip install -r scripts/requirements-audio.txt
+pnpm audio:generate
+```
+
+使用 `pnpm audio:generate -- --force` 可覆盖已有文件，使用 `pnpm audio:generate:all` 可生成全部课程。默认使用 `zh-CN-XiaoxiaoNeural`，普通讲解语速约 -15%，单字约 -25%；已有非空文件默认跳过，失败最多重试 3 次并限制并发。相同汉字的单字、答对和重试音频会复用同一文件。
+
+“edge-tts仅作为开发期语音生成工具，不是项目运行时依赖。生成后的MP3保存在本地，正式发布前可替换为拥有正式授权的云语音或真人录音。”
+
+也可以把正式授权的 MP3 按清单的 `saveDirectory` 和 `suggestedFileName` 放入对应目录，然后运行：
 
 ```bash
 pnpm audio:script
