@@ -1,5 +1,5 @@
 import { courses } from "../data/courses";
-import type { Progress, Settings } from "../types";
+import type { Course, Progress, Settings } from "../types";
 import { todayKey } from "./date";
 import { Capacitor } from "@capacitor/core";
 import { Preferences } from "@capacitor/preferences";
@@ -21,7 +21,30 @@ export const defaultSettings: Settings = {
   enabledThemes: { 防骗: true, 医院: true, 手机: true },
 };
 
-const unique = (ids: string[]) => [...new Set(ids)];
+export const unique = <T,>(items: T[]) => [...new Set(items)];
+
+const itemById = new Map(
+  courses.flatMap((course) =>
+    course.characters.map((item) => [item.id, item] as const),
+  ),
+);
+const newCourseItemIds = new Set(
+  courses
+    .filter((course) => course.courseType === "new")
+    .flatMap((course) => course.characters.map((item) => item.id)),
+);
+
+export function idsToCharacterKeys(ids: string[]): string[] {
+  return unique(
+    ids
+      .map((id) => itemById.get(id)?.characterKey)
+      .filter((key): key is string => Boolean(key)),
+  );
+}
+
+function newCourseIdsToCharacterKeys(ids: string[]): string[] {
+  return idsToCharacterKeys(ids.filter((id) => newCourseItemIds.has(id)));
+}
 
 export function findNextCourseIndex(learnedIds: string[], start = 0): number {
   const learned = new Set(learnedIds);
@@ -36,7 +59,7 @@ export function findNextCourseIndex(learnedIds: string[], start = 0): number {
 export const freshProgress = (): Progress => {
   const date = todayKey();
   return {
-    version: 1,
+    version: 2,
     updatedAt: Date.now(),
     date,
     courseIndex: 0,
@@ -52,9 +75,12 @@ export const freshProgress = (): Progress => {
     completedDates: [],
     dailyBaseGoalCompleted: false,
     todayLearnedCharacterIds: [],
+    todayNewCharacterKeys: [],
+    todayPracticedCharacterKeys: [],
     todayNewCharacterCount: 0,
     todayExtraGroupCount: 0,
     totalLearnedCharacterIds: [],
+    totalLearnedCharacterKeys: [],
     nextCourseIndex: 0,
     currentExtraGroupProgress: 0,
     lastCompletedDate: "",
@@ -65,17 +91,18 @@ export const freshProgress = (): Progress => {
 
 const valid = (
   value: unknown,
-): value is Partial<Progress> & Pick<Progress, "version" | "date"> =>
+): value is Record<string, unknown> & { version: 1 | 2; date: string } =>
   !!value &&
   typeof value === "object" &&
-  (value as Progress).version === 1 &&
-  typeof (value as Progress).date === "string";
+  ((value as { version?: number }).version === 1 ||
+    (value as { version?: number }).version === 2) &&
+  typeof (value as { date?: unknown }).date === "string";
 
 /** 将旧版记录补齐为新版结构，不删除任何长期学习数据。 */
 export function migrateProgress(value: unknown): Progress {
   const fresh = freshProgress();
   if (!valid(value)) return fresh;
-  const old = value as Partial<Progress>;
+  const old = value as unknown as Partial<Progress> & { version: 1 | 2 };
   const settings = { ...defaultSettings, ...(old.settings ?? {}) };
   const total = unique(old.totalLearnedCharacterIds ?? old.learnedIds ?? []);
   const oldCourseIndex = Math.max(
@@ -88,17 +115,30 @@ export function migrateProgress(value: unknown): Progress {
       ? courses[oldCourseIndex].characters.map((item) => item.id)
       : []);
   const todayIds = unique(inferredToday);
+  const totalKeys = unique(
+    old.totalLearnedCharacterKeys ?? idsToCharacterKeys(total),
+  );
+  const todayPracticedKeys = unique(
+    old.todayPracticedCharacterKeys ?? idsToCharacterKeys(todayIds),
+  );
+  const todayNewKeys = unique(
+    old.todayNewCharacterKeys ?? newCourseIdsToCharacterKeys(todayIds),
+  );
   const inferredNext =
     old.nextCourseIndex ?? findNextCourseIndex(total, oldCourseIndex);
   return {
     ...fresh,
     ...old,
+    version: 2,
     settings,
     courseIndex: old.courseIndex ?? Math.min(inferredNext, courses.length - 1),
     learnedIds: total,
     totalLearnedCharacterIds: total,
+    totalLearnedCharacterKeys: totalKeys,
     todayLearnedCharacterIds: todayIds,
-    todayNewCharacterCount: old.todayNewCharacterCount ?? todayIds.length,
+    todayNewCharacterKeys: todayNewKeys,
+    todayPracticedCharacterKeys: todayPracticedKeys,
+    todayNewCharacterCount: todayNewKeys.length,
     todayExtraGroupCount:
       old.todayExtraGroupCount ??
       Math.max(0, Math.floor(todayIds.length / 3) - 1),
@@ -109,8 +149,114 @@ export function migrateProgress(value: unknown): Progress {
     currentExtraGroupProgress: old.currentExtraGroupProgress ?? 0,
     lastCompletedDate:
       old.lastCompletedDate ?? (old.completedToday ? (old.date ?? "") : ""),
-    dailyStats: old.dailyStats ?? {},
+    dailyStats: Object.fromEntries(
+      Object.entries(old.dailyStats ?? {}).map(([date, stat]) => {
+        const learnedCharacterIds = unique(stat.learnedCharacterIds ?? []);
+        const practicedCharacterKeys = unique(
+          stat.practicedCharacterKeys ??
+            idsToCharacterKeys(learnedCharacterIds),
+        );
+        const newCharacterKeys = unique(
+          stat.newCharacterKeys ??
+            newCourseIdsToCharacterKeys(learnedCharacterIds),
+        );
+        return [
+          date,
+          {
+            ...stat,
+            learnedCharacterIds,
+            practicedCharacterKeys,
+            newCharacterKeys,
+            newCharacterCount: newCharacterKeys.length,
+          },
+        ];
+      }),
+    ),
     updatedAt: old.updatedAt ?? Date.now(),
+  };
+}
+
+/**
+ * 完成一个课程组。课程条目 ID 继续负责定位；真正的识字统计只使用
+ * characterKey，复习课程只增加练习记录。
+ */
+export function completeCourseGroup(
+  progress: Progress,
+  course: Course,
+  answerStats: Progress["answerStats"] = progress.answerStats,
+): Progress {
+  const groupIds = course.characters.map((item) => item.id);
+  const practicedKeys = unique(
+    course.characters.map((item) => item.characterKey),
+  );
+  const historicalKeys = new Set(progress.totalLearnedCharacterKeys);
+  const groupNewKeys =
+    course.courseType === "review"
+      ? []
+      : practicedKeys.filter((key) => !historicalKeys.has(key));
+
+  const totalIds = unique([...progress.totalLearnedCharacterIds, ...groupIds]);
+  const todayIds = unique([...progress.todayLearnedCharacterIds, ...groupIds]);
+  const totalKeys = unique([
+    ...progress.totalLearnedCharacterKeys,
+    ...groupNewKeys,
+  ]);
+  const todayNewKeys = unique([
+    ...progress.todayNewCharacterKeys,
+    ...groupNewKeys,
+  ]);
+  const todayPracticedKeys = unique([
+    ...progress.todayPracticedCharacterKeys,
+    ...practicedKeys,
+  ]);
+  const firstBaseCompletion = !progress.dailyBaseGoalCompleted;
+  const isExtraGroup = progress.dailyBaseGoalCompleted;
+  const extraGroups =
+    progress.todayExtraGroupCount + (isExtraGroup ? 1 : 0);
+  const nextCourseIndex = findNextCourseIndex(
+    totalIds,
+    progress.courseIndex + 1,
+  );
+  const completedDates = unique([...progress.completedDates, progress.date]);
+  const streak =
+    firstBaseCompletion && progress.lastCompletedDate !== progress.date
+      ? progress.streak + 1
+      : progress.streak;
+
+  return {
+    ...progress,
+    stage: "complete",
+    reviewIndex: 0,
+    answerStats,
+    completedToday: true,
+    dailyBaseGoalCompleted: true,
+    todayLearnedCharacterIds: todayIds,
+    todayNewCharacterKeys: todayNewKeys,
+    todayPracticedCharacterKeys: todayPracticedKeys,
+    todayNewCharacterCount: todayNewKeys.length,
+    todayExtraGroupCount: extraGroups,
+    totalLearnedCharacterIds: totalIds,
+    totalLearnedCharacterKeys: totalKeys,
+    learnedIds: totalIds,
+    nextCourseIndex,
+    currentExtraGroupProgress:
+      progress.currentExtraGroupProgress + (isExtraGroup ? 1 : 0),
+    streak,
+    lastCompletedDate: firstBaseCompletion
+      ? progress.date
+      : progress.lastCompletedDate,
+    completedDates,
+    dailyStats: {
+      ...progress.dailyStats,
+      [progress.date]: {
+        learnedCharacterIds: todayIds,
+        newCharacterKeys: todayNewKeys,
+        practicedCharacterKeys: todayPracticedKeys,
+        newCharacterCount: todayNewKeys.length,
+        extraGroupCount: extraGroups,
+        baseGoalCompleted: true,
+      },
+    },
   };
 }
 
@@ -123,7 +269,9 @@ export function rollToToday(progress: Progress): Progress {
     ...progress.dailyStats,
     [progress.date]: {
       learnedCharacterIds: yesterdayIds,
-      newCharacterCount: progress.todayNewCharacterCount,
+      newCharacterKeys: progress.todayNewCharacterKeys,
+      practicedCharacterKeys: progress.todayPracticedCharacterKeys,
+      newCharacterCount: progress.todayNewCharacterKeys.length,
       extraGroupCount: progress.todayExtraGroupCount,
       baseGoalCompleted: progress.dailyBaseGoalCompleted,
     },
@@ -141,6 +289,8 @@ export function rollToToday(progress: Progress): Progress {
     completedToday: false,
     dailyBaseGoalCompleted: false,
     todayLearnedCharacterIds: [],
+    todayNewCharacterKeys: [],
+    todayPracticedCharacterKeys: [],
     todayNewCharacterCount: 0,
     todayExtraGroupCount: 0,
     currentExtraGroupProgress: 0,

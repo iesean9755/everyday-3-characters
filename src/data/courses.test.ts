@@ -12,10 +12,15 @@ describe('课程数据',()=>{
       expect(course.openingSpeech.length).toBeGreaterThan(8);
       expect(course.characters).toHaveLength(3);
       for(const item of course.characters){
+        expect(item.characterKey).toBe(item.char);
         expect(item.char).toHaveLength(1);
         expect(item.speech.length).toBeGreaterThanOrEqual(5);
         expect(item.example.length).toBeGreaterThanOrEqual(4);
       }
     }
+  });
+  it('仅轻量复习课程标记为review，其他课程标记为new',()=>{
+    expect(courses.filter(course=>course.courseType==='review').map(course=>course.name)).toEqual(['轻量复习']);
+    expect(courses.filter(course=>course.courseType==='new')).toHaveLength(29);
   });
 });

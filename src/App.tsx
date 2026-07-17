@@ -12,6 +12,7 @@ import {
 } from "./components/Controls";
 import { SceneArt } from "./components/SceneArt";
 import {
+  completeCourseGroup,
   findNextCourseIndex,
   freshProgress,
   loadProgress,
@@ -79,7 +80,7 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
   const hasMoreCourses = p.nextCourseIndex < courses.length;
   const maxReached =
     p.settings.maxDailyCharacters !== null &&
-    p.todayNewCharacterCount >= p.settings.maxDailyCharacters;
+    p.todayPracticedCharacterKeys.length >= p.settings.maxDailyCharacters;
   const handlePlayback = useCallback((result: PlaybackResult) => {
     if (result.ok) setSoundHelp(false);
     else setSoundHelp(true);
@@ -366,51 +367,7 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
       : go("learn", { characterIndex: 0 });
   const afterLearn = () => go("quiz");
   const finishCurrentGroup = (nextStats: Progress["answerStats"]) => {
-    const oldTotal = new Set(p.totalLearnedCharacterIds);
-    const newIds = dailyItems
-      .map((entry) => entry.id)
-      .filter((id) => !oldTotal.has(id));
-    const totalIds = [...new Set([...p.totalLearnedCharacterIds, ...newIds])];
-    const todayIds = [...new Set([...p.todayLearnedCharacterIds, ...newIds])];
-    const firstBaseCompletion =
-      !p.dailyBaseGoalCompleted && todayIds.length >= 3;
-    const isExtraGroup = p.dailyBaseGoalCompleted && newIds.length > 0;
-    const baseCompleted = p.dailyBaseGoalCompleted || todayIds.length >= 3;
-    const extraGroups = p.todayExtraGroupCount + (isExtraGroup ? 1 : 0);
-    const nextCourseIndex = findNextCourseIndex(totalIds, p.courseIndex + 1);
-    const completedDates = baseCompleted
-      ? [...new Set([...p.completedDates, p.date])]
-      : p.completedDates;
-    const streak =
-      firstBaseCompletion && p.lastCompletedDate !== p.date
-        ? p.streak + 1
-        : p.streak;
-    go("complete", {
-      reviewIndex: 0,
-      answerStats: nextStats,
-      completedToday: baseCompleted,
-      dailyBaseGoalCompleted: baseCompleted,
-      todayLearnedCharacterIds: todayIds,
-      todayNewCharacterCount: todayIds.length,
-      todayExtraGroupCount: extraGroups,
-      totalLearnedCharacterIds: totalIds,
-      learnedIds: totalIds,
-      nextCourseIndex,
-      currentExtraGroupProgress:
-        p.currentExtraGroupProgress + (isExtraGroup ? 1 : 0),
-      streak,
-      lastCompletedDate: firstBaseCompletion ? p.date : p.lastCompletedDate,
-      completedDates,
-      dailyStats: {
-        ...p.dailyStats,
-        [p.date]: {
-          learnedCharacterIds: todayIds,
-          newCharacterCount: todayIds.length,
-          extraGroupCount: extraGroups,
-          baseGoalCompleted: baseCompleted,
-        },
-      },
-    });
+    go("complete", completeCourseGroup(p, course, nextStats));
   };
   const answer = (choice: string, target = item.char, isReview = false) => {
     if (locked) return;
@@ -588,7 +545,11 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
               ✓
             </div>
             <h1>今天的目标已完成</h1>
-            <p>今天已经认识 {p.todayNewCharacterCount} 个字。</p>
+            <p>
+              {p.todayNewCharacterKeys.length > 0
+                ? `今天新认识${p.todayNewCharacterKeys.length}个字，练习了${p.todayPracticedCharacterKeys.length}个字。`
+                : `今天复习了${p.todayPracticedCharacterKeys.length}个字，没有增加新的汉字。`}
+            </p>
             {hasMoreCourses && !maxReached ? (
               <PrimaryButton
                 onClick={() => startNextGroup()}
@@ -714,7 +675,11 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
       {p.stage === "complete" && (
         <section className="complete">
           <div className="complete-mark">✓</div>
-          <h1>这3个字学会了</h1>
+          <h1>
+            {course.courseType === "review"
+              ? `今天复习了${new Set(dailyItems.map((item) => item.characterKey)).size}个字`
+              : `今天新认识${p.todayNewCharacterKeys.length}个字`}
+          </h1>
           <div className="learned-row">
             {dailyItems.map((c) => (
               <div key={c.id}>
@@ -727,11 +692,20 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
             <span aria-hidden="true">🌳</span>
             <b>已学习 {p.streak} 天</b>
           </div>
-          <p>今天共认识 {p.todayNewCharacterCount} 个字</p>
+          {course.courseType === "review" && <p>没有增加新的汉字</p>}
+          <p>
+            {p.todayNewCharacterKeys.length > 0 &&
+            p.todayPracticedCharacterKeys.length >
+              p.todayNewCharacterKeys.length
+              ? `今天新认识${p.todayNewCharacterKeys.length}个字，练习了${p.todayPracticedCharacterKeys.length}个字`
+              : p.todayNewCharacterKeys.length > 0
+                ? `今天新认识${p.todayNewCharacterKeys.length}个字`
+                : `今天练习了${p.todayPracticedCharacterKeys.length}个字`}
+          </p>
           {hasMoreCourses && !maxReached && (
             <PrimaryButton
               onClick={() => startNextGroup()}
-              label="再学3个新字"
+              label="继续学3个"
               icon="➜"
               disabled={locked}
             />
@@ -920,6 +894,8 @@ function Settings({
       completedToday: false,
       dailyBaseGoalCompleted: false,
       todayLearnedCharacterIds: [],
+      todayNewCharacterKeys: [],
+      todayPracticedCharacterKeys: [],
       todayNewCharacterCount: 0,
       todayExtraGroupCount: 0,
       currentExtraGroupProgress: 0,
@@ -1096,7 +1072,7 @@ function Settings({
         <h2>最近学习</h2>
         <p>
           完成 {progress.completedDates.length} 天 · 认识{" "}
-          {progress.totalLearnedCharacterIds.length} 个字
+          {progress.totalLearnedCharacterKeys.length} 个字
         </p>
         <h2>需要多复习</h2>
         <p>

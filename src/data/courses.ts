@@ -357,6 +357,7 @@ const plans: Plan[] = [
 
 export const courses: Course[] = plans.map((p, index) => ({
   id: index + 1,
+  courseType: p[0] === "轻量复习" ? "review" : "new",
   name: p[0],
   goal: p[1],
   scene: p[4].map((r) => r[3]).join("、"),
@@ -364,6 +365,7 @@ export const courses: Course[] = plans.map((p, index) => ({
   theme: p[3],
   characters: p[4].map((r, i): CharacterItem => ({
     id: `d${index + 1}-${i + 1}`,
+    characterKey: r[0],
     char: r[0],
     pinyin: r[1],
     meaning: r[2],

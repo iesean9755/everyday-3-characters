@@ -13,6 +13,7 @@ export type Theme =
   | "防骗";
 export interface CharacterItem {
   id: string;
+  characterKey: string;
   char: string;
   pinyin: string;
   meaning: string;
@@ -37,6 +38,7 @@ export interface CharacterItem {
 }
 export interface Course {
   id: number;
+  courseType: "new" | "review";
   name: string;
   goal: string;
   scene: string;
@@ -80,12 +82,14 @@ export type Stage =
   | "settings";
 export interface DailyLearningStat {
   learnedCharacterIds: string[];
+  newCharacterKeys: string[];
+  practicedCharacterKeys: string[];
   newCharacterCount: number;
   extraGroupCount: number;
   baseGoalCompleted: boolean;
 }
 export interface Progress {
-  version: 1;
+  version: 2;
   updatedAt: number;
   date: string;
   courseIndex: number;
@@ -101,9 +105,12 @@ export interface Progress {
   completedDates: string[];
   dailyBaseGoalCompleted: boolean;
   todayLearnedCharacterIds: string[];
+  todayNewCharacterKeys: string[];
+  todayPracticedCharacterKeys: string[];
   todayNewCharacterCount: number;
   todayExtraGroupCount: number;
   totalLearnedCharacterIds: string[];
+  totalLearnedCharacterKeys: string[];
   nextCourseIndex: number;
   currentExtraGroupProgress: number;
   lastCompletedDate: string;
