@@ -1570,7 +1570,7 @@
     "suggestedFileName": "day-08-opening.mp3",
     "saveDirectory": "/audio/system",
     "audioPath": "/audio/system/day-08-opening.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-银",
@@ -1583,7 +1583,7 @@
     "suggestedFileName": "银.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/银.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-8-1-explanation",
@@ -1596,7 +1596,7 @@
     "suggestedFileName": "day-08-1-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-08-1-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-8-1-question",
@@ -1609,7 +1609,7 @@
     "suggestedFileName": "day-08-1-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-08-1-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-银",
@@ -1622,7 +1622,7 @@
     "suggestedFileName": "银-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/银-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-银",
@@ -1635,7 +1635,7 @@
     "suggestedFileName": "银-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/银-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-行",
@@ -1648,7 +1648,7 @@
     "suggestedFileName": "行.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/行.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-8-2-explanation",
@@ -1661,7 +1661,7 @@
     "suggestedFileName": "day-08-2-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-08-2-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-8-2-question",
@@ -1674,7 +1674,7 @@
     "suggestedFileName": "day-08-2-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-08-2-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-行",
@@ -1687,7 +1687,7 @@
     "suggestedFileName": "行-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/行-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-行",
@@ -1700,7 +1700,7 @@
     "suggestedFileName": "行-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/行-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-取",
@@ -1713,7 +1713,7 @@
     "suggestedFileName": "取.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/取.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-8-3-explanation",
@@ -1726,7 +1726,7 @@
     "suggestedFileName": "day-08-3-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-08-3-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-8-3-question",
@@ -1739,7 +1739,7 @@
     "suggestedFileName": "day-08-3-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-08-3-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-取",
@@ -1752,7 +1752,7 @@
     "suggestedFileName": "取-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/取-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-取",
@@ -1765,7 +1765,7 @@
     "suggestedFileName": "取-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/取-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-9-opening",
@@ -1778,7 +1778,7 @@
     "suggestedFileName": "day-09-opening.mp3",
     "saveDirectory": "/audio/system",
     "audioPath": "/audio/system/day-09-opening.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-付",
@@ -1791,7 +1791,7 @@
     "suggestedFileName": "付.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/付.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-9-1-explanation",
@@ -1804,7 +1804,7 @@
     "suggestedFileName": "day-09-1-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-09-1-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-9-1-question",
@@ -1817,7 +1817,7 @@
     "suggestedFileName": "day-09-1-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-09-1-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-付",
@@ -1830,7 +1830,7 @@
     "suggestedFileName": "付-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/付-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-付",
@@ -1843,7 +1843,7 @@
     "suggestedFileName": "付-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/付-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-扫",
@@ -1856,7 +1856,7 @@
     "suggestedFileName": "扫.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/扫.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-9-2-explanation",
@@ -1869,7 +1869,7 @@
     "suggestedFileName": "day-09-2-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-09-2-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-9-2-question",
@@ -1882,7 +1882,7 @@
     "suggestedFileName": "day-09-2-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-09-2-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-扫",
@@ -1895,7 +1895,7 @@
     "suggestedFileName": "扫-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/扫-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-扫",
@@ -1908,7 +1908,7 @@
     "suggestedFileName": "扫-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/扫-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-码",
@@ -1921,7 +1921,7 @@
     "suggestedFileName": "码.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/码.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-9-3-explanation",
@@ -1934,7 +1934,7 @@
     "suggestedFileName": "day-09-3-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-09-3-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-9-3-question",
@@ -1947,7 +1947,7 @@
     "suggestedFileName": "day-09-3-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-09-3-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-码",
@@ -1960,7 +1960,7 @@
     "suggestedFileName": "码-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/码-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-码",
@@ -1973,7 +1973,7 @@
     "suggestedFileName": "码-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/码-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-10-opening",
@@ -1986,7 +1986,7 @@
     "suggestedFileName": "day-10-opening.mp3",
     "saveDirectory": "/audio/system",
     "audioPath": "/audio/system/day-10-opening.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-上",
@@ -1999,7 +1999,7 @@
     "suggestedFileName": "上.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/上.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-10-1-explanation",
@@ -2012,7 +2012,7 @@
     "suggestedFileName": "day-10-1-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-10-1-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-10-1-question",
@@ -2025,7 +2025,7 @@
     "suggestedFileName": "day-10-1-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-10-1-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-上",
@@ -2038,7 +2038,7 @@
     "suggestedFileName": "上-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/上-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-上",
@@ -2051,7 +2051,7 @@
     "suggestedFileName": "上-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/上-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-下",
@@ -2064,7 +2064,7 @@
     "suggestedFileName": "下.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/下.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-10-2-explanation",
@@ -2077,7 +2077,7 @@
     "suggestedFileName": "day-10-2-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-10-2-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-10-2-question",
@@ -2090,7 +2090,7 @@
     "suggestedFileName": "day-10-2-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-10-2-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-下",
@@ -2103,7 +2103,7 @@
     "suggestedFileName": "下-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/下-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-下",
@@ -2116,7 +2116,7 @@
     "suggestedFileName": "下-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/下-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-座",
@@ -2129,7 +2129,7 @@
     "suggestedFileName": "座.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/座.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-10-3-explanation",
@@ -2142,7 +2142,7 @@
     "suggestedFileName": "day-10-3-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-10-3-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-10-3-question",
@@ -2155,7 +2155,7 @@
     "suggestedFileName": "day-10-3-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-10-3-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-座",
@@ -2168,7 +2168,7 @@
     "suggestedFileName": "座-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/座-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-座",
@@ -2181,7 +2181,7 @@
     "suggestedFileName": "座-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/座-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-11-opening",
@@ -2194,7 +2194,7 @@
     "suggestedFileName": "day-11-opening.mp3",
     "saveDirectory": "/audio/system",
     "audioPath": "/audio/system/day-11-opening.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-进",
@@ -2207,7 +2207,7 @@
     "suggestedFileName": "进.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/进.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-11-1-explanation",
@@ -2220,7 +2220,7 @@
     "suggestedFileName": "day-11-1-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-11-1-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-11-1-question",
@@ -2233,7 +2233,7 @@
     "suggestedFileName": "day-11-1-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-11-1-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-进",
@@ -2246,7 +2246,7 @@
     "suggestedFileName": "进-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/进-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-进",
@@ -2259,7 +2259,7 @@
     "suggestedFileName": "进-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/进-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-出",
@@ -2272,7 +2272,7 @@
     "suggestedFileName": "出.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/出.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-11-2-explanation",
@@ -2285,7 +2285,7 @@
     "suggestedFileName": "day-11-2-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-11-2-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-11-2-question",
@@ -2298,7 +2298,7 @@
     "suggestedFileName": "day-11-2-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-11-2-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-出",
@@ -2311,7 +2311,7 @@
     "suggestedFileName": "出-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/出-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-出",
@@ -2324,7 +2324,7 @@
     "suggestedFileName": "出-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/出-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-口",
@@ -2337,7 +2337,7 @@
     "suggestedFileName": "口.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/口.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-11-3-explanation",
@@ -2350,7 +2350,7 @@
     "suggestedFileName": "day-11-3-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-11-3-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-11-3-question",
@@ -2363,7 +2363,7 @@
     "suggestedFileName": "day-11-3-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-11-3-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-口",
@@ -2376,7 +2376,7 @@
     "suggestedFileName": "口-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/口-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-口",
@@ -2389,7 +2389,7 @@
     "suggestedFileName": "口-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/口-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-12-opening",
@@ -2402,7 +2402,7 @@
     "suggestedFileName": "day-12-opening.mp3",
     "saveDirectory": "/audio/system",
     "audioPath": "/audio/system/day-12-opening.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-挂",
@@ -2415,7 +2415,7 @@
     "suggestedFileName": "挂.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/挂.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-12-1-explanation",
@@ -2428,7 +2428,7 @@
     "suggestedFileName": "day-12-1-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-12-1-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-12-1-question",
@@ -2441,7 +2441,7 @@
     "suggestedFileName": "day-12-1-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-12-1-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-挂",
@@ -2454,7 +2454,7 @@
     "suggestedFileName": "挂-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/挂-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-挂",
@@ -2467,7 +2467,7 @@
     "suggestedFileName": "挂-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/挂-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-号",
@@ -2480,7 +2480,7 @@
     "suggestedFileName": "号.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/号.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-12-2-explanation",
@@ -2493,7 +2493,7 @@
     "suggestedFileName": "day-12-2-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-12-2-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-12-2-question",
@@ -2506,7 +2506,7 @@
     "suggestedFileName": "day-12-2-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-12-2-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-号",
@@ -2519,7 +2519,7 @@
     "suggestedFileName": "号-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/号-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-号",
@@ -2532,7 +2532,7 @@
     "suggestedFileName": "号-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/号-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-诊",
@@ -2545,7 +2545,7 @@
     "suggestedFileName": "诊.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/诊.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-12-3-explanation",
@@ -2558,7 +2558,7 @@
     "suggestedFileName": "day-12-3-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-12-3-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-12-3-question",
@@ -2571,7 +2571,7 @@
     "suggestedFileName": "day-12-3-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-12-3-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-诊",
@@ -2584,7 +2584,7 @@
     "suggestedFileName": "诊-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/诊-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-诊",
@@ -2597,7 +2597,7 @@
     "suggestedFileName": "诊-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/诊-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-13-opening",
@@ -2610,7 +2610,7 @@
     "suggestedFileName": "day-13-opening.mp3",
     "saveDirectory": "/audio/system",
     "audioPath": "/audio/system/day-13-opening.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-片",
@@ -2623,7 +2623,7 @@
     "suggestedFileName": "片.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/片.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-13-1-explanation",
@@ -2636,7 +2636,7 @@
     "suggestedFileName": "day-13-1-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-13-1-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-13-1-question",
@@ -2649,7 +2649,7 @@
     "suggestedFileName": "day-13-1-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-13-1-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-片",
@@ -2662,7 +2662,7 @@
     "suggestedFileName": "片-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/片-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-片",
@@ -2675,7 +2675,7 @@
     "suggestedFileName": "片-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/片-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-次",
@@ -2688,7 +2688,7 @@
     "suggestedFileName": "次.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/次.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-13-2-explanation",
@@ -2701,7 +2701,7 @@
     "suggestedFileName": "day-13-2-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-13-2-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-13-2-question",
@@ -2714,7 +2714,7 @@
     "suggestedFileName": "day-13-2-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-13-2-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-次",
@@ -2727,7 +2727,7 @@
     "suggestedFileName": "次-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/次-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-次",
@@ -2740,7 +2740,7 @@
     "suggestedFileName": "次-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/次-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-饭",
@@ -2753,7 +2753,7 @@
     "suggestedFileName": "饭.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/饭.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-13-3-explanation",
@@ -2766,7 +2766,7 @@
     "suggestedFileName": "day-13-3-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-13-3-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-13-3-question",
@@ -2779,7 +2779,7 @@
     "suggestedFileName": "day-13-3-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-13-3-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-饭",
@@ -2792,7 +2792,7 @@
     "suggestedFileName": "饭-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/饭-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-饭",
@@ -2805,7 +2805,7 @@
     "suggestedFileName": "饭-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/饭-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-14-opening",
@@ -2818,7 +2818,7 @@
     "suggestedFileName": "day-14-opening.mp3",
     "saveDirectory": "/audio/system",
     "audioPath": "/audio/system/day-14-opening.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-水",
@@ -2831,7 +2831,7 @@
     "suggestedFileName": "水.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/水.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-14-1-explanation",
@@ -2844,7 +2844,7 @@
     "suggestedFileName": "day-14-1-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-14-1-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-14-1-question",
@@ -2857,7 +2857,7 @@
     "suggestedFileName": "day-14-1-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-14-1-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-水",
@@ -2870,7 +2870,7 @@
     "suggestedFileName": "水-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/水-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-水",
@@ -2883,7 +2883,7 @@
     "suggestedFileName": "水-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/水-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-气",
@@ -2896,7 +2896,7 @@
     "suggestedFileName": "气.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/气.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-14-2-explanation",
@@ -2909,7 +2909,7 @@
     "suggestedFileName": "day-14-2-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-14-2-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-14-2-question",
@@ -2922,7 +2922,7 @@
     "suggestedFileName": "day-14-2-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-14-2-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-气",
@@ -2935,7 +2935,7 @@
     "suggestedFileName": "气-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/气-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-气",
@@ -2948,7 +2948,7 @@
     "suggestedFileName": "气-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/气-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-表",
@@ -2961,7 +2961,7 @@
     "suggestedFileName": "表.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/表.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-14-3-explanation",
@@ -2974,7 +2974,7 @@
     "suggestedFileName": "day-14-3-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-14-3-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-14-3-question",
@@ -2987,7 +2987,7 @@
     "suggestedFileName": "day-14-3-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-14-3-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-表",
@@ -3000,7 +3000,7 @@
     "suggestedFileName": "表-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/表-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-表",
@@ -3013,7 +3013,7 @@
     "suggestedFileName": "表-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/表-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-15-opening",
@@ -3026,7 +3026,7 @@
     "suggestedFileName": "day-15-opening.mp3",
     "saveDirectory": "/audio/system",
     "audioPath": "/audio/system/day-15-opening.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-年",
@@ -3039,7 +3039,7 @@
     "suggestedFileName": "年.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/年.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-15-1-explanation",
@@ -3052,7 +3052,7 @@
     "suggestedFileName": "day-15-1-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-15-1-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-15-1-question",
@@ -3065,7 +3065,7 @@
     "suggestedFileName": "day-15-1-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-15-1-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-年",
@@ -3078,7 +3078,7 @@
     "suggestedFileName": "年-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/年-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-年",
@@ -3091,7 +3091,7 @@
     "suggestedFileName": "年-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/年-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-月",
@@ -3104,7 +3104,7 @@
     "suggestedFileName": "月.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/月.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-15-2-explanation",
@@ -3117,7 +3117,7 @@
     "suggestedFileName": "day-15-2-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-15-2-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-15-2-question",
@@ -3130,7 +3130,7 @@
     "suggestedFileName": "day-15-2-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-15-2-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-月",
@@ -3143,7 +3143,7 @@
     "suggestedFileName": "月-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/月-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-月",
@@ -3156,7 +3156,7 @@
     "suggestedFileName": "月-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/月-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-日",
@@ -3169,7 +3169,7 @@
     "suggestedFileName": "日.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/日.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-15-3-explanation",
@@ -3182,7 +3182,7 @@
     "suggestedFileName": "day-15-3-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-15-3-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-15-3-question",
@@ -3195,7 +3195,7 @@
     "suggestedFileName": "day-15-3-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-15-3-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-日",
@@ -3208,7 +3208,7 @@
     "suggestedFileName": "日-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/日-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-日",
@@ -3221,7 +3221,7 @@
     "suggestedFileName": "日-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/日-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-16-opening",
@@ -3234,7 +3234,7 @@
     "suggestedFileName": "day-16-opening.mp3",
     "saveDirectory": "/audio/system",
     "audioPath": "/audio/system/day-16-opening.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-件",
@@ -3247,7 +3247,7 @@
     "suggestedFileName": "件.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/件.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-16-1-explanation",
@@ -3260,7 +3260,7 @@
     "suggestedFileName": "day-16-1-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-16-1-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-16-1-question",
@@ -3273,7 +3273,7 @@
     "suggestedFileName": "day-16-1-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-16-1-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-件",
@@ -3286,7 +3286,7 @@
     "suggestedFileName": "件-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/件-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-件",
@@ -3299,7 +3299,7 @@
     "suggestedFileName": "件-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/件-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-柜",
@@ -3312,7 +3312,7 @@
     "suggestedFileName": "柜.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/柜.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-16-2-explanation",
@@ -3325,7 +3325,7 @@
     "suggestedFileName": "day-16-2-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-16-2-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-16-2-question",
@@ -3338,7 +3338,7 @@
     "suggestedFileName": "day-16-2-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-16-2-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-柜",
@@ -3351,7 +3351,7 @@
     "suggestedFileName": "柜-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/柜-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-柜",
@@ -3364,7 +3364,7 @@
     "suggestedFileName": "柜-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/柜-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-层",
@@ -3377,7 +3377,7 @@
     "suggestedFileName": "层.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/层.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-16-3-explanation",
@@ -3390,7 +3390,7 @@
     "suggestedFileName": "day-16-3-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-16-3-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-16-3-question",
@@ -3403,7 +3403,7 @@
     "suggestedFileName": "day-16-3-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-16-3-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-层",
@@ -3416,7 +3416,7 @@
     "suggestedFileName": "层-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/层-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-层",
@@ -3429,7 +3429,7 @@
     "suggestedFileName": "层-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/层-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-17-opening",
@@ -3442,7 +3442,7 @@
     "suggestedFileName": "day-17-opening.mp3",
     "saveDirectory": "/audio/system",
     "audioPath": "/audio/system/day-17-opening.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-左",
@@ -3455,7 +3455,7 @@
     "suggestedFileName": "左.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/左.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-17-1-explanation",
@@ -3468,7 +3468,7 @@
     "suggestedFileName": "day-17-1-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-17-1-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-17-1-question",
@@ -3481,7 +3481,7 @@
     "suggestedFileName": "day-17-1-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-17-1-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-左",
@@ -3494,7 +3494,7 @@
     "suggestedFileName": "左-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/左-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-左",
@@ -3507,7 +3507,7 @@
     "suggestedFileName": "左-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/左-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-右",
@@ -3520,7 +3520,7 @@
     "suggestedFileName": "右.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/右.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-17-2-explanation",
@@ -3533,7 +3533,7 @@
     "suggestedFileName": "day-17-2-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-17-2-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-17-2-question",
@@ -3546,7 +3546,7 @@
     "suggestedFileName": "day-17-2-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-17-2-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-右",
@@ -3559,7 +3559,7 @@
     "suggestedFileName": "右-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/右-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-右",
@@ -3572,7 +3572,7 @@
     "suggestedFileName": "右-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/右-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-前",
@@ -3585,7 +3585,7 @@
     "suggestedFileName": "前.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/前.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-17-3-explanation",
@@ -3598,7 +3598,7 @@
     "suggestedFileName": "day-17-3-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-17-3-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-17-3-question",
@@ -3611,7 +3611,7 @@
     "suggestedFileName": "day-17-3-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-17-3-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-前",
@@ -3624,7 +3624,7 @@
     "suggestedFileName": "前-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/前-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-前",
@@ -3637,7 +3637,7 @@
     "suggestedFileName": "前-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/前-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-18-opening",
@@ -3650,7 +3650,7 @@
     "suggestedFileName": "day-18-opening.mp3",
     "saveDirectory": "/audio/system",
     "audioPath": "/audio/system/day-18-opening.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-骗",
@@ -3663,7 +3663,7 @@
     "suggestedFileName": "骗.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/骗.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-18-1-explanation",
@@ -3676,7 +3676,7 @@
     "suggestedFileName": "day-18-1-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-18-1-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-18-1-question",
@@ -3689,7 +3689,7 @@
     "suggestedFileName": "day-18-1-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-18-1-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-骗",
@@ -3702,7 +3702,7 @@
     "suggestedFileName": "骗-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/骗-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-骗",
@@ -3715,7 +3715,7 @@
     "suggestedFileName": "骗-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/骗-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-转",
@@ -3728,7 +3728,7 @@
     "suggestedFileName": "转.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/转.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-18-2-explanation",
@@ -3741,7 +3741,7 @@
     "suggestedFileName": "day-18-2-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-18-2-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-18-2-question",
@@ -3754,7 +3754,7 @@
     "suggestedFileName": "day-18-2-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-18-2-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-转",
@@ -3767,7 +3767,7 @@
     "suggestedFileName": "转-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/转-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-转",
@@ -3780,7 +3780,7 @@
     "suggestedFileName": "转-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/转-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-假",
@@ -3793,7 +3793,7 @@
     "suggestedFileName": "假.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/假.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-18-3-explanation",
@@ -3806,7 +3806,7 @@
     "suggestedFileName": "day-18-3-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-18-3-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-18-3-question",
@@ -3819,7 +3819,7 @@
     "suggestedFileName": "day-18-3-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-18-3-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-假",
@@ -3832,7 +3832,7 @@
     "suggestedFileName": "假-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/假-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-假",
@@ -3845,7 +3845,7 @@
     "suggestedFileName": "假-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/假-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-19-opening",
@@ -3858,7 +3858,7 @@
     "suggestedFileName": "day-19-opening.mp3",
     "saveDirectory": "/audio/system",
     "audioPath": "/audio/system/day-19-opening.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-急",
@@ -3871,7 +3871,7 @@
     "suggestedFileName": "急.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/急.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-19-1-explanation",
@@ -3884,7 +3884,7 @@
     "suggestedFileName": "day-19-1-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-19-1-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-19-1-question",
@@ -3897,7 +3897,7 @@
     "suggestedFileName": "day-19-1-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-19-1-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-急",
@@ -3910,7 +3910,7 @@
     "suggestedFileName": "急-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/急-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-急",
@@ -3923,7 +3923,7 @@
     "suggestedFileName": "急-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/急-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-救",
@@ -3936,7 +3936,7 @@
     "suggestedFileName": "救.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/救.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-19-2-explanation",
@@ -3949,7 +3949,7 @@
     "suggestedFileName": "day-19-2-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-19-2-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-19-2-question",
@@ -3962,7 +3962,7 @@
     "suggestedFileName": "day-19-2-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-19-2-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-救",
@@ -3975,7 +3975,7 @@
     "suggestedFileName": "救-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/救-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-救",
@@ -3988,7 +3988,7 @@
     "suggestedFileName": "救-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/救-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-警",
@@ -4001,7 +4001,7 @@
     "suggestedFileName": "警.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/警.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-19-3-explanation",
@@ -4014,7 +4014,7 @@
     "suggestedFileName": "day-19-3-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-19-3-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-19-3-question",
@@ -4027,7 +4027,7 @@
     "suggestedFileName": "day-19-3-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-19-3-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-警",
@@ -4040,7 +4040,7 @@
     "suggestedFileName": "警-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/警-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-警",
@@ -4053,7 +4053,7 @@
     "suggestedFileName": "警-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/警-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-20-opening",
@@ -4066,7 +4066,7 @@
     "suggestedFileName": "day-20-opening.mp3",
     "saveDirectory": "/audio/system",
     "audioPath": "/audio/system/day-20-opening.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-儿",
@@ -4079,7 +4079,7 @@
     "suggestedFileName": "儿.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/儿.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-20-1-explanation",
@@ -4092,7 +4092,7 @@
     "suggestedFileName": "day-20-1-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-20-1-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-20-1-question",
@@ -4105,7 +4105,7 @@
     "suggestedFileName": "day-20-1-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-20-1-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-儿",
@@ -4118,7 +4118,7 @@
     "suggestedFileName": "儿-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/儿-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-儿",
@@ -4131,7 +4131,7 @@
     "suggestedFileName": "儿-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/儿-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-孙",
@@ -4144,7 +4144,7 @@
     "suggestedFileName": "孙.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/孙.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-20-2-explanation",
@@ -4157,7 +4157,7 @@
     "suggestedFileName": "day-20-2-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-20-2-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-20-2-question",
@@ -4170,7 +4170,7 @@
     "suggestedFileName": "day-20-2-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-20-2-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-孙",
@@ -4183,7 +4183,7 @@
     "suggestedFileName": "孙-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/孙-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-孙",
@@ -4196,7 +4196,7 @@
     "suggestedFileName": "孙-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/孙-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-家",
@@ -4209,7 +4209,7 @@
     "suggestedFileName": "家.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/家.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-20-3-explanation",
@@ -4222,7 +4222,7 @@
     "suggestedFileName": "day-20-3-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-20-3-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-20-3-question",
@@ -4235,7 +4235,7 @@
     "suggestedFileName": "day-20-3-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-20-3-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-家",
@@ -4248,7 +4248,7 @@
     "suggestedFileName": "家-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/家-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-家",
@@ -4261,7 +4261,7 @@
     "suggestedFileName": "家-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/家-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-21-opening",
@@ -4274,7 +4274,7 @@
     "suggestedFileName": "day-21-opening.mp3",
     "saveDirectory": "/audio/system",
     "audioPath": "/audio/system/day-21-opening.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-今",
@@ -4287,7 +4287,7 @@
     "suggestedFileName": "今.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/今.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-21-1-explanation",
@@ -4300,7 +4300,7 @@
     "suggestedFileName": "day-21-1-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-21-1-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-21-1-question",
@@ -4313,7 +4313,7 @@
     "suggestedFileName": "day-21-1-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-21-1-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-今",
@@ -4326,7 +4326,7 @@
     "suggestedFileName": "今-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/今-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-今",
@@ -4339,7 +4339,7 @@
     "suggestedFileName": "今-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/今-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-明",
@@ -4352,7 +4352,7 @@
     "suggestedFileName": "明.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/明.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-21-2-explanation",
@@ -4365,7 +4365,7 @@
     "suggestedFileName": "day-21-2-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-21-2-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-21-2-question",
@@ -4378,7 +4378,7 @@
     "suggestedFileName": "day-21-2-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-21-2-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-明",
@@ -4391,7 +4391,7 @@
     "suggestedFileName": "明-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/明-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-明",
@@ -4404,7 +4404,7 @@
     "suggestedFileName": "明-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/明-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-点",
@@ -4417,7 +4417,7 @@
     "suggestedFileName": "点.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/点.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-21-3-explanation",
@@ -4430,7 +4430,7 @@
     "suggestedFileName": "day-21-3-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-21-3-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-21-3-question",
@@ -4443,7 +4443,7 @@
     "suggestedFileName": "day-21-3-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-21-3-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-点",
@@ -4456,7 +4456,7 @@
     "suggestedFileName": "点-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/点-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-点",
@@ -4469,7 +4469,7 @@
     "suggestedFileName": "点-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/点-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-22-opening",
@@ -4482,7 +4482,7 @@
     "suggestedFileName": "day-22-opening.mp3",
     "saveDirectory": "/audio/system",
     "audioPath": "/audio/system/day-22-opening.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-雨",
@@ -4495,7 +4495,7 @@
     "suggestedFileName": "雨.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/雨.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-22-1-explanation",
@@ -4508,7 +4508,7 @@
     "suggestedFileName": "day-22-1-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-22-1-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-22-1-question",
@@ -4521,7 +4521,7 @@
     "suggestedFileName": "day-22-1-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-22-1-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-雨",
@@ -4534,7 +4534,7 @@
     "suggestedFileName": "雨-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/雨-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-雨",
@@ -4547,7 +4547,7 @@
     "suggestedFileName": "雨-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/雨-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-风",
@@ -4560,7 +4560,7 @@
     "suggestedFileName": "风.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/风.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-22-2-explanation",
@@ -4573,7 +4573,7 @@
     "suggestedFileName": "day-22-2-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-22-2-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-22-2-question",
@@ -4586,7 +4586,7 @@
     "suggestedFileName": "day-22-2-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-22-2-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-风",
@@ -4599,7 +4599,7 @@
     "suggestedFileName": "风-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/风-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-风",
@@ -4612,7 +4612,7 @@
     "suggestedFileName": "风-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/风-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-冷",
@@ -4625,7 +4625,7 @@
     "suggestedFileName": "冷.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/冷.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-22-3-explanation",
@@ -4638,7 +4638,7 @@
     "suggestedFileName": "day-22-3-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-22-3-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-22-3-question",
@@ -4651,7 +4651,7 @@
     "suggestedFileName": "day-22-3-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-22-3-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-冷",
@@ -4664,7 +4664,7 @@
     "suggestedFileName": "冷-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/冷-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-冷",
@@ -4677,7 +4677,7 @@
     "suggestedFileName": "冷-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/冷-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-23-opening",
@@ -4690,7 +4690,7 @@
     "suggestedFileName": "day-23-opening.mp3",
     "saveDirectory": "/audio/system",
     "audioPath": "/audio/system/day-23-opening.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-米",
@@ -4703,7 +4703,7 @@
     "suggestedFileName": "米.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/米.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-23-1-explanation",
@@ -4716,7 +4716,7 @@
     "suggestedFileName": "day-23-1-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-23-1-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-23-1-question",
@@ -4729,7 +4729,7 @@
     "suggestedFileName": "day-23-1-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-23-1-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-米",
@@ -4742,7 +4742,7 @@
     "suggestedFileName": "米-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/米-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-米",
@@ -4755,7 +4755,7 @@
     "suggestedFileName": "米-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/米-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-油",
@@ -4768,7 +4768,7 @@
     "suggestedFileName": "油.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/油.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-23-2-explanation",
@@ -4781,7 +4781,7 @@
     "suggestedFileName": "day-23-2-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-23-2-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-23-2-question",
@@ -4794,7 +4794,7 @@
     "suggestedFileName": "day-23-2-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-23-2-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-油",
@@ -4807,7 +4807,7 @@
     "suggestedFileName": "油-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/油-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-油",
@@ -4820,7 +4820,7 @@
     "suggestedFileName": "油-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/油-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-盐",
@@ -4833,7 +4833,7 @@
     "suggestedFileName": "盐.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/盐.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-23-3-explanation",
@@ -4846,7 +4846,7 @@
     "suggestedFileName": "day-23-3-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-23-3-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-23-3-question",
@@ -4859,7 +4859,7 @@
     "suggestedFileName": "day-23-3-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-23-3-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-盐",
@@ -4872,7 +4872,7 @@
     "suggestedFileName": "盐-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/盐-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-盐",
@@ -4885,7 +4885,7 @@
     "suggestedFileName": "盐-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/盐-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-24-opening",
@@ -4898,7 +4898,7 @@
     "suggestedFileName": "day-24-opening.mp3",
     "saveDirectory": "/audio/system",
     "audioPath": "/audio/system/day-24-opening.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-通",
@@ -4911,7 +4911,7 @@
     "suggestedFileName": "通.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/通.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-24-1-explanation",
@@ -4924,7 +4924,7 @@
     "suggestedFileName": "day-24-1-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-24-1-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-24-1-question",
@@ -4937,7 +4937,7 @@
     "suggestedFileName": "day-24-1-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-24-1-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-通",
@@ -4950,7 +4950,7 @@
     "suggestedFileName": "通-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/通-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-通",
@@ -4963,7 +4963,7 @@
     "suggestedFileName": "通-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/通-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-知",
@@ -4976,7 +4976,7 @@
     "suggestedFileName": "知.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/知.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-24-2-explanation",
@@ -4989,7 +4989,7 @@
     "suggestedFileName": "day-24-2-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-24-2-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-24-2-question",
@@ -5002,7 +5002,7 @@
     "suggestedFileName": "day-24-2-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-24-2-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-知",
@@ -5015,7 +5015,7 @@
     "suggestedFileName": "知-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/知-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-知",
@@ -5028,7 +5028,7 @@
     "suggestedFileName": "知-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/知-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-停",
@@ -5041,7 +5041,7 @@
     "suggestedFileName": "停.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/停.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-24-3-explanation",
@@ -5054,7 +5054,7 @@
     "suggestedFileName": "day-24-3-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-24-3-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-24-3-question",
@@ -5067,7 +5067,7 @@
     "suggestedFileName": "day-24-3-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-24-3-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-停",
@@ -5080,7 +5080,7 @@
     "suggestedFileName": "停-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/停-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-停",
@@ -5093,7 +5093,7 @@
     "suggestedFileName": "停-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/停-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-25-opening",
@@ -5106,7 +5106,7 @@
     "suggestedFileName": "day-25-opening.mp3",
     "saveDirectory": "/audio/system",
     "audioPath": "/audio/system/day-25-opening.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-楼",
@@ -5119,7 +5119,7 @@
     "suggestedFileName": "楼.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/楼.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-25-1-explanation",
@@ -5132,7 +5132,7 @@
     "suggestedFileName": "day-25-1-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-25-1-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-25-1-question",
@@ -5145,7 +5145,7 @@
     "suggestedFileName": "day-25-1-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-25-1-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-楼",
@@ -5158,7 +5158,7 @@
     "suggestedFileName": "楼-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/楼-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-楼",
@@ -5171,7 +5171,7 @@
     "suggestedFileName": "楼-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/楼-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-室",
@@ -5184,7 +5184,7 @@
     "suggestedFileName": "室.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/室.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-25-2-explanation",
@@ -5197,7 +5197,7 @@
     "suggestedFileName": "day-25-2-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-25-2-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-25-2-question",
@@ -5210,7 +5210,7 @@
     "suggestedFileName": "day-25-2-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-25-2-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-室",
@@ -5223,7 +5223,7 @@
     "suggestedFileName": "室-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/室-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-室",
@@ -5236,7 +5236,7 @@
     "suggestedFileName": "室-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/室-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-门",
@@ -5249,7 +5249,7 @@
     "suggestedFileName": "门.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/门.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-25-3-explanation",
@@ -5262,7 +5262,7 @@
     "suggestedFileName": "day-25-3-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-25-3-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-25-3-question",
@@ -5275,7 +5275,7 @@
     "suggestedFileName": "day-25-3-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-25-3-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-门",
@@ -5288,7 +5288,7 @@
     "suggestedFileName": "门-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/门-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-门",
@@ -5301,7 +5301,7 @@
     "suggestedFileName": "门-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/门-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-26-opening",
@@ -5314,7 +5314,7 @@
     "suggestedFileName": "day-26-opening.mp3",
     "saveDirectory": "/audio/system",
     "audioPath": "/audio/system/day-26-opening.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-菜",
@@ -5327,7 +5327,7 @@
     "suggestedFileName": "菜.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/菜.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-26-1-explanation",
@@ -5340,7 +5340,7 @@
     "suggestedFileName": "day-26-1-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-26-1-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-26-1-question",
@@ -5353,7 +5353,7 @@
     "suggestedFileName": "day-26-1-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-26-1-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-菜",
@@ -5366,7 +5366,7 @@
     "suggestedFileName": "菜-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/菜-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-菜",
@@ -5379,7 +5379,7 @@
     "suggestedFileName": "菜-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/菜-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-汤",
@@ -5392,7 +5392,7 @@
     "suggestedFileName": "汤.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/汤.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-26-2-explanation",
@@ -5405,7 +5405,7 @@
     "suggestedFileName": "day-26-2-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-26-2-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-26-2-question",
@@ -5418,7 +5418,7 @@
     "suggestedFileName": "day-26-2-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-26-2-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-汤",
@@ -5431,7 +5431,7 @@
     "suggestedFileName": "汤-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/汤-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-汤",
@@ -5444,7 +5444,7 @@
     "suggestedFileName": "汤-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/汤-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-面",
@@ -5457,7 +5457,7 @@
     "suggestedFileName": "面.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/面.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-26-3-explanation",
@@ -5470,7 +5470,7 @@
     "suggestedFileName": "day-26-3-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-26-3-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-26-3-question",
@@ -5483,7 +5483,7 @@
     "suggestedFileName": "day-26-3-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-26-3-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-面",
@@ -5496,7 +5496,7 @@
     "suggestedFileName": "面-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/面-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-面",
@@ -5509,7 +5509,7 @@
     "suggestedFileName": "面-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/面-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-27-opening",
@@ -5522,7 +5522,7 @@
     "suggestedFileName": "day-27-opening.mp3",
     "saveDirectory": "/audio/system",
     "audioPath": "/audio/system/day-27-opening.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-洗",
@@ -5535,7 +5535,7 @@
     "suggestedFileName": "洗.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/洗.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-27-1-explanation",
@@ -5548,7 +5548,7 @@
     "suggestedFileName": "day-27-1-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-27-1-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-27-1-question",
@@ -5561,7 +5561,7 @@
     "suggestedFileName": "day-27-1-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-27-1-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-洗",
@@ -5574,7 +5574,7 @@
     "suggestedFileName": "洗-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/洗-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-洗",
@@ -5587,7 +5587,7 @@
     "suggestedFileName": "洗-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/洗-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-衣",
@@ -5600,7 +5600,7 @@
     "suggestedFileName": "衣.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/衣.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-27-2-explanation",
@@ -5613,7 +5613,7 @@
     "suggestedFileName": "day-27-2-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-27-2-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-27-2-question",
@@ -5626,7 +5626,7 @@
     "suggestedFileName": "day-27-2-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-27-2-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-衣",
@@ -5639,7 +5639,7 @@
     "suggestedFileName": "衣-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/衣-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-衣",
@@ -5652,7 +5652,7 @@
     "suggestedFileName": "衣-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/衣-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-干",
@@ -5665,7 +5665,7 @@
     "suggestedFileName": "干.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/干.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-27-3-explanation",
@@ -5678,7 +5678,7 @@
     "suggestedFileName": "day-27-3-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-27-3-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-27-3-question",
@@ -5691,7 +5691,7 @@
     "suggestedFileName": "day-27-3-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-27-3-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-干",
@@ -5704,7 +5704,7 @@
     "suggestedFileName": "干-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/干-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-干",
@@ -5717,7 +5717,7 @@
     "suggestedFileName": "干-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/干-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-28-opening",
@@ -5730,7 +5730,7 @@
     "suggestedFileName": "day-28-opening.mp3",
     "saveDirectory": "/audio/system",
     "audioPath": "/audio/system/day-28-opening.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-热",
@@ -5743,7 +5743,7 @@
     "suggestedFileName": "热.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/热.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-28-1-explanation",
@@ -5756,7 +5756,7 @@
     "suggestedFileName": "day-28-1-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-28-1-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-28-1-question",
@@ -5769,7 +5769,7 @@
     "suggestedFileName": "day-28-1-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-28-1-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-热",
@@ -5782,7 +5782,7 @@
     "suggestedFileName": "热-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/热-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-热",
@@ -5795,7 +5795,7 @@
     "suggestedFileName": "热-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/热-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-温",
@@ -5808,7 +5808,7 @@
     "suggestedFileName": "温.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/温.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-28-2-explanation",
@@ -5821,7 +5821,7 @@
     "suggestedFileName": "day-28-2-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-28-2-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-28-2-question",
@@ -5834,7 +5834,7 @@
     "suggestedFileName": "day-28-2-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-28-2-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-温",
@@ -5847,7 +5847,7 @@
     "suggestedFileName": "温-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/温-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-温",
@@ -5860,7 +5860,7 @@
     "suggestedFileName": "温-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/温-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-28-3-explanation",
@@ -5873,7 +5873,7 @@
     "suggestedFileName": "day-28-3-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-28-3-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-28-3-question",
@@ -5886,7 +5886,7 @@
     "suggestedFileName": "day-28-3-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-28-3-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-29-opening",
@@ -5899,7 +5899,7 @@
     "suggestedFileName": "day-29-opening.mp3",
     "saveDirectory": "/audio/system",
     "audioPath": "/audio/system/day-29-opening.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-痛",
@@ -5912,7 +5912,7 @@
     "suggestedFileName": "痛.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/痛.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-29-1-explanation",
@@ -5925,7 +5925,7 @@
     "suggestedFileName": "day-29-1-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-29-1-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-29-1-question",
@@ -5938,7 +5938,7 @@
     "suggestedFileName": "day-29-1-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-29-1-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-痛",
@@ -5951,7 +5951,7 @@
     "suggestedFileName": "痛-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/痛-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-痛",
@@ -5964,7 +5964,7 @@
     "suggestedFileName": "痛-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/痛-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-头",
@@ -5977,7 +5977,7 @@
     "suggestedFileName": "头.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/头.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-29-2-explanation",
@@ -5990,7 +5990,7 @@
     "suggestedFileName": "day-29-2-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-29-2-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-29-2-question",
@@ -6003,7 +6003,7 @@
     "suggestedFileName": "day-29-2-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-29-2-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-头",
@@ -6016,7 +6016,7 @@
     "suggestedFileName": "头-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/头-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-头",
@@ -6029,7 +6029,7 @@
     "suggestedFileName": "头-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/头-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "character-心",
@@ -6042,7 +6042,7 @@
     "suggestedFileName": "心.mp3",
     "saveDirectory": "/audio/characters",
     "audioPath": "/audio/characters/心.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-29-3-explanation",
@@ -6055,7 +6055,7 @@
     "suggestedFileName": "day-29-3-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-29-3-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-29-3-question",
@@ -6068,7 +6068,7 @@
     "suggestedFileName": "day-29-3-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-29-3-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "success-心",
@@ -6081,7 +6081,7 @@
     "suggestedFileName": "心-success.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/心-success.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "retry-心",
@@ -6094,7 +6094,7 @@
     "suggestedFileName": "心-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/心-retry.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-30-opening",
@@ -6107,7 +6107,7 @@
     "suggestedFileName": "day-30-opening.mp3",
     "saveDirectory": "/audio/system",
     "audioPath": "/audio/system/day-30-opening.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-30-1-explanation",
@@ -6120,7 +6120,7 @@
     "suggestedFileName": "day-30-1-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-30-1-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-30-1-question",
@@ -6133,7 +6133,7 @@
     "suggestedFileName": "day-30-1-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-30-1-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-30-2-explanation",
@@ -6146,7 +6146,7 @@
     "suggestedFileName": "day-30-2-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-30-2-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-30-2-question",
@@ -6159,7 +6159,7 @@
     "suggestedFileName": "day-30-2-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-30-2-question.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-30-3-explanation",
@@ -6172,7 +6172,7 @@
     "suggestedFileName": "day-30-3-explanation.mp3",
     "saveDirectory": "/audio/lessons",
     "audioPath": "/audio/lessons/day-30-3-explanation.mp3",
-    "exists": false
+    "exists": true
   },
   {
     "id": "day-30-3-question",
@@ -6185,6 +6185,6 @@
     "suggestedFileName": "day-30-3-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-30-3-question.mp3",
-    "exists": false
+    "exists": true
   }
 ]

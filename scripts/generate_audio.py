@@ -13,6 +13,16 @@ MISSING_PATH = ROOT / "scripts" / "audio-missing.json"
 DEFAULT_VOICE = "zh-CN-XiaoxiaoNeural"
 
 
+def valid_mp3(path: Path) -> bool:
+    if not path.exists() or path.stat().st_size <= 1000:
+        return False
+    with path.open("rb") as audio_file:
+        header = audio_file.read(3)
+    return header == b"ID3" or (
+        len(header) >= 2 and header[0] == 0xFF and header[1] & 0xE0 == 0xE0
+    )
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="生成本地开发样音")
     parser.add_argument("--voice", default=DEFAULT_VOICE)
@@ -29,7 +39,7 @@ async def generate_one(edge_tts, row: dict, args: argparse.Namespace, semaphore)
     audio_root = (ROOT / "public" / "audio").resolve()
     if audio_root not in output.parents:
         raise ValueError(f"非法音频路径：{row['audioPath']}")
-    if not args.force and output.exists() and output.stat().st_size > 0:
+    if not args.force and valid_mp3(output):
         return "skipped", row
 
     output.parent.mkdir(parents=True, exist_ok=True)
@@ -41,8 +51,8 @@ async def generate_one(edge_tts, row: dict, args: argparse.Namespace, semaphore)
                     text=row["fullText"], voice=args.voice, rate=rate
                 )
                 await communicate.save(str(output))
-                if not output.exists() or output.stat().st_size == 0:
-                    raise RuntimeError("生成文件为空")
+                if not valid_mp3(output):
+                    raise RuntimeError("生成文件不是有效的非空MP3")
                 return "generated", row
             except Exception as error:  # edge-tts exposes several transport errors
                 if output.exists() and output.stat().st_size == 0:
@@ -93,7 +103,7 @@ async def main() -> int:
         f"生成 {counts['generated']}，跳过 {counts['skipped']}，失败 {counts['failed']}，"
         f"全课程尚缺 {len(remaining)}。"
     )
-    if failed:
+    if failed or remaining:
         print(json.dumps(failed, ensure_ascii=False, indent=2), file=sys.stderr)
         return 1
     return 0
