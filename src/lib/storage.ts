@@ -1,6 +1,17 @@
 import { courses } from "../data/courses";
-import type { Course, Progress, Settings } from "../types";
-import { todayKey } from "./date";
+import type {
+  CharacterAnswerStat,
+  Course,
+  Progress,
+  ReviewPlanEntry,
+  Settings,
+} from "../types";
+import {
+  addDays,
+  calculateNextStreak,
+  isDue,
+  todayKey,
+} from "./date";
 import { Capacitor } from "@capacitor/core";
 import { Preferences } from "@capacitor/preferences";
 
@@ -28,6 +39,11 @@ const itemById = new Map(
     course.characters.map((item) => [item.id, item] as const),
   ),
 );
+const firstItemIdByCharacterKey = new Map<string, string>();
+for (const item of itemById.values()) {
+  if (!firstItemIdByCharacterKey.has(item.characterKey))
+    firstItemIdByCharacterKey.set(item.characterKey, item.id);
+}
 const newCourseItemIds = new Set(
   courses
     .filter((course) => course.courseType === "new")
@@ -46,6 +62,68 @@ function newCourseIdsToCharacterKeys(ids: string[]): string[] {
   return idsToCharacterKeys(ids.filter((id) => newCourseItemIds.has(id)));
 }
 
+const emptyReviewPlan = (): ReviewPlanEntry => ({
+  dueDates: [],
+  completedDates: [],
+  correctStreak: 0,
+  wrongCount: 0,
+  mastered: false,
+});
+
+const normalizeAnswerStats = (
+  value: Record<string, Partial<CharacterAnswerStat>> | undefined,
+  fallbackDate: string,
+): Record<string, CharacterAnswerStat> =>
+  Object.fromEntries(
+    Object.entries(value ?? {}).map(([key, stat]) => [
+      itemById.get(key)?.characterKey ?? key,
+      {
+        correct: Number(stat.correct ?? 0),
+        wrong: Number(stat.wrong ?? 0),
+        lastAnsweredDate: stat.lastAnsweredDate ?? fallbackDate,
+      },
+    ]),
+  );
+
+function legacyAnswerStatsToCharacterKeys(
+  value: Progress["answerStats"] | undefined,
+  fallbackDate: string,
+): Record<string, CharacterAnswerStat> {
+  const result: Record<string, CharacterAnswerStat> = {};
+  for (const [id, stat] of Object.entries(value ?? {})) {
+    const key = itemById.get(id)?.characterKey ?? id;
+    const previous = result[key] ?? {
+      correct: 0,
+      wrong: 0,
+      lastAnsweredDate: fallbackDate,
+    };
+    result[key] = {
+      correct: previous.correct + stat.correct,
+      wrong: previous.wrong + stat.wrong,
+      lastAnsweredDate: fallbackDate,
+    };
+  }
+  return result;
+}
+
+export function getDueReviewKeys(
+  reviewPlan: Progress["reviewPlan"],
+  today: string,
+  limit = 3,
+): string[] {
+  const firstOutstanding = (entry: ReviewPlanEntry) =>
+    [...entry.dueDates].sort()[entry.completedDates.length] ?? "9999-12-31";
+  return Object.entries(reviewPlan)
+    .filter(([, entry]) => isDue(firstOutstanding(entry), today))
+    .sort(
+      (a, b) =>
+        firstOutstanding(a[1]).localeCompare(firstOutstanding(b[1])) ||
+        b[1].wrongCount - a[1].wrongCount,
+    )
+    .map(([key]) => key)
+    .slice(0, limit);
+}
+
 export function findNextCourseIndex(learnedIds: string[], start = 0): number {
   const learned = new Set(learnedIds);
   for (let offset = 0; offset < courses.length; offset += 1) {
@@ -59,7 +137,7 @@ export function findNextCourseIndex(learnedIds: string[], start = 0): number {
 export const freshProgress = (): Progress => {
   const date = todayKey();
   return {
-    version: 2,
+    version: 3,
     updatedAt: Date.now(),
     date,
     courseIndex: 0,
@@ -67,6 +145,10 @@ export const freshProgress = (): Progress => {
     characterIndex: 0,
     reviewIndex: 0,
     answerStats: {},
+    todayAnswerStats: {},
+    lifetimeAnswerStats: {},
+    reviewPlan: {},
+    reviewQueue: [],
     learnedIds: [],
     reviewIds: [],
     streak: 0,
@@ -91,18 +173,21 @@ export const freshProgress = (): Progress => {
 
 const valid = (
   value: unknown,
-): value is Record<string, unknown> & { version: 1 | 2; date: string } =>
+): value is Record<string, unknown> & { version: 1 | 2 | 3; date: string } =>
   !!value &&
   typeof value === "object" &&
   ((value as { version?: number }).version === 1 ||
-    (value as { version?: number }).version === 2) &&
+    (value as { version?: number }).version === 2 ||
+    (value as { version?: number }).version === 3) &&
   typeof (value as { date?: unknown }).date === "string";
 
 /** 将旧版记录补齐为新版结构，不删除任何长期学习数据。 */
 export function migrateProgress(value: unknown): Progress {
   const fresh = freshProgress();
   if (!valid(value)) return fresh;
-  const old = value as unknown as Partial<Progress> & { version: 1 | 2 };
+  const old = value as unknown as Partial<Omit<Progress, "version">> & {
+    version: 1 | 2 | 3;
+  };
   const settings = { ...defaultSettings, ...(old.settings ?? {}) };
   const total = unique(old.totalLearnedCharacterIds ?? old.learnedIds ?? []);
   const oldCourseIndex = Math.max(
@@ -126,10 +211,75 @@ export function migrateProgress(value: unknown): Progress {
   );
   const inferredNext =
     old.nextCourseIndex ?? findNextCourseIndex(total, oldCourseIndex);
-  return {
+  const dailyStats = Object.fromEntries(
+    Object.entries(old.dailyStats ?? {}).map(([date, stat]) => {
+      const learnedCharacterIds = unique(stat.learnedCharacterIds ?? []);
+      const practicedCharacterKeys = unique(
+        stat.practicedCharacterKeys ?? idsToCharacterKeys(learnedCharacterIds),
+      );
+      const newCharacterKeys = unique(
+        stat.newCharacterKeys ??
+          newCourseIdsToCharacterKeys(learnedCharacterIds),
+      );
+      return [
+        date,
+        {
+          ...stat,
+          learnedCharacterIds,
+          practicedCharacterKeys,
+          newCharacterKeys,
+          newCharacterCount: newCharacterKeys.length,
+        },
+      ];
+    }),
+  );
+  const legacyStats = legacyAnswerStatsToCharacterKeys(
+    old.answerStats,
+    old.date ?? fresh.date,
+  );
+  const todayAnswerStats = old.todayAnswerStats
+    ? normalizeAnswerStats(old.todayAnswerStats, old.date ?? fresh.date)
+    : legacyStats;
+  const lifetimeAnswerStats = old.lifetimeAnswerStats
+    ? normalizeAnswerStats(old.lifetimeAnswerStats, old.date ?? fresh.date)
+    : legacyStats;
+  const reviewPlan: Progress["reviewPlan"] = Object.fromEntries(
+    Object.entries(old.reviewPlan ?? {}).map(([key, entry]) => [
+      key,
+      {
+        dueDates: unique(entry.dueDates ?? []).sort(),
+        completedDates: unique(entry.completedDates ?? []).sort(),
+        correctStreak: entry.correctStreak ?? 0,
+        wrongCount: entry.wrongCount ?? 0,
+        mastered: entry.mastered ?? false,
+      },
+    ]),
+  );
+  const learnedByDate = {
+    ...Object.fromEntries(
+      Object.entries(dailyStats).map(([date, stat]) => [
+        date,
+        stat.newCharacterKeys,
+      ]),
+    ),
+    [old.date ?? fresh.date]: todayNewKeys,
+  };
+  for (const [learnedDate, keys] of Object.entries(learnedByDate)) {
+    for (const key of keys) {
+      const entry = reviewPlan[key] ?? emptyReviewPlan();
+      reviewPlan[key] = {
+        ...entry,
+        dueDates: unique([
+          ...entry.dueDates,
+          ...[1, 3, 7].map((days) => addDays(learnedDate, days)),
+        ]).sort(),
+      };
+    }
+  }
+  const migrated: Progress = {
     ...fresh,
     ...old,
-    version: 2,
+    version: 3,
     settings,
     courseIndex: old.courseIndex ?? Math.min(inferredNext, courses.length - 1),
     learnedIds: total,
@@ -138,6 +288,10 @@ export function migrateProgress(value: unknown): Progress {
     todayLearnedCharacterIds: todayIds,
     todayNewCharacterKeys: todayNewKeys,
     todayPracticedCharacterKeys: todayPracticedKeys,
+    todayAnswerStats,
+    lifetimeAnswerStats,
+    reviewPlan,
+    reviewQueue: [],
     todayNewCharacterCount: todayNewKeys.length,
     todayExtraGroupCount:
       old.todayExtraGroupCount ??
@@ -149,30 +303,81 @@ export function migrateProgress(value: unknown): Progress {
     currentExtraGroupProgress: old.currentExtraGroupProgress ?? 0,
     lastCompletedDate:
       old.lastCompletedDate ?? (old.completedToday ? (old.date ?? "") : ""),
-    dailyStats: Object.fromEntries(
-      Object.entries(old.dailyStats ?? {}).map(([date, stat]) => {
-        const learnedCharacterIds = unique(stat.learnedCharacterIds ?? []);
-        const practicedCharacterKeys = unique(
-          stat.practicedCharacterKeys ??
-            idsToCharacterKeys(learnedCharacterIds),
-        );
-        const newCharacterKeys = unique(
-          stat.newCharacterKeys ??
-            newCourseIdsToCharacterKeys(learnedCharacterIds),
-        );
-        return [
-          date,
-          {
-            ...stat,
-            learnedCharacterIds,
-            practicedCharacterKeys,
-            newCharacterKeys,
-            newCharacterCount: newCharacterKeys.length,
-          },
-        ];
-      }),
-    ),
+    dailyStats,
     updatedAt: old.updatedAt ?? Date.now(),
+  };
+  migrated.reviewQueue = unique(
+    old.reviewQueue ?? getDueReviewKeys(reviewPlan, migrated.date),
+  ).slice(0, 3);
+  return migrated;
+}
+
+export function recordCharacterAnswer(
+  progress: Progress,
+  characterKey: string,
+  correct: boolean,
+  lessonItemId?: string,
+  scheduledReview = false,
+): Progress {
+  const increment = (
+    stats: Record<string, CharacterAnswerStat>,
+  ): Record<string, CharacterAnswerStat> => {
+    const previous = stats[characterKey] ?? {
+      correct: 0,
+      wrong: 0,
+      lastAnsweredDate: progress.date,
+    };
+    return {
+      ...stats,
+      [characterKey]: {
+        correct: previous.correct + (correct ? 1 : 0),
+        wrong: previous.wrong + (correct ? 0 : 1),
+        lastAnsweredDate: progress.date,
+      },
+    };
+  };
+  const reviewPlan = { ...progress.reviewPlan };
+  if (scheduledReview || !correct) {
+    const entry = reviewPlan[characterKey] ?? emptyReviewPlan();
+    const alreadyReviewedToday = entry.completedDates.includes(progress.date);
+    const completedDates = scheduledReview
+      ? unique([...entry.completedDates, progress.date]).sort()
+      : entry.completedDates;
+    const correctStreak = correct
+      ? alreadyReviewedToday
+        ? entry.correctStreak
+        : entry.correctStreak + 1
+      : 0;
+    reviewPlan[characterKey] = {
+      ...entry,
+      dueDates: correct
+        ? entry.dueDates
+        : unique([...entry.dueDates, addDays(progress.date, 1)]).sort(),
+      completedDates,
+      correctStreak,
+      wrongCount: entry.wrongCount + (correct ? 0 : 1),
+      mastered: correctStreak >= 3,
+    };
+  }
+  const legacy = lessonItemId
+    ? {
+        ...progress.answerStats,
+        [lessonItemId]: {
+          correct:
+            (progress.answerStats[lessonItemId]?.correct ?? 0) +
+            (correct ? 1 : 0),
+          wrong:
+            (progress.answerStats[lessonItemId]?.wrong ?? 0) +
+            (correct ? 0 : 1),
+        },
+      }
+    : progress.answerStats;
+  return {
+    ...progress,
+    answerStats: legacy,
+    todayAnswerStats: increment(progress.todayAnswerStats),
+    lifetimeAnswerStats: increment(progress.lifetimeAnswerStats),
+    reviewPlan,
   };
 }
 
@@ -218,10 +423,24 @@ export function completeCourseGroup(
     progress.courseIndex + 1,
   );
   const completedDates = unique([...progress.completedDates, progress.date]);
-  const streak =
-    firstBaseCompletion && progress.lastCompletedDate !== progress.date
-      ? progress.streak + 1
-      : progress.streak;
+  const streak = firstBaseCompletion
+    ? calculateNextStreak(
+        progress.lastCompletedDate,
+        progress.date,
+        progress.streak,
+      )
+    : progress.streak;
+  const reviewPlan = { ...progress.reviewPlan };
+  for (const key of groupNewKeys) {
+    const entry = reviewPlan[key] ?? emptyReviewPlan();
+    reviewPlan[key] = {
+      ...entry,
+      dueDates: unique([
+        ...entry.dueDates,
+        ...course.reviewSchedule.map((days) => addDays(progress.date, days)),
+      ]).sort(),
+    };
+  }
 
   return {
     ...progress,
@@ -237,6 +456,7 @@ export function completeCourseGroup(
     todayExtraGroupCount: extraGroups,
     totalLearnedCharacterIds: totalIds,
     totalLearnedCharacterKeys: totalKeys,
+    reviewPlan,
     learnedIds: totalIds,
     nextCourseIndex,
     currentExtraGroupProgress:
@@ -277,6 +497,7 @@ export function rollToToday(progress: Progress): Progress {
     },
   };
   const next = Math.min(progress.nextCourseIndex, courses.length - 1);
+  const reviewQueue = getDueReviewKeys(progress.reviewPlan, today, 3);
   return {
     ...progress,
     date: today,
@@ -285,7 +506,11 @@ export function rollToToday(progress: Progress): Progress {
     characterIndex: 0,
     reviewIndex: 0,
     answerStats: {},
-    reviewIds: yesterdayIds.slice(-3),
+    todayAnswerStats: {},
+    reviewQueue,
+    reviewIds: reviewQueue
+      .map((key) => firstItemIdByCharacterKey.get(key))
+      .filter((id): id is string => Boolean(id)),
     completedToday: false,
     dailyBaseGoalCompleted: false,
     todayLearnedCharacterIds: [],

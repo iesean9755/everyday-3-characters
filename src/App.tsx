@@ -16,8 +16,10 @@ import {
   findNextCourseIndex,
   freshProgress,
   loadProgress,
+  recordCharacterAnswer,
   saveProgress,
 } from "./lib/storage";
+import { calculateStreakFromDates } from "./lib/date";
 import {
   getChineseVoices,
   initializeVoices,
@@ -69,10 +71,10 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
   );
   const priorItems = useMemo(
     () =>
-      p.reviewIds
-        .map((id) => allItems.find((x) => x.id === id))
+      p.reviewQueue
+        .map((key) => allItems.find((x) => x.characterKey === key))
         .filter((x): x is NonNullable<typeof x> => !!x),
-    [allItems, p.reviewIds],
+    [allItems, p.reviewQueue],
   );
   const item =
     dailyItems[Math.min(Math.max(p.characterIndex, 0), dailyItems.length - 1)];
@@ -119,7 +121,7 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
       soundAttempt.current += 1;
       setSoundHelp(false);
       stopSpeech();
-      commit({ ...p, stage, ...extra });
+      commit({ ...p, ...extra, stage });
       window.setTimeout(() => setLocked(false), 650);
     },
     [commit, locked, p],
@@ -358,6 +360,7 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
       characterIndex: 0,
       reviewIndex: 0,
       reviewIds: [],
+      reviewQueue: [],
       currentExtraGroupProgress: afterRest ? 0 : p.currentExtraGroupProgress,
     });
   };
@@ -366,24 +369,33 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
       ? go("review", { characterIndex: -1, reviewIndex: 0 })
       : go("learn", { characterIndex: 0 });
   const afterLearn = () => go("quiz");
-  const finishCurrentGroup = (nextStats: Progress["answerStats"]) => {
-    go("complete", completeCourseGroup(p, course, nextStats));
+  const finishCurrentGroup = (answeredProgress: Progress) => {
+    go(
+      "complete",
+      completeCourseGroup(
+        answeredProgress,
+        course,
+        answeredProgress.answerStats,
+      ),
+    );
   };
   const answer = (choice: string, target = item.char, isReview = false) => {
     if (locked) return;
     const reviewItem = activeReviewItems[p.reviewIndex];
     const id = isReview ? reviewItem.id : item.id;
-    const stats = p.answerStats[id] ?? { correct: 0, wrong: 0 };
+    const answered = recordCharacterAnswer(
+      p,
+      (isReview ? reviewItem : item).characterKey,
+      choice === target,
+      id,
+      isReview && p.characterIndex === -1,
+    );
     if (choice === target) {
       setFeedback("good");
       void say(
         `找对了，这个字念${target}。`,
         (isReview ? reviewItem : item).successAudio,
       );
-      const nextStats = {
-        ...p.answerStats,
-        [id]: { ...stats, correct: stats.correct + 1 },
-      };
       window.setTimeout(() => {
         setFeedback(null);
         if (isReview) {
@@ -391,29 +403,24 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
           if (next >= activeReviewItems.length) {
             if (p.characterIndex === -1)
               go("learn", {
+                ...answered,
                 characterIndex: 0,
                 reviewIndex: 0,
                 reviewIds: [],
-                answerStats: nextStats,
+                reviewQueue: [],
               });
-            else finishCurrentGroup(nextStats);
-          } else go("review", { reviewIndex: next, answerStats: nextStats });
+            else finishCurrentGroup(answered);
+          } else go("review", { ...answered, reviewIndex: next });
         } else {
           const next = p.characterIndex + 1;
           if (next >= dailyItems.length)
-            go("review", { reviewIndex: 0, answerStats: nextStats });
-          else go("learn", { characterIndex: next, answerStats: nextStats });
+            go("review", { ...answered, reviewIndex: 0 });
+          else go("learn", { ...answered, characterIndex: next });
         }
       }, 1050);
     } else {
       setFeedback("retry");
-      commit({
-        ...p,
-        answerStats: {
-          ...p.answerStats,
-          [id]: { ...stats, wrong: stats.wrong + 1 },
-        },
-      });
+      commit(answered);
       void say(
         `没关系，我们再看一次。这个字念${target}。`,
         (isReview ? reviewItem : item).retryAudio,
@@ -424,30 +431,25 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
   const answerTodayReview = (choice: string) => {
     if (locked || !todayItems.length) return;
     const reviewItem = todayItems[p.reviewIndex];
-    const stats = p.answerStats[reviewItem.id] ?? { correct: 0, wrong: 0 };
+    const answered = recordCharacterAnswer(
+      p,
+      reviewItem.characterKey,
+      choice === reviewItem.char,
+      reviewItem.id,
+    );
     if (choice === reviewItem.char) {
       setFeedback("good");
       void say(`找对了，这个字念${reviewItem.char}。`, reviewItem.successAudio);
-      const answerStats = {
-        ...p.answerStats,
-        [reviewItem.id]: { ...stats, correct: stats.correct + 1 },
-      };
       window.setTimeout(() => {
         setFeedback(null);
         const next = p.reviewIndex + 1;
         if (next >= todayItems.length)
-          go("home", { reviewIndex: 0, answerStats });
-        else go("todayReview", { reviewIndex: next, answerStats });
+          go("home", { ...answered, reviewIndex: 0 });
+        else go("todayReview", { ...answered, reviewIndex: next });
       }, 900);
     } else {
       setFeedback("retry");
-      commit({
-        ...p,
-        answerStats: {
-          ...p.answerStats,
-          [reviewItem.id]: { ...stats, wrong: stats.wrong + 1 },
-        },
-      });
+      commit(answered);
       void say(
         `没关系，我们再看一次。这个字念${reviewItem.char}。`,
         reviewItem.retryAudio,
@@ -590,7 +592,7 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
           />
           <PrimaryButton
             onClick={begin}
-            label={priorItems.length ? "先复习昨天" : "开始学习"}
+            label={priorItems.length ? "先复习到期汉字" : "开始学习"}
             disabled={locked}
           />
           <SpeakerButton onClick={() => void playCurrentStage()} />
@@ -644,7 +646,7 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
             <Quiz
               title={
                 p.characterIndex === -1
-                  ? "先复习昨天学过的字"
+                  ? "先复习到期汉字"
                   : "听一听，找出刚学的字"
               }
               target={q.char}
@@ -690,7 +692,8 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
           </div>
           <div className="tree-growth">
             <span aria-hidden="true">🌳</span>
-            <b>已学习 {p.streak} 天</b>
+            <b>连续学习 {p.streak} 天</b>
+            <small>累计完成 {p.completedDates.length} 天</small>
           </div>
           {course.courseType === "review" && <p>没有增加新的汉字</p>}
           <p>
@@ -832,9 +835,19 @@ function Settings({
       stopSpeech();
     };
   }, []);
-  const stats = Object.entries(progress.answerStats)
+  const stats = Object.entries(progress.lifetimeAnswerStats)
     .filter(([, v]) => v.wrong > 0)
-    .sort((a, b) => b[1].wrong - a[1].wrong)
+    .sort((a, b) => {
+      const wrongDifference = b[1].wrong - a[1].wrong;
+      if (wrongDifference) return wrongDifference;
+      const recentDifference = b[1].lastAnsweredDate.localeCompare(
+        a[1].lastAnsweredDate,
+      );
+      if (recentDifference) return recentDifference;
+      const accuracy = (value: (typeof a)[1]) =>
+        value.correct / Math.max(1, value.correct + value.wrong);
+      return accuracy(a[1]) - accuracy(b[1]);
+    })
     .slice(0, 8);
   const reExperienceToday = () => {
     const currentIds = new Set(
@@ -871,8 +884,17 @@ function Settings({
           ),
         )
       : progress.nextCourseIndex;
-    const completedDates = progress.completedDates.filter(
-      (date) => date !== progress.date,
+    const completedDates = progress.completedDates
+      .filter((date) => date !== progress.date)
+      .sort();
+    const todayNewKeys = new Set(progress.todayNewCharacterKeys);
+    const totalKeys = progress.totalLearnedCharacterKeys.filter(
+      (key) => !todayNewKeys.has(key),
+    );
+    const reviewPlan = Object.fromEntries(
+      Object.entries(progress.reviewPlan).filter(
+        ([key]) => !todayNewKeys.has(key),
+      ),
     );
     const dailyStats = { ...progress.dailyStats };
     delete dailyStats[progress.date];
@@ -887,9 +909,13 @@ function Settings({
           ([id]) => !todaySet.has(id),
         ),
       ),
+      todayAnswerStats: {},
       reviewIds: [],
+      reviewQueue: [],
+      reviewPlan,
       learnedIds: totalIds,
       totalLearnedCharacterIds: totalIds,
+      totalLearnedCharacterKeys: totalKeys,
       nextCourseIndex: findNextCourseIndex(totalIds, earliestTodayCourse),
       completedToday: false,
       dailyBaseGoalCompleted: false,
@@ -899,10 +925,7 @@ function Settings({
       todayNewCharacterCount: 0,
       todayExtraGroupCount: 0,
       currentExtraGroupProgress: 0,
-      streak:
-        progress.lastCompletedDate === progress.date
-          ? Math.max(0, progress.streak - 1)
-          : progress.streak,
+      streak: calculateStreakFromDates(completedDates),
       lastCompletedDate: completedDates.at(-1) ?? "",
       completedDates,
       dailyStats,
@@ -1071,19 +1094,14 @@ function Settings({
       <section className="records">
         <h2>最近学习</h2>
         <p>
-          完成 {progress.completedDates.length} 天 · 认识{" "}
+          连续学习 {progress.streak} 天 · 累计完成 {progress.completedDates.length} 天 · 认识{" "}
           {progress.totalLearnedCharacterKeys.length} 个字
         </p>
         <h2>需要多复习</h2>
         <p>
           {stats.length
             ? stats
-                .map(
-                  ([id]) =>
-                    courses
-                      .flatMap((c) => c.characters)
-                      .find((x) => x.id === id)?.char,
-                )
+                .map(([characterKey]) => characterKey)
                 .join("、")
             : "暂时没有"}
         </p>

@@ -3,19 +3,22 @@ import {
   completeCourseGroup,
   findNextCourseIndex,
   freshProgress,
+  getDueReviewKeys,
   loadProgress,
   migrateProgress,
+  recordCharacterAnswer,
   rollToToday,
   saveProgress,
 } from "./storage";
 import { courses } from "../data/courses";
+import { addDays, todayKey } from "./date";
 
 describe("学习记录容错与迁移", () => {
   beforeEach(() => localStorage.clear());
 
   it("损坏数据会恢复成安全的新记录", () => {
     localStorage.setItem("everyday-3-characters-v1", "{坏数据");
-    expect(loadProgress().version).toBe(2);
+    expect(loadProgress().version).toBe(3);
   });
 
   it("保存后可恢复到原学习位置", () => {
@@ -39,7 +42,7 @@ describe("学习记录容错与迁移", () => {
       courseIndex: 0,
     });
     expect(migrated.dailyBaseGoalCompleted).toBe(true);
-    expect(migrated.version).toBe(2);
+    expect(migrated.version).toBe(3);
     expect(migrated.todayNewCharacterCount).toBe(3);
     const firstCourseKeys = courses[0].characters.map(
       (item) => item.characterKey,
@@ -51,10 +54,11 @@ describe("学习记录容错与迁移", () => {
     expect(migrated.nextCourseIndex).toBe(1);
   });
 
-  it("跨日只清空今日统计并保留下一课程和昨日复习", () => {
+  it("跨日只清空今日统计并保留下一课程和历史答题", () => {
+    const today = todayKey();
     const progress = {
       ...freshProgress(),
-      date: "2026-07-15",
+      date: addDays(today, -1),
       nextCourseIndex: 3,
       dailyBaseGoalCompleted: true,
       todayLearnedCharacterIds: ["d1-1", "d1-2", "d1-3"],
@@ -65,10 +69,14 @@ describe("学习记录容错与迁移", () => {
         (item) => item.characterKey,
       ),
       todayNewCharacterCount: 3,
+      lifetimeAnswerStats: {
+        药: { correct: 1, wrong: 2, lastAnsweredDate: addDays(today, -1) },
+      },
     };
     const rolled = rollToToday(progress);
     expect(rolled.todayNewCharacterCount).toBe(0);
-    expect(rolled.reviewIds).toEqual(["d1-1", "d1-2", "d1-3"]);
+    expect(rolled.todayAnswerStats).toEqual({});
+    expect(rolled.lifetimeAnswerStats.药.wrong).toBe(2);
     expect(rolled.courseIndex).toBe(3);
     expect(rolled.dailyBaseGoalCompleted).toBe(false);
   });
@@ -135,7 +143,7 @@ describe("学习记录容错与迁移", () => {
       todayLearnedCharacterIds: stopIds,
     });
 
-    expect(migrated.version).toBe(2);
+    expect(migrated.version).toBe(3);
     expect(migrated.totalLearnedCharacterIds).toEqual(stopIds);
     expect(migrated.totalLearnedCharacterKeys).toEqual(["停"]);
     expect(migrated.todayPracticedCharacterKeys).toEqual(["停"]);
@@ -169,5 +177,143 @@ describe("学习记录容错与迁移", () => {
     expect(second.todayPracticedCharacterKeys).toHaveLength(6);
     expect(second.todayLearnedCharacterIds).toHaveLength(6);
     expect(second.todayExtraGroupCount).toBe(1);
+  });
+
+  it("昨天完成后今天完成连续天数从1变2", () => {
+    const progress = {
+      ...freshProgress(),
+      date: "2026-07-17",
+      streak: 1,
+      lastCompletedDate: "2026-07-16",
+      completedDates: ["2026-07-16"],
+    };
+    expect(completeCourseGroup(progress, courses[0]).streak).toBe(2);
+  });
+
+  it("隔三天完成重置为1，同一天完成三组只增加一次", () => {
+    const progress = {
+      ...freshProgress(),
+      date: "2026-07-17",
+      streak: 6,
+      lastCompletedDate: "2026-07-14",
+      completedDates: ["2026-07-14"],
+    };
+    const first = completeCourseGroup(progress, courses[0]);
+    const second = completeCourseGroup(
+      { ...first, courseIndex: 1 },
+      courses[1],
+    );
+    const third = completeCourseGroup(
+      { ...second, courseIndex: 2 },
+      courses[2],
+    );
+    expect(first.streak).toBe(1);
+    expect(second.streak).toBe(1);
+    expect(third.streak).toBe(1);
+    expect(third.completedDates.filter((date) => date === "2026-07-17"))
+      .toHaveLength(1);
+  });
+
+  it("新字会在第1、3、7天进入复习队列", () => {
+    let progress = completeCourseGroup(
+      { ...freshProgress(), date: "2026-07-10" },
+      courses[0],
+    );
+    const key = courses[0].characters[0].characterKey;
+    expect(progress.reviewPlan[key].dueDates).toEqual([
+      "2026-07-11",
+      "2026-07-13",
+      "2026-07-17",
+    ]);
+    expect(getDueReviewKeys(progress.reviewPlan, "2026-07-11")).toContain(key);
+
+    progress = recordCharacterAnswer(
+      { ...progress, date: "2026-07-11" },
+      key,
+      true,
+      undefined,
+      true,
+    );
+    expect(getDueReviewKeys(progress.reviewPlan, "2026-07-12")).not.toContain(key);
+    expect(getDueReviewKeys(progress.reviewPlan, "2026-07-13")).toContain(key);
+    progress = recordCharacterAnswer(
+      { ...progress, date: "2026-07-13" },
+      key,
+      true,
+      undefined,
+      true,
+    );
+    expect(getDueReviewKeys(progress.reviewPlan, "2026-07-17")).toContain(key);
+  });
+
+  it("跨日连续答对三次后标记为mastered", () => {
+    const key = courses[0].characters[0].characterKey;
+    let progress = completeCourseGroup(
+      { ...freshProgress(), date: "2026-07-10" },
+      courses[0],
+    );
+    for (const date of ["2026-07-11", "2026-07-13", "2026-07-17"]) {
+      progress = recordCharacterAnswer(
+        { ...progress, date },
+        key,
+        true,
+        undefined,
+        true,
+      );
+    }
+    expect(progress.reviewPlan[key].correctStreak).toBe(3);
+    expect(progress.reviewPlan[key].mastered).toBe(true);
+  });
+
+  it("答错后第二天再次出现且同一汉字不会重复入队", () => {
+    const key = courses[0].characters[0].characterKey;
+    let progress = recordCharacterAnswer(
+      { ...freshProgress(), date: "2026-07-10" },
+      key,
+      false,
+    );
+    progress = recordCharacterAnswer(progress, key, false);
+    expect(progress.reviewPlan[key].dueDates).toEqual(["2026-07-11"]);
+    expect(getDueReviewKeys(progress.reviewPlan, "2026-07-11")).toEqual([key]);
+  });
+
+  it("同一天到期超过三个字时只返回三个且全部去重", () => {
+    const plan = Object.fromEntries(
+      ["药", "钱", "骗", "早"].map((key) => [
+        key,
+        {
+          dueDates: ["2026-07-11", "2026-07-11"],
+          completedDates: [],
+          correctStreak: 0,
+          wrongCount: 0,
+          mastered: false,
+        },
+      ]),
+    );
+    const queue = getDueReviewKeys(plan, "2026-07-11");
+    expect(queue).toHaveLength(3);
+    expect(new Set(queue).size).toBe(3);
+  });
+
+  it("version 2数据会升级并把条目答题记录合并到汉字历史", () => {
+    const fresh = freshProgress();
+    const migrated = migrateProgress({
+      version: 2,
+      date: fresh.date,
+      answerStats: {
+        "d1-1": { correct: 1, wrong: 2 },
+        "d30-1": { correct: 3, wrong: 1 },
+      },
+      totalLearnedCharacterIds: ["d1-1", "d30-1"],
+      todayLearnedCharacterIds: ["d1-1"],
+    });
+    const key = courses[0].characters[0].characterKey;
+    expect(migrated.version).toBe(3);
+    expect(migrated.lifetimeAnswerStats[key]).toMatchObject({
+      correct: 4,
+      wrong: 3,
+      lastAnsweredDate: fresh.date,
+    });
+    expect(migrated.answerStats["d1-1"]).toEqual({ correct: 1, wrong: 2 });
   });
 });

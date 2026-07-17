@@ -69,6 +69,16 @@ export interface AnswerStat {
   correct: number;
   wrong: number;
 }
+export interface CharacterAnswerStat extends AnswerStat {
+  lastAnsweredDate: string;
+}
+export interface ReviewPlanEntry {
+  dueDates: string[];
+  completedDates: string[];
+  correctStreak: number;
+  wrongCount: number;
+  mastered: boolean;
+}
 export type Stage =
   | "welcome"
   | "home"
@@ -89,7 +99,7 @@ export interface DailyLearningStat {
   baseGoalCompleted: boolean;
 }
 export interface Progress {
-  version: 2;
+  version: 3;
   updatedAt: number;
   date: string;
   courseIndex: number;
@@ -97,6 +107,10 @@ export interface Progress {
   characterIndex: number;
   reviewIndex: number;
   answerStats: Record<string, AnswerStat>;
+  todayAnswerStats: Record<string, CharacterAnswerStat>;
+  lifetimeAnswerStats: Record<string, CharacterAnswerStat>;
+  reviewPlan: Record<string, ReviewPlanEntry>;
+  reviewQueue: string[];
   learnedIds: string[];
   reviewIds: string[];
   streak: number;

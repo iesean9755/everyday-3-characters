@@ -82,4 +82,57 @@ describe("核心学习流程", () => {
     expect(screen.getByText("今天新认识3个字，练习了6个字"))
       .toBeInTheDocument();
   });
+  it("长按家人设置可以看到按汉字保存的历史错题", () => {
+    const progress = {
+      ...freshProgress(),
+      lifetimeAnswerStats: {
+        药: { correct: 1, wrong: 5, lastAnsweredDate: "2026-07-16" },
+      },
+    };
+    render(<App initialProgress={progress} />);
+    fireEvent.pointerDown(
+      screen.getByRole("button", { name: "家人设置，长按三秒" }),
+    );
+    act(() => vi.advanceTimersByTime(3100));
+
+    expect(
+      screen.getByRole("heading", { name: "家人设置" }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("需要多复习")).toBeInTheDocument();
+    expect(screen.getByText("药")).toBeInTheDocument();
+  });
+  it("清除今日记录后会按剩余完成日期恢复连续天数", () => {
+    vi.spyOn(window, "confirm").mockReturnValue(true);
+    const progress = {
+      ...freshProgress(),
+      date: "2026-07-17",
+      streak: 4,
+      lastCompletedDate: "2026-07-17",
+      completedDates: [
+        "2026-07-14",
+        "2026-07-15",
+        "2026-07-16",
+        "2026-07-17",
+      ],
+      dailyBaseGoalCompleted: true,
+      completedToday: true,
+    };
+    render(<App initialProgress={progress} />);
+    fireEvent.pointerDown(
+      screen.getByRole("button", { name: "家人设置，长按三秒" }),
+    );
+    act(() => vi.advanceTimersByTime(3100));
+    fireEvent.click(screen.getByRole("button", { name: "清除今日学习记录" }));
+
+    const saved = JSON.parse(
+      localStorage.getItem("everyday-3-characters-v1")!,
+    );
+    expect(saved.streak).toBe(3);
+    expect(saved.lastCompletedDate).toBe("2026-07-16");
+    expect(saved.completedDates).toEqual([
+      "2026-07-14",
+      "2026-07-15",
+      "2026-07-16",
+    ]);
+  });
 });
