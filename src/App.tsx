@@ -19,7 +19,7 @@ import {
   recordCharacterAnswer,
   saveProgress,
 } from "./lib/storage";
-import { calculateStreakFromDates } from "./lib/date";
+import { calculateActiveStreakFromDates } from "./lib/date";
 import {
   getChineseVoices,
   initializeVoices,
@@ -925,7 +925,7 @@ function Settings({
       todayNewCharacterCount: 0,
       todayExtraGroupCount: 0,
       currentExtraGroupProgress: 0,
-      streak: calculateStreakFromDates(completedDates),
+      streak: calculateActiveStreakFromDates(completedDates, progress.date),
       lastCompletedDate: completedDates.at(-1) ?? "",
       completedDates,
       dailyStats,

@@ -21,9 +21,14 @@ export function calculateNextStreak(
   if (lastCompletedDate === today) return currentStreak;
   return isYesterday(lastCompletedDate, today) ? currentStreak + 1 : 1;
 }
-export function calculateStreakFromDates(dates: string[]): number {
+export function calculateActiveStreakFromDates(
+  dates: string[],
+  referenceDate: string,
+): number {
   const sorted = [...new Set(dates)].sort();
   if (!sorted.length) return 0;
+  const latest = sorted.at(-1)!;
+  if (!isYesterday(latest, referenceDate)) return 0;
   let streak = 1;
   for (let index = sorted.length - 1; index > 0; index -= 1) {
     if (!isYesterday(sorted[index - 1], sorted[index])) break;

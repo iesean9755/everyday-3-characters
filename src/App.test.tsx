@@ -17,6 +17,7 @@ describe("核心学习流程", () => {
   afterEach(() => {
     cleanup();
     vi.clearAllTimers();
+    vi.restoreAllMocks();
     vi.useRealTimers();
   });
   it("首次打开有唯一的大开始按钮", () => {
@@ -134,5 +135,30 @@ describe("核心学习流程", () => {
       "2026-07-15",
       "2026-07-16",
     ]);
+  });
+  it("清除今日记录时昨天未学习会把连续天数恢复为0", () => {
+    vi.spyOn(window, "confirm").mockReturnValue(true);
+    const progress = {
+      ...freshProgress(),
+      date: "2026-07-17",
+      streak: 1,
+      lastCompletedDate: "2026-07-17",
+      completedDates: ["2026-07-10", "2026-07-17"],
+      dailyBaseGoalCompleted: true,
+      completedToday: true,
+    };
+    render(<App initialProgress={progress} />);
+    fireEvent.pointerDown(
+      screen.getByRole("button", { name: "家人设置，长按三秒" }),
+    );
+    act(() => vi.advanceTimersByTime(3100));
+    fireEvent.click(screen.getByRole("button", { name: "清除今日学习记录" }));
+
+    const saved = JSON.parse(
+      localStorage.getItem("everyday-3-characters-v1")!,
+    );
+    expect(saved.streak).toBe(0);
+    expect(saved.lastCompletedDate).toBe("2026-07-10");
+    expect(saved.completedDates).toEqual(["2026-07-10"]);
   });
 });
