@@ -11,6 +11,7 @@
     "audio:script": "node scripts/generate-audio-script.mjs",
     "audio:generate": "python scripts/generate_audio.py",
     "audio:generate:all": "python scripts/generate_audio.py --all",
+    "audio:teaching": "python scripts/generate-teaching-audio.py",
     "audio:normalize": "python scripts/normalize-audio.py",
     "qa:browser": "node scripts/reproduce-sound-overlay.mjs",
     "qa:audio": "node scripts/qa-local-audio.mjs",

@@ -1,6 +1,13 @@
 import type { CharacterItem } from "../types";
 import { getTeachingParts } from "./audioText";
 
+export const AUDIO_VERSION = "20260718b";
+
+export function versionAudioPath(path: string): string {
+  const separator = path.includes("?") ? "&" : "?";
+  return `${path}${separator}v=${AUDIO_VERSION}`;
+}
+
 export interface VoiceOption {
   name: string;
   lang: string;
@@ -217,7 +224,9 @@ export function getSelectedVoice(
 async function getAudioManifest(): Promise<Set<string>> {
   if (typeof fetch !== "function") return new Set();
   if (!manifestPromise) {
-    manifestPromise = fetch("/audio/manifest.json", { cache: "no-cache" })
+    manifestPromise = fetch(versionAudioPath("/audio/manifest.json"), {
+      cache: "no-cache",
+    })
       .then(async (response) => {
         if (!response.ok) return [] as string[];
         const data: unknown = await response.json();
@@ -238,7 +247,7 @@ export async function preloadAudio(paths: string[]) {
     .forEach((path) => {
       const audio = new Audio();
       audio.preload = "auto";
-      audio.src = path;
+      audio.src = versionAudioPath(path);
       audio.load();
     });
 }
@@ -258,7 +267,7 @@ async function playLocal(
   const manifest = await getAudioManifest();
   if (!manifest.has(path) || token !== generation) return false;
   return new Promise((resolve) => {
-    const audio = new Audio(path);
+    const audio = new Audio(versionAudioPath(path));
     activeAudio = audio;
     audio.preload = "auto";
     audio.volume = 1;
@@ -455,33 +464,16 @@ export async function speakTeaching(
 ): Promise<PlaybackResult> {
   const { intro, character, explanation, example } = getTeachingParts(item);
   const normalRate = options.rate ?? 0.8;
-  stopSpeech();
-  // teachingAudio 是整段旧文件；当前主路径已改为分段（含例句），不再优先整段
+  const teachingText = `${intro}，${character}。${explanation}。${example}`;
+  // Safari only starts one audio source. If the complete MP3 is unavailable,
+  // the same complete sentence is spoken with one SpeechSynthesisUtterance.
   return playSegments(
     [
       {
-        text: intro,
-        rate: normalRate,
-        pauseAfterMs: options.introPauseMs ?? 300,
-        audioPath: item.introAudio,
-      },
-      {
-        text: character,
-        rate: normalRate,
-        pauseAfterMs: options.characterPauseMs ?? 400,
-        audioPath: item.characterAudio,
-      },
-      {
-        text: explanation,
-        rate: normalRate,
-        pauseAfterMs: options.explanationPauseMs ?? 300,
-        audioPath: item.explanationAudio,
-      },
-      {
-        text: example,
+        text: teachingText,
         rate: normalRate,
         pauseAfterMs: 0,
-        audioPath: item.exampleAudio,
+        audioPath: item.teachingAudio,
       },
     ],
     options.voiceName ?? "",

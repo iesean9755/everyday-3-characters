@@ -139,6 +139,15 @@ for (const course of courses) {
     const prefix = `day-${day}-${suffix}`;
     const parts = audioText.getTeachingParts(item);
     add({
+      id: `${prefix}-teaching`,
+      category: "teaching",
+      day,
+      character: item.characterKey,
+      text: `${parts.intro}，${parts.character}。${parts.explanation}。${parts.example}`,
+      pause: "内含150ms、200ms、150ms停顿",
+      file: item.teachingAudio,
+    });
+    add({
       id: `character-${item.characterKey}`,
       category: "character",
       day,

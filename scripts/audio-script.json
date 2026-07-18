@@ -117,6 +117,19 @@
     "exists": true
   },
   {
+    "id": "day-1-1-teaching",
+    "category": "teaching",
+    "courseDay": 1,
+    "targetCharacter": "药",
+    "fullText": "这个字念，药。吃药的药。。早上吃一次药。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-01-1-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-01-1-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-药",
     "category": "character",
     "courseDay": 1,
@@ -195,6 +208,19 @@
     "exists": true
   },
   {
+    "id": "day-1-2-teaching",
+    "category": "teaching",
+    "courseDay": 1,
+    "targetCharacter": "早",
+    "fullText": "这个字念，早。早晨的早。。早上吃药。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-01-2-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-01-2-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-早",
     "category": "character",
     "courseDay": 1,
@@ -270,6 +296,19 @@
     "suggestedFileName": "早-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/早-retry.mp3",
+    "exists": true
+  },
+  {
+    "id": "day-1-3-teaching",
+    "category": "teaching",
+    "courseDay": 1,
+    "targetCharacter": "晚",
+    "fullText": "这个字念，晚。晚上的晚。。晚上再吃一次。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-01-3-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-01-3-teaching.mp3",
     "exists": true
   },
   {
@@ -364,6 +403,19 @@
     "exists": true
   },
   {
+    "id": "day-2-1-teaching",
+    "category": "teaching",
+    "courseDay": 2,
+    "targetCharacter": "钱",
+    "fullText": "这个字念，钱。买东西要用的钱。这些要多少钱？",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-02-1-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-02-1-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-钱",
     "category": "character",
     "courseDay": 2,
@@ -442,6 +494,19 @@
     "exists": true
   },
   {
+    "id": "day-2-2-teaching",
+    "category": "teaching",
+    "courseDay": 2,
+    "targetCharacter": "元",
+    "fullText": "这个字念，元。常见的钱数单位。一共十元。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-02-2-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-02-2-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-元",
     "category": "character",
     "courseDay": 2,
@@ -517,6 +582,19 @@
     "suggestedFileName": "元-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/元-retry.mp3",
+    "exists": true
+  },
+  {
+    "id": "day-2-3-teaching",
+    "category": "teaching",
+    "courseDay": 2,
+    "targetCharacter": "斤",
+    "fullText": "这个字念，斤。买菜常用的重量。买一斤菜。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-02-3-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-02-3-teaching.mp3",
     "exists": true
   },
   {
@@ -611,6 +689,19 @@
     "exists": true
   },
   {
+    "id": "day-3-1-teaching",
+    "category": "teaching",
+    "courseDay": 3,
+    "targetCharacter": "车",
+    "fullText": "这个字念，车。载人出行的车。车来了。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-03-1-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-03-1-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-车",
     "category": "character",
     "courseDay": 3,
@@ -689,6 +780,19 @@
     "exists": true
   },
   {
+    "id": "day-3-2-teaching",
+    "category": "teaching",
+    "courseDay": 3,
+    "targetCharacter": "站",
+    "fullText": "这个字念，站。等车或下车的地方。下一站下车。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-03-2-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-03-2-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-站",
     "category": "character",
     "courseDay": 3,
@@ -764,6 +868,19 @@
     "suggestedFileName": "站-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/站-retry.mp3",
+    "exists": true
+  },
+  {
+    "id": "day-3-3-teaching",
+    "category": "teaching",
+    "courseDay": 3,
+    "targetCharacter": "路",
+    "fullText": "这个字念，路。人和车走的道路。这条路往前走。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-03-3-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-03-3-teaching.mp3",
     "exists": true
   },
   {
@@ -858,6 +975,19 @@
     "exists": true
   },
   {
+    "id": "day-4-1-teaching",
+    "category": "teaching",
+    "courseDay": 4,
+    "targetCharacter": "火",
+    "fullText": "这个字念，火。会发热发光的火。小心有火。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-04-1-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-04-1-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-火",
     "category": "character",
     "courseDay": 4,
@@ -936,6 +1066,19 @@
     "exists": true
   },
   {
+    "id": "day-4-2-teaching",
+    "category": "teaching",
+    "courseDay": 4,
+    "targetCharacter": "电",
+    "fullText": "这个字念，电。电器使用的电。不要碰电。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-04-2-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-04-2-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-电",
     "category": "character",
     "courseDay": 4,
@@ -1011,6 +1154,19 @@
     "suggestedFileName": "电-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/电-retry.mp3",
+    "exists": true
+  },
+  {
+    "id": "day-4-3-teaching",
+    "category": "teaching",
+    "courseDay": 4,
+    "targetCharacter": "险",
+    "fullText": "这个字念，险。表示有危险。这里危险，不要靠近。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-04-3-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-04-3-teaching.mp3",
     "exists": true
   },
   {
@@ -1105,6 +1261,19 @@
     "exists": true
   },
   {
+    "id": "day-5-1-teaching",
+    "category": "teaching",
+    "courseDay": 5,
+    "targetCharacter": "开",
+    "fullText": "这个字念，开。让东西开始工作。把灯打开。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-05-1-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-05-1-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-开",
     "category": "character",
     "courseDay": 5,
@@ -1183,6 +1352,19 @@
     "exists": true
   },
   {
+    "id": "day-5-2-teaching",
+    "category": "teaching",
+    "courseDay": 5,
+    "targetCharacter": "关",
+    "fullText": "这个字念，关。让东西停止工作。把火关掉。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-05-2-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-05-2-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-关",
     "category": "character",
     "courseDay": 5,
@@ -1258,6 +1440,19 @@
     "suggestedFileName": "关-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/关-retry.mp3",
+    "exists": true
+  },
+  {
+    "id": "day-5-3-teaching",
+    "category": "teaching",
+    "courseDay": 5,
+    "targetCharacter": "接",
+    "fullText": "这个字念，接。接起打来的电话。家人来电话，点接。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-05-3-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-05-3-teaching.mp3",
     "exists": true
   },
   {
@@ -1352,6 +1547,19 @@
     "exists": true
   },
   {
+    "id": "day-6-1-teaching",
+    "category": "teaching",
+    "courseDay": 6,
+    "targetCharacter": "男",
+    "fullText": "这个字念，男。男性标志。这是男厕所。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-06-1-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-06-1-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-男",
     "category": "character",
     "courseDay": 6,
@@ -1430,6 +1638,19 @@
     "exists": true
   },
   {
+    "id": "day-6-2-teaching",
+    "category": "teaching",
+    "courseDay": 6,
+    "targetCharacter": "女",
+    "fullText": "这个字念，女。女性标志。这是女厕所。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-06-2-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-06-2-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-女",
     "category": "character",
     "courseDay": 6,
@@ -1505,6 +1726,19 @@
     "suggestedFileName": "女-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/女-retry.mp3",
+    "exists": true
+  },
+  {
+    "id": "day-6-3-teaching",
+    "category": "teaching",
+    "courseDay": 6,
+    "targetCharacter": "间",
+    "fullText": "这个字念，间。房间的间。卫生间在前面。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-06-3-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-06-3-teaching.mp3",
     "exists": true
   },
   {
@@ -1599,6 +1833,19 @@
     "exists": true
   },
   {
+    "id": "day-7-1-teaching",
+    "category": "teaching",
+    "courseDay": 7,
+    "targetCharacter": "医",
+    "fullText": "这个字念，医。看病治病。去找医生。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-07-1-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-07-1-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-医",
     "category": "character",
     "courseDay": 7,
@@ -1677,6 +1924,19 @@
     "exists": true
   },
   {
+    "id": "day-7-2-teaching",
+    "category": "teaching",
+    "courseDay": 7,
+    "targetCharacter": "院",
+    "fullText": "这个字念，院。医院的院。医院在前面。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-07-2-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-07-2-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-院",
     "category": "character",
     "courseDay": 7,
@@ -1752,6 +2012,19 @@
     "suggestedFileName": "院-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/院-retry.mp3",
+    "exists": true
+  },
+  {
+    "id": "day-7-3-teaching",
+    "category": "teaching",
+    "courseDay": 7,
+    "targetCharacter": "病",
+    "fullText": "这个字念，病。身体不舒服。生病了要看医生。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-07-3-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-07-3-teaching.mp3",
     "exists": true
   },
   {
@@ -1846,6 +2119,19 @@
     "exists": true
   },
   {
+    "id": "day-8-1-teaching",
+    "category": "teaching",
+    "courseDay": 8,
+    "targetCharacter": "银",
+    "fullText": "这个字念，银。银行的银。去银行取钱。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-08-1-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-08-1-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-银",
     "category": "character",
     "courseDay": 8,
@@ -1924,6 +2210,19 @@
     "exists": true
   },
   {
+    "id": "day-8-2-teaching",
+    "category": "teaching",
+    "courseDay": 8,
+    "targetCharacter": "行",
+    "fullText": "这个字念，行。银行的行。这是一家银行。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-08-2-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-08-2-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-行",
     "category": "character",
     "courseDay": 8,
@@ -1999,6 +2298,19 @@
     "suggestedFileName": "行-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/行-retry.mp3",
+    "exists": true
+  },
+  {
+    "id": "day-8-3-teaching",
+    "category": "teaching",
+    "courseDay": 8,
+    "targetCharacter": "取",
+    "fullText": "这个字念，取。把东西拿出来。从机器里取钱。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-08-3-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-08-3-teaching.mp3",
     "exists": true
   },
   {
@@ -2093,6 +2405,19 @@
     "exists": true
   },
   {
+    "id": "day-9-1-teaching",
+    "category": "teaching",
+    "courseDay": 9,
+    "targetCharacter": "付",
+    "fullText": "这个字念，付。把钱交出去。买完东西要付款。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-09-1-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-09-1-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-付",
     "category": "character",
     "courseDay": 9,
@@ -2171,6 +2496,19 @@
     "exists": true
   },
   {
+    "id": "day-9-2-teaching",
+    "category": "teaching",
+    "courseDay": 9,
+    "targetCharacter": "扫",
+    "fullText": "这个字念，扫。用手机扫一下。打开手机扫一扫。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-09-2-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-09-2-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-扫",
     "category": "character",
     "courseDay": 9,
@@ -2246,6 +2584,19 @@
     "suggestedFileName": "扫-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/扫-retry.mp3",
+    "exists": true
+  },
+  {
+    "id": "day-9-3-teaching",
+    "category": "teaching",
+    "courseDay": 9,
+    "targetCharacter": "码",
+    "fullText": "这个字念，码。手机上的方块图案。请出示付款码。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-09-3-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-09-3-teaching.mp3",
     "exists": true
   },
   {
@@ -2340,6 +2691,19 @@
     "exists": true
   },
   {
+    "id": "day-10-1-teaching",
+    "category": "teaching",
+    "courseDay": 10,
+    "targetCharacter": "上",
+    "fullText": "这个字念，上。往高处或进入车里。从前门上车。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-10-1-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-10-1-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-上",
     "category": "character",
     "courseDay": 10,
@@ -2418,6 +2782,19 @@
     "exists": true
   },
   {
+    "id": "day-10-2-teaching",
+    "category": "teaching",
+    "courseDay": 10,
+    "targetCharacter": "下",
+    "fullText": "这个字念，下。往低处或离开车。到站下车。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-10-2-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-10-2-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-下",
     "category": "character",
     "courseDay": 10,
@@ -2493,6 +2870,19 @@
     "suggestedFileName": "下-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/下-retry.mp3",
+    "exists": true
+  },
+  {
+    "id": "day-10-3-teaching",
+    "category": "teaching",
+    "courseDay": 10,
+    "targetCharacter": "座",
+    "fullText": "这个字念，座。坐下的位置。这里有座位。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-10-3-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-10-3-teaching.mp3",
     "exists": true
   },
   {
@@ -2587,6 +2977,19 @@
     "exists": true
   },
   {
+    "id": "day-11-1-teaching",
+    "category": "teaching",
+    "courseDay": 11,
+    "targetCharacter": "进",
+    "fullText": "这个字念，进。从外面到里面。从这里进站。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-11-1-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-11-1-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-进",
     "category": "character",
     "courseDay": 11,
@@ -2665,6 +3068,19 @@
     "exists": true
   },
   {
+    "id": "day-11-2-teaching",
+    "category": "teaching",
+    "courseDay": 11,
+    "targetCharacter": "出",
+    "fullText": "这个字念，出。从里面到外面。从这里出去。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-11-2-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-11-2-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-出",
     "category": "character",
     "courseDay": 11,
@@ -2740,6 +3156,19 @@
     "suggestedFileName": "出-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/出-retry.mp3",
+    "exists": true
+  },
+  {
+    "id": "day-11-3-teaching",
+    "category": "teaching",
+    "courseDay": 11,
+    "targetCharacter": "口",
+    "fullText": "这个字念，口。入口出口的口。出口在右边。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-11-3-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-11-3-teaching.mp3",
     "exists": true
   },
   {
@@ -2834,6 +3263,19 @@
     "exists": true
   },
   {
+    "id": "day-12-1-teaching",
+    "category": "teaching",
+    "courseDay": 12,
+    "targetCharacter": "挂",
+    "fullText": "这个字念，挂。挂号的挂。先去挂号。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-12-1-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-12-1-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-挂",
     "category": "character",
     "courseDay": 12,
@@ -2912,6 +3354,19 @@
     "exists": true
   },
   {
+    "id": "day-12-2-teaching",
+    "category": "teaching",
+    "courseDay": 12,
+    "targetCharacter": "号",
+    "fullText": "这个字念，号。号码的号。请看手里的号。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-12-2-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-12-2-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-号",
     "category": "character",
     "courseDay": 12,
@@ -2987,6 +3442,19 @@
     "suggestedFileName": "号-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/号-retry.mp3",
+    "exists": true
+  },
+  {
+    "id": "day-12-3-teaching",
+    "category": "teaching",
+    "courseDay": 12,
+    "targetCharacter": "诊",
+    "fullText": "这个字念，诊。医生看病。门诊在一楼。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-12-3-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-12-3-teaching.mp3",
     "exists": true
   },
   {
@@ -3081,6 +3549,19 @@
     "exists": true
   },
   {
+    "id": "day-13-1-teaching",
+    "category": "teaching",
+    "courseDay": 13,
+    "targetCharacter": "片",
+    "fullText": "这个字念，片。药片的片。一次吃一片。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-13-1-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-13-1-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-片",
     "category": "character",
     "courseDay": 13,
@@ -3159,6 +3640,19 @@
     "exists": true
   },
   {
+    "id": "day-13-2-teaching",
+    "category": "teaching",
+    "courseDay": 13,
+    "targetCharacter": "次",
+    "fullText": "这个字念，次。次数的次。一天吃两次。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-13-2-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-13-2-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-次",
     "category": "character",
     "courseDay": 13,
@@ -3234,6 +3728,19 @@
     "suggestedFileName": "次-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/次-retry.mp3",
+    "exists": true
+  },
+  {
+    "id": "day-13-3-teaching",
+    "category": "teaching",
+    "courseDay": 13,
+    "targetCharacter": "饭",
+    "fullText": "这个字念，饭。吃的饭。饭后再吃药。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-13-3-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-13-3-teaching.mp3",
     "exists": true
   },
   {
@@ -3328,6 +3835,19 @@
     "exists": true
   },
   {
+    "id": "day-14-1-teaching",
+    "category": "teaching",
+    "courseDay": 14,
+    "targetCharacter": "水",
+    "fullText": "这个字念，水。喝的和用的水。把水关好。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-14-1-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-14-1-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-水",
     "category": "character",
     "courseDay": 14,
@@ -3406,6 +3926,19 @@
     "exists": true
   },
   {
+    "id": "day-14-2-teaching",
+    "category": "teaching",
+    "courseDay": 14,
+    "targetCharacter": "气",
+    "fullText": "这个字念，气。燃气的气。闻到燃气要开窗。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-14-2-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-14-2-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-气",
     "category": "character",
     "courseDay": 14,
@@ -3481,6 +4014,19 @@
     "suggestedFileName": "气-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/气-retry.mp3",
+    "exists": true
+  },
+  {
+    "id": "day-14-3-teaching",
+    "category": "teaching",
+    "courseDay": 14,
+    "targetCharacter": "表",
+    "fullText": "这个字念，表。显示用量的表。这是家里的电表。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-14-3-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-14-3-teaching.mp3",
     "exists": true
   },
   {
@@ -3575,6 +4121,19 @@
     "exists": true
   },
   {
+    "id": "day-15-1-teaching",
+    "category": "teaching",
+    "courseDay": 15,
+    "targetCharacter": "年",
+    "fullText": "这个字念，年。年份的年。今年是二零二六年。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-15-1-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-15-1-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-年",
     "category": "character",
     "courseDay": 15,
@@ -3653,6 +4212,19 @@
     "exists": true
   },
   {
+    "id": "day-15-2-teaching",
+    "category": "teaching",
+    "courseDay": 15,
+    "targetCharacter": "月",
+    "fullText": "这个字念，月。月份的月。七月十五日。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-15-2-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-15-2-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-月",
     "category": "character",
     "courseDay": 15,
@@ -3728,6 +4300,19 @@
     "suggestedFileName": "月-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/月-retry.mp3",
+    "exists": true
+  },
+  {
+    "id": "day-15-3-teaching",
+    "category": "teaching",
+    "courseDay": 15,
+    "targetCharacter": "日",
+    "fullText": "这个字念，日。日期的日。请看生产日期。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-15-3-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-15-3-teaching.mp3",
     "exists": true
   },
   {
@@ -3822,6 +4407,19 @@
     "exists": true
   },
   {
+    "id": "day-16-1-teaching",
+    "category": "teaching",
+    "courseDay": 16,
+    "targetCharacter": "件",
+    "fullText": "这个字念，件。快递件的件。您有一个快递件。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-16-1-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-16-1-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-件",
     "category": "character",
     "courseDay": 16,
@@ -3900,6 +4498,19 @@
     "exists": true
   },
   {
+    "id": "day-16-2-teaching",
+    "category": "teaching",
+    "courseDay": 16,
+    "targetCharacter": "柜",
+    "fullText": "这个字念，柜。放东西的柜子。快递在柜子里。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-16-2-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-16-2-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-柜",
     "category": "character",
     "courseDay": 16,
@@ -3975,6 +4586,19 @@
     "suggestedFileName": "柜-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/柜-retry.mp3",
+    "exists": true
+  },
+  {
+    "id": "day-16-3-teaching",
+    "category": "teaching",
+    "courseDay": 16,
+    "targetCharacter": "层",
+    "fullText": "这个字念，层。楼层的层。快递柜在一层。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-16-3-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-16-3-teaching.mp3",
     "exists": true
   },
   {
@@ -4069,6 +4693,19 @@
     "exists": true
   },
   {
+    "id": "day-17-1-teaching",
+    "category": "teaching",
+    "courseDay": 17,
+    "targetCharacter": "左",
+    "fullText": "这个字念，左。左手一边。请往左走。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-17-1-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-17-1-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-左",
     "category": "character",
     "courseDay": 17,
@@ -4147,6 +4784,19 @@
     "exists": true
   },
   {
+    "id": "day-17-2-teaching",
+    "category": "teaching",
+    "courseDay": 17,
+    "targetCharacter": "右",
+    "fullText": "这个字念，右。右手一边。请往右走。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-17-2-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-17-2-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-右",
     "category": "character",
     "courseDay": 17,
@@ -4222,6 +4872,19 @@
     "suggestedFileName": "右-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/右-retry.mp3",
+    "exists": true
+  },
+  {
+    "id": "day-17-3-teaching",
+    "category": "teaching",
+    "courseDay": 17,
+    "targetCharacter": "前",
+    "fullText": "这个字念，前。面对的一边。一直往前走。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-17-3-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-17-3-teaching.mp3",
     "exists": true
   },
   {
@@ -4316,6 +4979,19 @@
     "exists": true
   },
   {
+    "id": "day-18-1-teaching",
+    "category": "teaching",
+    "courseDay": 18,
+    "targetCharacter": "骗",
+    "fullText": "这个字念，骗。用假话骗钱。陌生电话可能是骗。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-18-1-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-18-1-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-骗",
     "category": "character",
     "courseDay": 18,
@@ -4394,6 +5070,19 @@
     "exists": true
   },
   {
+    "id": "day-18-2-teaching",
+    "category": "teaching",
+    "courseDay": 18,
+    "targetCharacter": "转",
+    "fullText": "这个字念，转。把钱转给别人。不要给陌生人转钱。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-18-2-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-18-2-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-转",
     "category": "character",
     "courseDay": 18,
@@ -4469,6 +5158,19 @@
     "suggestedFileName": "转-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/转-retry.mp3",
+    "exists": true
+  },
+  {
+    "id": "day-18-3-teaching",
+    "category": "teaching",
+    "courseDay": 18,
+    "targetCharacter": "假",
+    "fullText": "这个字念，假。不是真的。这可能是假消息。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-18-3-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-18-3-teaching.mp3",
     "exists": true
   },
   {
@@ -4563,6 +5265,19 @@
     "exists": true
   },
   {
+    "id": "day-19-1-teaching",
+    "category": "teaching",
+    "courseDay": 19,
+    "targetCharacter": "急",
+    "fullText": "这个字念，急。情况紧急。紧急时打电话。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-19-1-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-19-1-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-急",
     "category": "character",
     "courseDay": 19,
@@ -4641,6 +5356,19 @@
     "exists": true
   },
   {
+    "id": "day-19-2-teaching",
+    "category": "teaching",
+    "courseDay": 19,
+    "targetCharacter": "救",
+    "fullText": "这个字念，救。帮助脱离危险。有人受伤要急救。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-19-2-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-19-2-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-救",
     "category": "character",
     "courseDay": 19,
@@ -4716,6 +5444,19 @@
     "suggestedFileName": "救-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/救-retry.mp3",
+    "exists": true
+  },
+  {
+    "id": "day-19-3-teaching",
+    "category": "teaching",
+    "courseDay": 19,
+    "targetCharacter": "警",
+    "fullText": "这个字念，警。警察的警。遇到坏人要报警。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-19-3-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-19-3-teaching.mp3",
     "exists": true
   },
   {
@@ -4810,6 +5551,19 @@
     "exists": true
   },
   {
+    "id": "day-20-1-teaching",
+    "category": "teaching",
+    "courseDay": 20,
+    "targetCharacter": "儿",
+    "fullText": "这个字念，儿。儿子的儿。这是我儿子。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-20-1-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-20-1-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-儿",
     "category": "character",
     "courseDay": 20,
@@ -4888,6 +5642,19 @@
     "exists": true
   },
   {
+    "id": "day-20-2-teaching",
+    "category": "teaching",
+    "courseDay": 20,
+    "targetCharacter": "孙",
+    "fullText": "这个字念，孙。孙子的孙。这是我孙子。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-20-2-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-20-2-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-孙",
     "category": "character",
     "courseDay": 20,
@@ -4963,6 +5730,19 @@
     "suggestedFileName": "孙-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/孙-retry.mp3",
+    "exists": true
+  },
+  {
+    "id": "day-20-3-teaching",
+    "category": "teaching",
+    "courseDay": 20,
+    "targetCharacter": "家",
+    "fullText": "这个字念，家。一家人的家。家人在等您。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-20-3-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-20-3-teaching.mp3",
     "exists": true
   },
   {
@@ -5057,6 +5837,19 @@
     "exists": true
   },
   {
+    "id": "day-21-1-teaching",
+    "category": "teaching",
+    "courseDay": 21,
+    "targetCharacter": "今",
+    "fullText": "这个字念，今。今天的今。今天要出门。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-21-1-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-21-1-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-今",
     "category": "character",
     "courseDay": 21,
@@ -5135,6 +5928,19 @@
     "exists": true
   },
   {
+    "id": "day-21-2-teaching",
+    "category": "teaching",
+    "courseDay": 21,
+    "targetCharacter": "明",
+    "fullText": "这个字念，明。明天的明。明天再来。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-21-2-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-21-2-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-明",
     "category": "character",
     "courseDay": 21,
@@ -5210,6 +6016,19 @@
     "suggestedFileName": "明-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/明-retry.mp3",
+    "exists": true
+  },
+  {
+    "id": "day-21-3-teaching",
+    "category": "teaching",
+    "courseDay": 21,
+    "targetCharacter": "点",
+    "fullText": "这个字念，点。钟点的点。三点去医院。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-21-3-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-21-3-teaching.mp3",
     "exists": true
   },
   {
@@ -5304,6 +6123,19 @@
     "exists": true
   },
   {
+    "id": "day-22-1-teaching",
+    "category": "teaching",
+    "courseDay": 22,
+    "targetCharacter": "雨",
+    "fullText": "这个字念，雨。从天上落下的雨。下雨要带伞。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-22-1-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-22-1-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-雨",
     "category": "character",
     "courseDay": 22,
@@ -5382,6 +6214,19 @@
     "exists": true
   },
   {
+    "id": "day-22-2-teaching",
+    "category": "teaching",
+    "courseDay": 22,
+    "targetCharacter": "风",
+    "fullText": "这个字念，风。吹动东西的风。今天风很大。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-22-2-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-22-2-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-风",
     "category": "character",
     "courseDay": 22,
@@ -5457,6 +6302,19 @@
     "suggestedFileName": "风-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/风-retry.mp3",
+    "exists": true
+  },
+  {
+    "id": "day-22-3-teaching",
+    "category": "teaching",
+    "courseDay": 22,
+    "targetCharacter": "冷",
+    "fullText": "这个字念，冷。温度很低。天冷要加衣。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-22-3-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-22-3-teaching.mp3",
     "exists": true
   },
   {
@@ -5551,6 +6409,19 @@
     "exists": true
   },
   {
+    "id": "day-23-1-teaching",
+    "category": "teaching",
+    "courseDay": 23,
+    "targetCharacter": "米",
+    "fullText": "这个字念，米。大米的米。买一袋米。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-23-1-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-23-1-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-米",
     "category": "character",
     "courseDay": 23,
@@ -5629,6 +6500,19 @@
     "exists": true
   },
   {
+    "id": "day-23-2-teaching",
+    "category": "teaching",
+    "courseDay": 23,
+    "targetCharacter": "油",
+    "fullText": "这个字念，油。做饭用的油。家里要买油。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-23-2-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-23-2-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-油",
     "category": "character",
     "courseDay": 23,
@@ -5704,6 +6588,19 @@
     "suggestedFileName": "油-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/油-retry.mp3",
+    "exists": true
+  },
+  {
+    "id": "day-23-3-teaching",
+    "category": "teaching",
+    "courseDay": 23,
+    "targetCharacter": "盐",
+    "fullText": "这个字念，盐。做菜用的盐。少放一点盐。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-23-3-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-23-3-teaching.mp3",
     "exists": true
   },
   {
@@ -5798,6 +6695,19 @@
     "exists": true
   },
   {
+    "id": "day-24-1-teaching",
+    "category": "teaching",
+    "courseDay": 24,
+    "targetCharacter": "通",
+    "fullText": "这个字念，通。通知的通。社区有新通知。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-24-1-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-24-1-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-通",
     "category": "character",
     "courseDay": 24,
@@ -5876,6 +6786,19 @@
     "exists": true
   },
   {
+    "id": "day-24-2-teaching",
+    "category": "teaching",
+    "courseDay": 24,
+    "targetCharacter": "知",
+    "fullText": "这个字念，知。知道的知。请家人看通知。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-24-2-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-24-2-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-知",
     "category": "character",
     "courseDay": 24,
@@ -5951,6 +6874,19 @@
     "suggestedFileName": "知-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/知-retry.mp3",
+    "exists": true
+  },
+  {
+    "id": "day-24-3-teaching",
+    "category": "teaching",
+    "courseDay": 24,
+    "targetCharacter": "停",
+    "fullText": "这个字念，停。停止的停。明天停水。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-24-3-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-24-3-teaching.mp3",
     "exists": true
   },
   {
@@ -6045,6 +6981,19 @@
     "exists": true
   },
   {
+    "id": "day-25-1-teaching",
+    "category": "teaching",
+    "courseDay": 25,
+    "targetCharacter": "楼",
+    "fullText": "这个字念，楼。楼房的楼。住在三号楼。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-25-1-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-25-1-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-楼",
     "category": "character",
     "courseDay": 25,
@@ -6123,6 +7072,19 @@
     "exists": true
   },
   {
+    "id": "day-25-2-teaching",
+    "category": "teaching",
+    "courseDay": 25,
+    "targetCharacter": "室",
+    "fullText": "这个字念，室。房间的室。门诊室在里面。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-25-2-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-25-2-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-室",
     "category": "character",
     "courseDay": 25,
@@ -6198,6 +7160,19 @@
     "suggestedFileName": "室-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/室-retry.mp3",
+    "exists": true
+  },
+  {
+    "id": "day-25-3-teaching",
+    "category": "teaching",
+    "courseDay": 25,
+    "targetCharacter": "门",
+    "fullText": "这个字念，门。进出的门。请把门关好。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-25-3-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-25-3-teaching.mp3",
     "exists": true
   },
   {
@@ -6292,6 +7267,19 @@
     "exists": true
   },
   {
+    "id": "day-26-1-teaching",
+    "category": "teaching",
+    "courseDay": 26,
+    "targetCharacter": "菜",
+    "fullText": "这个字念，菜。吃的菜。点一个青菜。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-26-1-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-26-1-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-菜",
     "category": "character",
     "courseDay": 26,
@@ -6370,6 +7358,19 @@
     "exists": true
   },
   {
+    "id": "day-26-2-teaching",
+    "category": "teaching",
+    "courseDay": 26,
+    "targetCharacter": "汤",
+    "fullText": "这个字念，汤。有水的热菜。喝一碗热汤。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-26-2-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-26-2-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-汤",
     "category": "character",
     "courseDay": 26,
@@ -6445,6 +7446,19 @@
     "suggestedFileName": "汤-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/汤-retry.mp3",
+    "exists": true
+  },
+  {
+    "id": "day-26-3-teaching",
+    "category": "teaching",
+    "courseDay": 26,
+    "targetCharacter": "面",
+    "fullText": "这个字念，面。面条的面。要一碗面。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-26-3-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-26-3-teaching.mp3",
     "exists": true
   },
   {
@@ -6539,6 +7553,19 @@
     "exists": true
   },
   {
+    "id": "day-27-1-teaching",
+    "category": "teaching",
+    "courseDay": 27,
+    "targetCharacter": "洗",
+    "fullText": "这个字念，洗。用水洗干净。衣服要洗。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-27-1-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-27-1-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-洗",
     "category": "character",
     "courseDay": 27,
@@ -6617,6 +7644,19 @@
     "exists": true
   },
   {
+    "id": "day-27-2-teaching",
+    "category": "teaching",
+    "courseDay": 27,
+    "targetCharacter": "衣",
+    "fullText": "这个字念，衣。穿在身上的衣服。天冷多穿衣。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-27-2-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-27-2-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-衣",
     "category": "character",
     "courseDay": 27,
@@ -6692,6 +7732,19 @@
     "suggestedFileName": "衣-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/衣-retry.mp3",
+    "exists": true
+  },
+  {
+    "id": "day-27-3-teaching",
+    "category": "teaching",
+    "courseDay": 27,
+    "targetCharacter": "干",
+    "fullText": "这个字念，干。没有水分。衣服已经干了。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-27-3-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-27-3-teaching.mp3",
     "exists": true
   },
   {
@@ -6786,6 +7839,19 @@
     "exists": true
   },
   {
+    "id": "day-28-1-teaching",
+    "category": "teaching",
+    "courseDay": 28,
+    "targetCharacter": "热",
+    "fullText": "这个字念，热。温度高。水已经热了。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-28-1-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-28-1-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-热",
     "category": "character",
     "courseDay": 28,
@@ -6861,6 +7927,19 @@
     "suggestedFileName": "热-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/热-retry.mp3",
+    "exists": true
+  },
+  {
+    "id": "day-28-2-teaching",
+    "category": "teaching",
+    "courseDay": 28,
+    "targetCharacter": "温",
+    "fullText": "这个字念，温。温度的温。把温度调低。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-28-2-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-28-2-teaching.mp3",
     "exists": true
   },
   {
@@ -6942,6 +8021,19 @@
     "exists": true
   },
   {
+    "id": "day-28-3-teaching",
+    "category": "teaching",
+    "courseDay": 28,
+    "targetCharacter": "停",
+    "fullText": "这个字念，停。让机器停止。点这里停止。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-28-3-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-28-3-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "day-28-3-explanation",
     "category": "explanation",
     "courseDay": 28,
@@ -6991,6 +8083,19 @@
     "suggestedFileName": "day-29-opening.mp3",
     "saveDirectory": "/audio/system",
     "audioPath": "/audio/system/day-29-opening.mp3",
+    "exists": true
+  },
+  {
+    "id": "day-29-1-teaching",
+    "category": "teaching",
+    "courseDay": 29,
+    "targetCharacter": "痛",
+    "fullText": "这个字念，痛。身体疼痛。我的头很痛。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-29-1-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-29-1-teaching.mp3",
     "exists": true
   },
   {
@@ -7072,6 +8177,19 @@
     "exists": true
   },
   {
+    "id": "day-29-2-teaching",
+    "category": "teaching",
+    "courseDay": 29,
+    "targetCharacter": "头",
+    "fullText": "这个字念，头。身体最上面的头。我头不舒服。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-29-2-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-29-2-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "character-头",
     "category": "character",
     "courseDay": 29,
@@ -7147,6 +8265,19 @@
     "suggestedFileName": "头-retry.mp3",
     "saveDirectory": "/audio/feedback",
     "audioPath": "/audio/feedback/头-retry.mp3",
+    "exists": true
+  },
+  {
+    "id": "day-29-3-teaching",
+    "category": "teaching",
+    "courseDay": 29,
+    "targetCharacter": "心",
+    "fullText": "这个字念，心。心口的心。心口不舒服要就医。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-29-3-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-29-3-teaching.mp3",
     "exists": true
   },
   {
@@ -7241,6 +8372,19 @@
     "exists": true
   },
   {
+    "id": "day-30-1-teaching",
+    "category": "teaching",
+    "courseDay": 30,
+    "targetCharacter": "药",
+    "fullText": "这个字念，药。治病用的东西。早上吃一次药。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-30-1-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-30-1-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "day-30-1-explanation",
     "category": "explanation",
     "courseDay": 30,
@@ -7280,6 +8424,19 @@
     "exists": true
   },
   {
+    "id": "day-30-2-teaching",
+    "category": "teaching",
+    "courseDay": 30,
+    "targetCharacter": "钱",
+    "fullText": "这个字念，钱。买东西要用的钱。钱要收好。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-30-2-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-30-2-teaching.mp3",
+    "exists": true
+  },
+  {
     "id": "day-30-2-explanation",
     "category": "explanation",
     "courseDay": 30,
@@ -7316,6 +8473,19 @@
     "suggestedFileName": "day-30-2-question.mp3",
     "saveDirectory": "/audio/questions",
     "audioPath": "/audio/questions/day-30-2-question.mp3",
+    "exists": true
+  },
+  {
+    "id": "day-30-3-teaching",
+    "category": "teaching",
+    "courseDay": 30,
+    "targetCharacter": "险",
+    "fullText": "这个字念，险。表示有危险。看见危险要远离。",
+    "suggestedPause": "内含150ms、200ms、150ms停顿",
+    "suggestedRate": "-15%",
+    "suggestedFileName": "day-30-3-teaching.mp3",
+    "saveDirectory": "/audio/lessons",
+    "audioPath": "/audio/lessons/day-30-3-teaching.mp3",
     "exists": true
   },
   {

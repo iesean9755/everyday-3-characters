@@ -1,0 +1,1817 @@
+{
+  "targetPausesMs": [
+    150,
+    200,
+    150
+  ],
+  "targetLufs": -18,
+  "truePeakDb": -1.5,
+  "lra": 7,
+  "counts": {
+    "generated": 90,
+    "skipped": 0,
+    "failed": 0
+  },
+  "entries": [
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-01-1-teaching.mp3",
+      "durationSeconds": 7.436,
+      "sourceLufs": {
+        "input_i": "-17.32",
+        "input_tp": "-2.40",
+        "input_lra": "3.20",
+        "input_thresh": "-27.94",
+        "output_i": "-16.97",
+        "output_tp": "-2.18",
+        "output_lra": "4.50",
+        "output_thresh": "-27.62",
+        "normalization_type": "dynamic",
+        "target_offset": "-1.03"
+      },
+      "introSourceDifferenceLu": -0.03,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 2.97
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-01-2-teaching.mp3",
+      "durationSeconds": 7.196,
+      "sourceLufs": {
+        "input_i": "-17.55",
+        "input_tp": "-2.40",
+        "input_lra": "3.50",
+        "input_thresh": "-28.44",
+        "output_i": "-16.92",
+        "output_tp": "-2.17",
+        "output_lra": "4.90",
+        "output_thresh": "-27.71",
+        "normalization_type": "dynamic",
+        "target_offset": "-1.08"
+      },
+      "introSourceDifferenceLu": 0.11,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 3.11
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-01-3-teaching.mp3",
+      "durationSeconds": 7.532,
+      "sourceLufs": {
+        "input_i": "-17.71",
+        "input_tp": "-2.37",
+        "input_lra": "3.10",
+        "input_thresh": "-28.04",
+        "output_i": "-17.38",
+        "output_tp": "-2.15",
+        "output_lra": "4.60",
+        "output_thresh": "-27.73",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.62"
+      },
+      "introSourceDifferenceLu": -0.01,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 2.99
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-02-1-teaching.mp3",
+      "durationSeconds": 8.3,
+      "sourceLufs": {
+        "input_i": "-18.18",
+        "input_tp": "-2.19",
+        "input_lra": "3.40",
+        "input_thresh": "-28.53",
+        "output_i": "-18.02",
+        "output_tp": "-1.93",
+        "output_lra": "3.50",
+        "output_thresh": "-28.40",
+        "normalization_type": "dynamic",
+        "target_offset": "0.02"
+      },
+      "introSourceDifferenceLu": 0.01,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 3.01
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-02-2-teaching.mp3",
+      "durationSeconds": 7.892,
+      "sourceLufs": {
+        "input_i": "-18.23",
+        "input_tp": "-2.37",
+        "input_lra": "4.30",
+        "input_thresh": "-28.85",
+        "output_i": "-17.72",
+        "output_tp": "-2.15",
+        "output_lra": "4.90",
+        "output_thresh": "-28.31",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.28"
+      },
+      "introSourceDifferenceLu": -0.01,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 2.99
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-02-3-teaching.mp3",
+      "durationSeconds": 7.82,
+      "sourceLufs": {
+        "input_i": "-18.18",
+        "input_tp": "-2.37",
+        "input_lra": "4.20",
+        "input_thresh": "-28.68",
+        "output_i": "-17.84",
+        "output_tp": "-2.15",
+        "output_lra": "4.70",
+        "output_thresh": "-28.26",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.16"
+      },
+      "introSourceDifferenceLu": -0.02,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 2.98
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-03-1-teaching.mp3",
+      "durationSeconds": 7.508,
+      "sourceLufs": {
+        "input_i": "-18.29",
+        "input_tp": "-2.19",
+        "input_lra": "4.90",
+        "input_thresh": "-28.89",
+        "output_i": "-17.60",
+        "output_tp": "-1.93",
+        "output_lra": "4.20",
+        "output_thresh": "-28.24",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.40"
+      },
+      "introSourceDifferenceLu": -0.02,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 2.98
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-03-2-teaching.mp3",
+      "durationSeconds": 8.372,
+      "sourceLufs": {
+        "input_i": "-17.99",
+        "input_tp": "-2.40",
+        "input_lra": "4.20",
+        "input_thresh": "-28.88",
+        "output_i": "-17.99",
+        "output_tp": "-2.17",
+        "output_lra": "4.00",
+        "output_thresh": "-28.61",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.01"
+      },
+      "introSourceDifferenceLu": -0.01,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 2.99
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-03-3-teaching.mp3",
+      "durationSeconds": 8.252,
+      "sourceLufs": {
+        "input_i": "-18.00",
+        "input_tp": "-2.39",
+        "input_lra": "3.50",
+        "input_thresh": "-28.47",
+        "output_i": "-17.83",
+        "output_tp": "-2.18",
+        "output_lra": "3.90",
+        "output_thresh": "-28.31",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.17"
+      },
+      "introSourceDifferenceLu": 0.0,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 3.0
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-04-1-teaching.mp3",
+      "durationSeconds": 8.06,
+      "sourceLufs": {
+        "input_i": "-17.90",
+        "input_tp": "-2.19",
+        "input_lra": "4.40",
+        "input_thresh": "-28.84",
+        "output_i": "-17.81",
+        "output_tp": "-1.93",
+        "output_lra": "4.00",
+        "output_thresh": "-28.38",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.19"
+      },
+      "introSourceDifferenceLu": 0.01,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 3.01
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-04-2-teaching.mp3",
+      "durationSeconds": 7.532,
+      "sourceLufs": {
+        "input_i": "-17.84",
+        "input_tp": "-2.40",
+        "input_lra": "4.00",
+        "input_thresh": "-28.50",
+        "output_i": "-17.41",
+        "output_tp": "-2.18",
+        "output_lra": "5.60",
+        "output_thresh": "-27.96",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.59"
+      },
+      "introSourceDifferenceLu": 0.01,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 3.01
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-04-3-teaching.mp3",
+      "durationSeconds": 8.614,
+      "sourceLufs": {
+        "input_i": "-18.21",
+        "input_tp": "-2.19",
+        "input_lra": "3.30",
+        "input_thresh": "-28.73",
+        "output_i": "-18.05",
+        "output_tp": "-1.93",
+        "output_lra": "3.60",
+        "output_thresh": "-28.57",
+        "normalization_type": "dynamic",
+        "target_offset": "0.05"
+      },
+      "introSourceDifferenceLu": -0.01,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 2.99
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-05-1-teaching.mp3",
+      "durationSeconds": 7.964,
+      "sourceLufs": {
+        "input_i": "-18.17",
+        "input_tp": "-2.40",
+        "input_lra": "3.80",
+        "input_thresh": "-28.72",
+        "output_i": "-17.85",
+        "output_tp": "-2.18",
+        "output_lra": "4.60",
+        "output_thresh": "-28.34",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.15"
+      },
+      "introSourceDifferenceLu": 0.24,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 3.24
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-05-2-teaching.mp3",
+      "durationSeconds": 7.892,
+      "sourceLufs": {
+        "input_i": "-18.32",
+        "input_tp": "-2.40",
+        "input_lra": "4.40",
+        "input_thresh": "-28.87",
+        "output_i": "-17.83",
+        "output_tp": "-2.17",
+        "output_lra": "4.90",
+        "output_thresh": "-28.34",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.17"
+      },
+      "introSourceDifferenceLu": -0.01,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 2.99
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-05-3-teaching.mp3",
+      "durationSeconds": 9.332,
+      "sourceLufs": {
+        "input_i": "-18.19",
+        "input_tp": "-2.40",
+        "input_lra": "3.30",
+        "input_thresh": "-28.55",
+        "output_i": "-17.88",
+        "output_tp": "-2.20",
+        "output_lra": "3.60",
+        "output_thresh": "-28.44",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.12"
+      },
+      "introSourceDifferenceLu": -0.02,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 2.98
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-06-1-teaching.mp3",
+      "durationSeconds": 7.604,
+      "sourceLufs": {
+        "input_i": "-17.72",
+        "input_tp": "-2.37",
+        "input_lra": "3.70",
+        "input_thresh": "-28.33",
+        "output_i": "-17.43",
+        "output_tp": "-2.15",
+        "output_lra": "4.50",
+        "output_thresh": "-27.97",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.57"
+      },
+      "introSourceDifferenceLu": 0.01,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 3.01
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-06-2-teaching.mp3",
+      "durationSeconds": 8.084,
+      "sourceLufs": {
+        "input_i": "-17.41",
+        "input_tp": "-2.18",
+        "input_lra": "3.70",
+        "input_thresh": "-28.09",
+        "output_i": "-17.14",
+        "output_tp": "-1.98",
+        "output_lra": "3.70",
+        "output_thresh": "-27.77",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.86"
+      },
+      "introSourceDifferenceLu": -0.03,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 2.97
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-06-3-teaching.mp3",
+      "durationSeconds": 7.676,
+      "sourceLufs": {
+        "input_i": "-17.63",
+        "input_tp": "-2.36",
+        "input_lra": "3.10",
+        "input_thresh": "-28.15",
+        "output_i": "-17.19",
+        "output_tp": "-2.14",
+        "output_lra": "4.40",
+        "output_thresh": "-27.80",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.81"
+      },
+      "introSourceDifferenceLu": -0.0,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 3.0
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-07-1-teaching.mp3",
+      "durationSeconds": 7.22,
+      "sourceLufs": {
+        "input_i": "-17.79",
+        "input_tp": "-2.37",
+        "input_lra": "3.80",
+        "input_thresh": "-28.60",
+        "output_i": "-17.21",
+        "output_tp": "-2.15",
+        "output_lra": "4.90",
+        "output_thresh": "-27.88",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.79"
+      },
+      "introSourceDifferenceLu": -0.02,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 2.98
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-07-2-teaching.mp3",
+      "durationSeconds": 7.365,
+      "sourceLufs": {
+        "input_i": "-17.54",
+        "input_tp": "-2.40",
+        "input_lra": "3.20",
+        "input_thresh": "-28.03",
+        "output_i": "-17.02",
+        "output_tp": "-2.17",
+        "output_lra": "4.70",
+        "output_thresh": "-27.58",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.98"
+      },
+      "introSourceDifferenceLu": -0.13,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 2.87
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-07-3-teaching.mp3",
+      "durationSeconds": 8.06,
+      "sourceLufs": {
+        "input_i": "-17.79",
+        "input_tp": "-2.37",
+        "input_lra": "3.50",
+        "input_thresh": "-28.44",
+        "output_i": "-17.54",
+        "output_tp": "-2.16",
+        "output_lra": "3.70",
+        "output_thresh": "-28.19",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.46"
+      },
+      "introSourceDifferenceLu": -0.0,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 3.0
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-08-1-teaching.mp3",
+      "durationSeconds": 7.532,
+      "sourceLufs": {
+        "input_i": "-17.62",
+        "input_tp": "-2.40",
+        "input_lra": "3.40",
+        "input_thresh": "-28.29",
+        "output_i": "-17.18",
+        "output_tp": "-2.17",
+        "output_lra": "4.60",
+        "output_thresh": "-27.91",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.82"
+      },
+      "introSourceDifferenceLu": -0.02,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 2.98
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-08-2-teaching.mp3",
+      "durationSeconds": 7.772,
+      "sourceLufs": {
+        "input_i": "-17.69",
+        "input_tp": "-2.19",
+        "input_lra": "3.00",
+        "input_thresh": "-28.32",
+        "output_i": "-17.30",
+        "output_tp": "-1.93",
+        "output_lra": "5.20",
+        "output_thresh": "-27.99",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.70"
+      },
+      "introSourceDifferenceLu": 0.0,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 3.0
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-08-3-teaching.mp3",
+      "durationSeconds": 8.036,
+      "sourceLufs": {
+        "input_i": "-17.96",
+        "input_tp": "-2.25",
+        "input_lra": "3.70",
+        "input_thresh": "-28.40",
+        "output_i": "-17.78",
+        "output_tp": "-1.99",
+        "output_lra": "4.00",
+        "output_thresh": "-28.19",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.22"
+      },
+      "introSourceDifferenceLu": -0.0,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 3.0
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-09-1-teaching.mp3",
+      "durationSeconds": 8.084,
+      "sourceLufs": {
+        "input_i": "-17.92",
+        "input_tp": "-2.05",
+        "input_lra": "2.90",
+        "input_thresh": "-28.57",
+        "output_i": "-17.70",
+        "output_tp": "-1.84",
+        "output_lra": "3.60",
+        "output_thresh": "-28.35",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.30"
+      },
+      "introSourceDifferenceLu": 0.02,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 3.02
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-09-2-teaching.mp3",
+      "durationSeconds": 8.252,
+      "sourceLufs": {
+        "input_i": "-18.01",
+        "input_tp": "-2.19",
+        "input_lra": "3.60",
+        "input_thresh": "-28.47",
+        "output_i": "-17.85",
+        "output_tp": "-1.93",
+        "output_lra": "3.90",
+        "output_thresh": "-28.33",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.15"
+      },
+      "introSourceDifferenceLu": -0.0,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 3.0
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-09-3-teaching.mp3",
+      "durationSeconds": 8.493,
+      "sourceLufs": {
+        "input_i": "-18.06",
+        "input_tp": "-2.37",
+        "input_lra": "3.50",
+        "input_thresh": "-28.57",
+        "output_i": "-18.03",
+        "output_tp": "-2.14",
+        "output_lra": "3.40",
+        "output_thresh": "-28.49",
+        "normalization_type": "dynamic",
+        "target_offset": "0.03"
+      },
+      "introSourceDifferenceLu": -0.0,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 3.0
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-10-1-teaching.mp3",
+      "durationSeconds": 8.612,
+      "sourceLufs": {
+        "input_i": "-18.14",
+        "input_tp": "-2.19",
+        "input_lra": "4.00",
+        "input_thresh": "-28.66",
+        "output_i": "-18.09",
+        "output_tp": "-1.93",
+        "output_lra": "3.60",
+        "output_thresh": "-28.61",
+        "normalization_type": "dynamic",
+        "target_offset": "0.09"
+      },
+      "introSourceDifferenceLu": -0.01,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 2.99
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-10-2-teaching.mp3",
+      "durationSeconds": 8.66,
+      "sourceLufs": {
+        "input_i": "-18.14",
+        "input_tp": "-2.19",
+        "input_lra": "4.00",
+        "input_thresh": "-28.55",
+        "output_i": "-17.89",
+        "output_tp": "-1.96",
+        "output_lra": "3.70",
+        "output_thresh": "-28.29",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.11"
+      },
+      "introSourceDifferenceLu": -0.03,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 2.97
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-10-3-teaching.mp3",
+      "durationSeconds": 7.508,
+      "sourceLufs": {
+        "input_i": "-17.99",
+        "input_tp": "-2.40",
+        "input_lra": "3.80",
+        "input_thresh": "-28.58",
+        "output_i": "-17.27",
+        "output_tp": "-2.18",
+        "output_lra": "4.90",
+        "output_thresh": "-28.00",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.73"
+      },
+      "introSourceDifferenceLu": 0.0,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 3.0
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-11-1-teaching.mp3",
+      "durationSeconds": 7.82,
+      "sourceLufs": {
+        "input_i": "-17.87",
+        "input_tp": "-2.25",
+        "input_lra": "4.10",
+        "input_thresh": "-28.95",
+        "output_i": "-17.58",
+        "output_tp": "-1.99",
+        "output_lra": "4.90",
+        "output_thresh": "-28.27",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.42"
+      },
+      "introSourceDifferenceLu": -0.02,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 2.98
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-11-2-teaching.mp3",
+      "durationSeconds": 7.748,
+      "sourceLufs": {
+        "input_i": "-17.93",
+        "input_tp": "-2.19",
+        "input_lra": "4.00",
+        "input_thresh": "-28.70",
+        "output_i": "-17.66",
+        "output_tp": "-1.95",
+        "output_lra": "5.50",
+        "output_thresh": "-28.18",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.34"
+      },
+      "introSourceDifferenceLu": -0.01,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 2.99
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-11-3-teaching.mp3",
+      "durationSeconds": 7.892,
+      "sourceLufs": {
+        "input_i": "-17.75",
+        "input_tp": "-2.04",
+        "input_lra": "3.70",
+        "input_thresh": "-28.46",
+        "output_i": "-17.45",
+        "output_tp": "-1.84",
+        "output_lra": "5.00",
+        "output_thresh": "-28.21",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.55"
+      },
+      "introSourceDifferenceLu": 0.0,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 3.0
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-12-1-teaching.mp3",
+      "durationSeconds": 7.124,
+      "sourceLufs": {
+        "input_i": "-17.25",
+        "input_tp": "-2.40",
+        "input_lra": "3.30",
+        "input_thresh": "-28.16",
+        "output_i": "-16.66",
+        "output_tp": "-2.17",
+        "output_lra": "4.40",
+        "output_thresh": "-27.57",
+        "normalization_type": "dynamic",
+        "target_offset": "-1.34"
+      },
+      "introSourceDifferenceLu": 0.0,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 3.0
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-12-2-teaching.mp3",
+      "durationSeconds": 7.484,
+      "sourceLufs": {
+        "input_i": "-17.37",
+        "input_tp": "-2.05",
+        "input_lra": "3.10",
+        "input_thresh": "-27.98",
+        "output_i": "-17.01",
+        "output_tp": "-1.84",
+        "output_lra": "4.70",
+        "output_thresh": "-27.65",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.99"
+      },
+      "introSourceDifferenceLu": -0.02,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 2.98
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-12-3-teaching.mp3",
+      "durationSeconds": 7.532,
+      "sourceLufs": {
+        "input_i": "-17.70",
+        "input_tp": "-2.37",
+        "input_lra": "3.40",
+        "input_thresh": "-28.42",
+        "output_i": "-17.28",
+        "output_tp": "-2.15",
+        "output_lra": "5.20",
+        "output_thresh": "-27.91",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.72"
+      },
+      "introSourceDifferenceLu": -0.01,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 2.99
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-13-1-teaching.mp3",
+      "durationSeconds": 7.532,
+      "sourceLufs": {
+        "input_i": "-17.78",
+        "input_tp": "-2.19",
+        "input_lra": "3.40",
+        "input_thresh": "-28.19",
+        "output_i": "-17.37",
+        "output_tp": "-1.92",
+        "output_lra": "5.10",
+        "output_thresh": "-27.82",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.63"
+      },
+      "introSourceDifferenceLu": -0.02,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 2.98
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-13-2-teaching.mp3",
+      "durationSeconds": 7.58,
+      "sourceLufs": {
+        "input_i": "-17.64",
+        "input_tp": "-2.25",
+        "input_lra": "3.20",
+        "input_thresh": "-28.03",
+        "output_i": "-17.21",
+        "output_tp": "-2.00",
+        "output_lra": "4.80",
+        "output_thresh": "-27.65",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.79"
+      },
+      "introSourceDifferenceLu": -0.01,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 2.99
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-13-3-teaching.mp3",
+      "durationSeconds": 7.196,
+      "sourceLufs": {
+        "input_i": "-17.45",
+        "input_tp": "-2.19",
+        "input_lra": "3.30",
+        "input_thresh": "-28.37",
+        "output_i": "-16.98",
+        "output_tp": "-1.94",
+        "output_lra": "5.20",
+        "output_thresh": "-27.58",
+        "normalization_type": "dynamic",
+        "target_offset": "-1.02"
+      },
+      "introSourceDifferenceLu": 0.01,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 3.01
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-14-1-teaching.mp3",
+      "durationSeconds": 7.82,
+      "sourceLufs": {
+        "input_i": "-17.85",
+        "input_tp": "-2.19",
+        "input_lra": "3.90",
+        "input_thresh": "-28.68",
+        "output_i": "-17.45",
+        "output_tp": "-1.94",
+        "output_lra": "5.40",
+        "output_thresh": "-28.14",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.55"
+      },
+      "introSourceDifferenceLu": 0.0,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 3.0
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-14-2-teaching.mp3",
+      "durationSeconds": 7.964,
+      "sourceLufs": {
+        "input_i": "-18.03",
+        "input_tp": "-2.25",
+        "input_lra": "2.90",
+        "input_thresh": "-28.33",
+        "output_i": "-17.77",
+        "output_tp": "-1.99",
+        "output_lra": "4.70",
+        "output_thresh": "-28.10",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.23"
+      },
+      "introSourceDifferenceLu": -0.0,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 3.0
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-14-3-teaching.mp3",
+      "durationSeconds": 8.204,
+      "sourceLufs": {
+        "input_i": "-17.95",
+        "input_tp": "-2.37",
+        "input_lra": "3.50",
+        "input_thresh": "-28.42",
+        "output_i": "-17.78",
+        "output_tp": "-2.15",
+        "output_lra": "3.80",
+        "output_thresh": "-28.26",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.22"
+      },
+      "introSourceDifferenceLu": -0.0,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 3.0
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-15-1-teaching.mp3",
+      "durationSeconds": 8.156,
+      "sourceLufs": {
+        "input_i": "-17.91",
+        "input_tp": "-2.39",
+        "input_lra": "3.00",
+        "input_thresh": "-28.37",
+        "output_i": "-17.67",
+        "output_tp": "-2.17",
+        "output_lra": "3.20",
+        "output_thresh": "-28.15",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.33"
+      },
+      "introSourceDifferenceLu": 0.0,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 3.0
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-15-2-teaching.mp3",
+      "durationSeconds": 7.34,
+      "sourceLufs": {
+        "input_i": "-17.30",
+        "input_tp": "-2.39",
+        "input_lra": "3.50",
+        "input_thresh": "-28.35",
+        "output_i": "-16.88",
+        "output_tp": "-2.17",
+        "output_lra": "5.20",
+        "output_thresh": "-27.64",
+        "normalization_type": "dynamic",
+        "target_offset": "-1.12"
+      },
+      "introSourceDifferenceLu": -0.03,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 2.97
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-15-3-teaching.mp3",
+      "durationSeconds": 7.724,
+      "sourceLufs": {
+        "input_i": "-17.70",
+        "input_tp": "-2.36",
+        "input_lra": "3.00",
+        "input_thresh": "-28.21",
+        "output_i": "-17.35",
+        "output_tp": "-2.13",
+        "output_lra": "5.70",
+        "output_thresh": "-27.96",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.65"
+      },
+      "introSourceDifferenceLu": 0.0,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 3.0
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-16-1-teaching.mp3",
+      "durationSeconds": 7.724,
+      "sourceLufs": {
+        "input_i": "-17.90",
+        "input_tp": "-2.19",
+        "input_lra": "3.20",
+        "input_thresh": "-28.29",
+        "output_i": "-17.70",
+        "output_tp": "-1.95",
+        "output_lra": "5.50",
+        "output_thresh": "-28.13",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.30"
+      },
+      "introSourceDifferenceLu": 0.0,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 3.0
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-16-2-teaching.mp3",
+      "durationSeconds": 7.892,
+      "sourceLufs": {
+        "input_i": "-17.84",
+        "input_tp": "-2.40",
+        "input_lra": "3.70",
+        "input_thresh": "-28.41",
+        "output_i": "-17.54",
+        "output_tp": "-2.16",
+        "output_lra": "4.70",
+        "output_thresh": "-28.14",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.46"
+      },
+      "introSourceDifferenceLu": -0.02,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 2.98
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-16-3-teaching.mp3",
+      "durationSeconds": 7.676,
+      "sourceLufs": {
+        "input_i": "-17.69",
+        "input_tp": "-2.19",
+        "input_lra": "3.00",
+        "input_thresh": "-28.33",
+        "output_i": "-17.28",
+        "output_tp": "-1.93",
+        "output_lra": "4.80",
+        "output_thresh": "-27.97",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.72"
+      },
+      "introSourceDifferenceLu": 0.0,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 3.0
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-17-1-teaching.mp3",
+      "durationSeconds": 7.316,
+      "sourceLufs": {
+        "input_i": "-17.86",
+        "input_tp": "-2.40",
+        "input_lra": "3.50",
+        "input_thresh": "-28.46",
+        "output_i": "-17.07",
+        "output_tp": "-2.18",
+        "output_lra": "4.60",
+        "output_thresh": "-27.83",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.93"
+      },
+      "introSourceDifferenceLu": -0.03,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 2.97
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-17-2-teaching.mp3",
+      "durationSeconds": 7.292,
+      "sourceLufs": {
+        "input_i": "-17.82",
+        "input_tp": "-2.19",
+        "input_lra": "3.40",
+        "input_thresh": "-28.49",
+        "output_i": "-17.08",
+        "output_tp": "-1.94",
+        "output_lra": "4.60",
+        "output_thresh": "-27.75",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.92"
+      },
+      "introSourceDifferenceLu": 0.01,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 3.01
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-17-3-teaching.mp3",
+      "durationSeconds": 8.084,
+      "sourceLufs": {
+        "input_i": "-17.35",
+        "input_tp": "-2.19",
+        "input_lra": "3.80",
+        "input_thresh": "-27.96",
+        "output_i": "-17.08",
+        "output_tp": "-1.96",
+        "output_lra": "3.80",
+        "output_thresh": "-27.71",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.92"
+      },
+      "introSourceDifferenceLu": -0.01,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 2.99
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-18-1-teaching.mp3",
+      "durationSeconds": 8.612,
+      "sourceLufs": {
+        "input_i": "-18.20",
+        "input_tp": "-2.19",
+        "input_lra": "3.60",
+        "input_thresh": "-28.52",
+        "output_i": "-18.02",
+        "output_tp": "-1.93",
+        "output_lra": "3.90",
+        "output_thresh": "-28.39",
+        "normalization_type": "dynamic",
+        "target_offset": "0.02"
+      },
+      "introSourceDifferenceLu": -0.02,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 2.98
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-18-2-teaching.mp3",
+      "durationSeconds": 8.468,
+      "sourceLufs": {
+        "input_i": "-18.07",
+        "input_tp": "-2.40",
+        "input_lra": "3.50",
+        "input_thresh": "-28.67",
+        "output_i": "-17.92",
+        "output_tp": "-2.18",
+        "output_lra": "3.80",
+        "output_thresh": "-28.52",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.08"
+      },
+      "introSourceDifferenceLu": 0.0,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 3.0
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-18-3-teaching.mp3",
+      "durationSeconds": 7.748,
+      "sourceLufs": {
+        "input_i": "-17.86",
+        "input_tp": "-2.40",
+        "input_lra": "3.00",
+        "input_thresh": "-28.29",
+        "output_i": "-17.29",
+        "output_tp": "-2.17",
+        "output_lra": "5.50",
+        "output_thresh": "-28.07",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.71"
+      },
+      "introSourceDifferenceLu": -0.01,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 2.99
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-19-1-teaching.mp3",
+      "durationSeconds": 7.916,
+      "sourceLufs": {
+        "input_i": "-17.96",
+        "input_tp": "-2.40",
+        "input_lra": "2.90",
+        "input_thresh": "-28.44",
+        "output_i": "-17.62",
+        "output_tp": "-2.17",
+        "output_lra": "4.50",
+        "output_thresh": "-28.19",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.38"
+      },
+      "introSourceDifferenceLu": -0.02,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 2.98
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-19-2-teaching.mp3",
+      "durationSeconds": 8.42,
+      "sourceLufs": {
+        "input_i": "-18.24",
+        "input_tp": "-2.40",
+        "input_lra": "3.40",
+        "input_thresh": "-28.47",
+        "output_i": "-17.95",
+        "output_tp": "-2.17",
+        "output_lra": "3.70",
+        "output_thresh": "-28.34",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.05"
+      },
+      "introSourceDifferenceLu": -0.0,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 3.0
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-19-3-teaching.mp3",
+      "durationSeconds": 7.772,
+      "sourceLufs": {
+        "input_i": "-17.67",
+        "input_tp": "-2.40",
+        "input_lra": "3.10",
+        "input_thresh": "-28.30",
+        "output_i": "-17.28",
+        "output_tp": "-2.17",
+        "output_lra": "4.70",
+        "output_thresh": "-27.97",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.72"
+      },
+      "introSourceDifferenceLu": -0.01,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 2.99
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-20-1-teaching.mp3",
+      "durationSeconds": 7.028,
+      "sourceLufs": {
+        "input_i": "-17.58",
+        "input_tp": "-2.37",
+        "input_lra": "3.30",
+        "input_thresh": "-28.15",
+        "output_i": "-16.96",
+        "output_tp": "-2.15",
+        "output_lra": "4.60",
+        "output_thresh": "-27.47",
+        "normalization_type": "dynamic",
+        "target_offset": "-1.04"
+      },
+      "introSourceDifferenceLu": -0.02,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 2.98
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-20-2-teaching.mp3",
+      "durationSeconds": 7.388,
+      "sourceLufs": {
+        "input_i": "-17.82",
+        "input_tp": "-2.19",
+        "input_lra": "3.20",
+        "input_thresh": "-28.41",
+        "output_i": "-17.18",
+        "output_tp": "-1.94",
+        "output_lra": "5.60",
+        "output_thresh": "-27.74",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.82"
+      },
+      "introSourceDifferenceLu": 0.0,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 3.0
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-20-3-teaching.mp3",
+      "durationSeconds": 7.508,
+      "sourceLufs": {
+        "input_i": "-17.71",
+        "input_tp": "-2.36",
+        "input_lra": "3.80",
+        "input_thresh": "-28.56",
+        "output_i": "-17.23",
+        "output_tp": "-2.14",
+        "output_lra": "5.30",
+        "output_thresh": "-27.95",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.77"
+      },
+      "introSourceDifferenceLu": 0.0,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 3.0
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-21-1-teaching.mp3",
+      "durationSeconds": 7.292,
+      "sourceLufs": {
+        "input_i": "-17.45",
+        "input_tp": "-2.37",
+        "input_lra": "3.30",
+        "input_thresh": "-28.34",
+        "output_i": "-17.01",
+        "output_tp": "-2.15",
+        "output_lra": "5.00",
+        "output_thresh": "-27.58",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.99"
+      },
+      "introSourceDifferenceLu": -0.0,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 3.0
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-21-2-teaching.mp3",
+      "durationSeconds": 7.101,
+      "sourceLufs": {
+        "input_i": "-17.92",
+        "input_tp": "-2.37",
+        "input_lra": "3.60",
+        "input_thresh": "-28.40",
+        "output_i": "-17.27",
+        "output_tp": "-2.14",
+        "output_lra": "4.80",
+        "output_thresh": "-27.75",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.73"
+      },
+      "introSourceDifferenceLu": 0.0,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 3.0
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-21-3-teaching.mp3",
+      "durationSeconds": 7.389,
+      "sourceLufs": {
+        "input_i": "-17.34",
+        "input_tp": "-2.37",
+        "input_lra": "3.10",
+        "input_thresh": "-28.30",
+        "output_i": "-16.84",
+        "output_tp": "-2.15",
+        "output_lra": "4.80",
+        "output_thresh": "-27.59",
+        "normalization_type": "dynamic",
+        "target_offset": "-1.16"
+      },
+      "introSourceDifferenceLu": -0.01,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 2.99
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-22-1-teaching.mp3",
+      "durationSeconds": 8.037,
+      "sourceLufs": {
+        "input_i": "-17.98",
+        "input_tp": "-2.40",
+        "input_lra": "4.10",
+        "input_thresh": "-28.68",
+        "output_i": "-17.76",
+        "output_tp": "-2.17",
+        "output_lra": "4.40",
+        "output_thresh": "-28.42",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.24"
+      },
+      "introSourceDifferenceLu": 0.01,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 3.01
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-22-2-teaching.mp3",
+      "durationSeconds": 8.372,
+      "sourceLufs": {
+        "input_i": "-17.76",
+        "input_tp": "-2.05",
+        "input_lra": "3.80",
+        "input_thresh": "-28.58",
+        "output_i": "-17.38",
+        "output_tp": "-1.85",
+        "output_lra": "3.50",
+        "output_thresh": "-28.06",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.62"
+      },
+      "introSourceDifferenceLu": -0.01,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 2.99
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-22-3-teaching.mp3",
+      "durationSeconds": 7.484,
+      "sourceLufs": {
+        "input_i": "-17.79",
+        "input_tp": "-2.37",
+        "input_lra": "3.50",
+        "input_thresh": "-28.27",
+        "output_i": "-17.39",
+        "output_tp": "-2.14",
+        "output_lra": "4.40",
+        "output_thresh": "-27.84",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.61"
+      },
+      "introSourceDifferenceLu": -0.0,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 3.0
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-23-1-teaching.mp3",
+      "durationSeconds": 7.076,
+      "sourceLufs": {
+        "input_i": "-17.74",
+        "input_tp": "-2.19",
+        "input_lra": "3.50",
+        "input_thresh": "-28.49",
+        "output_i": "-17.09",
+        "output_tp": "-1.96",
+        "output_lra": "4.70",
+        "output_thresh": "-27.78",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.91"
+      },
+      "introSourceDifferenceLu": 0.02,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 3.02
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-23-2-teaching.mp3",
+      "durationSeconds": 7.532,
+      "sourceLufs": {
+        "input_i": "-17.60",
+        "input_tp": "-2.37",
+        "input_lra": "3.70",
+        "input_thresh": "-28.47",
+        "output_i": "-17.09",
+        "output_tp": "-2.14",
+        "output_lra": "4.90",
+        "output_thresh": "-27.82",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.91"
+      },
+      "introSourceDifferenceLu": -0.01,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 2.99
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-23-3-teaching.mp3",
+      "durationSeconds": 7.748,
+      "sourceLufs": {
+        "input_i": "-17.78",
+        "input_tp": "-2.40",
+        "input_lra": "3.60",
+        "input_thresh": "-28.43",
+        "output_i": "-17.44",
+        "output_tp": "-2.17",
+        "output_lra": "5.30",
+        "output_thresh": "-28.13",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.56"
+      },
+      "introSourceDifferenceLu": -0.01,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 2.99
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-24-1-teaching.mp3",
+      "durationSeconds": 7.82,
+      "sourceLufs": {
+        "input_i": "-17.63",
+        "input_tp": "-2.05",
+        "input_lra": "3.10",
+        "input_thresh": "-28.20",
+        "output_i": "-17.33",
+        "output_tp": "-1.85",
+        "output_lra": "5.10",
+        "output_thresh": "-27.94",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.67"
+      },
+      "introSourceDifferenceLu": 0.0,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 3.0
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-24-2-teaching.mp3",
+      "durationSeconds": 7.629,
+      "sourceLufs": {
+        "input_i": "-17.70",
+        "input_tp": "-2.37",
+        "input_lra": "3.00",
+        "input_thresh": "-28.15",
+        "output_i": "-17.32",
+        "output_tp": "-2.15",
+        "output_lra": "4.40",
+        "output_thresh": "-27.85",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.68"
+      },
+      "introSourceDifferenceLu": -0.01,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 2.99
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-24-3-teaching.mp3",
+      "durationSeconds": 7.364,
+      "sourceLufs": {
+        "input_i": "-17.98",
+        "input_tp": "-2.19",
+        "input_lra": "3.50",
+        "input_thresh": "-28.49",
+        "output_i": "-17.32",
+        "output_tp": "-1.93",
+        "output_lra": "4.30",
+        "output_thresh": "-27.87",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.68"
+      },
+      "introSourceDifferenceLu": 0.02,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 3.02
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-25-1-teaching.mp3",
+      "durationSeconds": 7.436,
+      "sourceLufs": {
+        "input_i": "-17.46",
+        "input_tp": "-2.37",
+        "input_lra": "3.10",
+        "input_thresh": "-27.94",
+        "output_i": "-17.13",
+        "output_tp": "-2.16",
+        "output_lra": "5.00",
+        "output_thresh": "-27.59",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.87"
+      },
+      "introSourceDifferenceLu": -0.0,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 3.0
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-25-2-teaching.mp3",
+      "durationSeconds": 7.772,
+      "sourceLufs": {
+        "input_i": "-17.75",
+        "input_tp": "-2.19",
+        "input_lra": "3.20",
+        "input_thresh": "-28.33",
+        "output_i": "-17.39",
+        "output_tp": "-1.94",
+        "output_lra": "5.10",
+        "output_thresh": "-28.00",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.61"
+      },
+      "introSourceDifferenceLu": -0.01,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 2.99
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-25-3-teaching.mp3",
+      "durationSeconds": 7.317,
+      "sourceLufs": {
+        "input_i": "-17.47",
+        "input_tp": "-2.18",
+        "input_lra": "3.20",
+        "input_thresh": "-28.22",
+        "output_i": "-17.11",
+        "output_tp": "-1.96",
+        "output_lra": "5.50",
+        "output_thresh": "-27.58",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.89"
+      },
+      "introSourceDifferenceLu": -0.01,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 2.99
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-26-1-teaching.mp3",
+      "durationSeconds": 7.292,
+      "sourceLufs": {
+        "input_i": "-17.36",
+        "input_tp": "-2.19",
+        "input_lra": "3.30",
+        "input_thresh": "-27.80",
+        "output_i": "-16.90",
+        "output_tp": "-1.93",
+        "output_lra": "4.70",
+        "output_thresh": "-27.39",
+        "normalization_type": "dynamic",
+        "target_offset": "-1.10"
+      },
+      "introSourceDifferenceLu": -0.01,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 2.99
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-26-2-teaching.mp3",
+      "durationSeconds": 7.653,
+      "sourceLufs": {
+        "input_i": "-17.66",
+        "input_tp": "-2.05",
+        "input_lra": "4.00",
+        "input_thresh": "-28.60",
+        "output_i": "-17.35",
+        "output_tp": "-1.84",
+        "output_lra": "4.40",
+        "output_thresh": "-27.98",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.65"
+      },
+      "introSourceDifferenceLu": 0.01,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 3.01
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-26-3-teaching.mp3",
+      "durationSeconds": 7.22,
+      "sourceLufs": {
+        "input_i": "-17.79",
+        "input_tp": "-2.40",
+        "input_lra": "3.40",
+        "input_thresh": "-28.33",
+        "output_i": "-17.03",
+        "output_tp": "-2.18",
+        "output_lra": "5.40",
+        "output_thresh": "-27.70",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.97"
+      },
+      "introSourceDifferenceLu": -0.02,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 2.98
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-27-1-teaching.mp3",
+      "durationSeconds": 7.724,
+      "sourceLufs": {
+        "input_i": "-18.24",
+        "input_tp": "-2.19",
+        "input_lra": "3.80",
+        "input_thresh": "-28.68",
+        "output_i": "-17.63",
+        "output_tp": "-1.93",
+        "output_lra": "5.60",
+        "output_thresh": "-28.15",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.37"
+      },
+      "introSourceDifferenceLu": -0.01,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 2.99
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-27-2-teaching.mp3",
+      "durationSeconds": 8.084,
+      "sourceLufs": {
+        "input_i": "-18.01",
+        "input_tp": "-2.37",
+        "input_lra": "4.10",
+        "input_thresh": "-28.63",
+        "output_i": "-17.87",
+        "output_tp": "-2.15",
+        "output_lra": "4.20",
+        "output_thresh": "-28.43",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.13"
+      },
+      "introSourceDifferenceLu": -0.01,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 2.99
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-27-3-teaching.mp3",
+      "durationSeconds": 7.436,
+      "sourceLufs": {
+        "input_i": "-17.45",
+        "input_tp": "-2.37",
+        "input_lra": "3.20",
+        "input_thresh": "-28.07",
+        "output_i": "-17.09",
+        "output_tp": "-2.15",
+        "output_lra": "4.60",
+        "output_thresh": "-27.72",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.91"
+      },
+      "introSourceDifferenceLu": -0.01,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 2.99
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-28-1-teaching.mp3",
+      "durationSeconds": 7.7,
+      "sourceLufs": {
+        "input_i": "-16.94",
+        "input_tp": "-1.55",
+        "input_lra": "3.90",
+        "input_thresh": "-27.80",
+        "output_i": "-16.56",
+        "output_tp": "-1.50",
+        "output_lra": "8.10",
+        "output_thresh": "-27.25",
+        "normalization_type": "dynamic",
+        "target_offset": "-1.44"
+      },
+      "introSourceDifferenceLu": -0.01,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 2.99
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-28-2-teaching.mp3",
+      "durationSeconds": 7.269,
+      "sourceLufs": {
+        "input_i": "-17.62",
+        "input_tp": "-1.67",
+        "input_lra": "3.30",
+        "input_thresh": "-28.37",
+        "output_i": "-17.23",
+        "output_tp": "-1.50",
+        "output_lra": "5.00",
+        "output_thresh": "-27.70",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.77"
+      },
+      "introSourceDifferenceLu": 0.0,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 3.0
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-28-3-teaching.mp3",
+      "durationSeconds": 7.748,
+      "sourceLufs": {
+        "input_i": "-17.92",
+        "input_tp": "-2.19",
+        "input_lra": "4.10",
+        "input_thresh": "-28.64",
+        "output_i": "-17.62",
+        "output_tp": "-1.92",
+        "output_lra": "4.50",
+        "output_thresh": "-28.14",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.38"
+      },
+      "introSourceDifferenceLu": 0.02,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 3.02
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-29-1-teaching.mp3",
+      "durationSeconds": 7.484,
+      "sourceLufs": {
+        "input_i": "-17.97",
+        "input_tp": "-2.19",
+        "input_lra": "3.10",
+        "input_thresh": "-28.42",
+        "output_i": "-17.41",
+        "output_tp": "-1.93",
+        "output_lra": "5.10",
+        "output_thresh": "-27.87",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.59"
+      },
+      "introSourceDifferenceLu": 0.0,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 3.0
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-29-2-teaching.mp3",
+      "durationSeconds": 8.084,
+      "sourceLufs": {
+        "input_i": "-18.09",
+        "input_tp": "-2.05",
+        "input_lra": "4.30",
+        "input_thresh": "-28.82",
+        "output_i": "-17.91",
+        "output_tp": "-1.85",
+        "output_lra": "4.00",
+        "output_thresh": "-28.39",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.09"
+      },
+      "introSourceDifferenceLu": -0.02,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 2.98
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-29-3-teaching.mp3",
+      "durationSeconds": 8.564,
+      "sourceLufs": {
+        "input_i": "-17.71",
+        "input_tp": "-2.19",
+        "input_lra": "3.60",
+        "input_thresh": "-28.18",
+        "output_i": "-17.64",
+        "output_tp": "-1.94",
+        "output_lra": "3.70",
+        "output_thresh": "-28.16",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.36"
+      },
+      "introSourceDifferenceLu": -0.33,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 2.67
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-30-1-teaching.mp3",
+      "durationSeconds": 7.916,
+      "sourceLufs": {
+        "input_i": "-17.83",
+        "input_tp": "-2.40",
+        "input_lra": "3.70",
+        "input_thresh": "-28.40",
+        "output_i": "-17.59",
+        "output_tp": "-2.17",
+        "output_lra": "5.40",
+        "output_thresh": "-28.18",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.41"
+      },
+      "introSourceDifferenceLu": -0.02,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 2.98
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-30-2-teaching.mp3",
+      "durationSeconds": 7.988,
+      "sourceLufs": {
+        "input_i": "-18.30",
+        "input_tp": "-2.19",
+        "input_lra": "4.40",
+        "input_thresh": "-28.85",
+        "output_i": "-17.86",
+        "output_tp": "-1.93",
+        "output_lra": "4.80",
+        "output_thresh": "-28.36",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.14"
+      },
+      "introSourceDifferenceLu": 0.0,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 3.0
+    },
+    {
+      "status": "generated",
+      "audioPath": "/audio/lessons/day-30-3-teaching.mp3",
+      "durationSeconds": 8.181,
+      "sourceLufs": {
+        "input_i": "-18.05",
+        "input_tp": "-2.19",
+        "input_lra": "3.80",
+        "input_thresh": "-28.51",
+        "output_i": "-17.70",
+        "output_tp": "-1.93",
+        "output_lra": "3.90",
+        "output_thresh": "-28.26",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.30"
+      },
+      "introSourceDifferenceLu": -0.03,
+      "introGainDb": 3.0,
+      "effectiveIntroDifferenceDb": 2.97
+    }
+  ]
+}

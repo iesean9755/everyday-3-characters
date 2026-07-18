@@ -17,6 +17,7 @@ await vite.close();
 const courseAudioPaths = (course) => [
   course.openingAudio,
   ...course.characters.flatMap((item) => [
+    item.teachingAudio,
     item.characterAudio,
     item.explanationAudio,
     item.exampleAudio,
@@ -119,6 +120,6 @@ const failed = Object.values(results).flatMap((group) => group.failed);
 console.log(JSON.stringify({ manifestCount, groups: results, consoleErrors }));
 await browser.close();
 
-if (manifestCount !== 566 || failed.length || consoleErrors.length) {
+if (manifestCount !== 656 || failed.length || consoleErrors.length) {
   process.exitCode = 1;
 }

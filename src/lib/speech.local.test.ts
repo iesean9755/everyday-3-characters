@@ -67,4 +67,61 @@ describe("本地音频回退", () => {
     expect(spoken).toEqual(["本地失败后继续朗读"]);
     stopSpeech();
   });
+
+  it("教学页只启动一个带版本号的完整MP3且不启动浏览器语音", async () => {
+    vi.useFakeTimers();
+    const sources: string[] = [];
+    const spoken: string[] = [];
+    class SuccessfulAudio {
+      preload = "";
+      volume = 0;
+      currentTime = 0;
+      src: string;
+      onended: (() => void) | null = null;
+      onerror: (() => void) | null = null;
+      constructor(src = "") {
+        this.src = src;
+        sources.push(src);
+      }
+      load() {}
+      pause() {}
+      play() {
+        window.setTimeout(() => this.onended?.(), 1);
+        return Promise.resolve();
+      }
+    }
+    vi.stubGlobal("fetch", vi.fn(async () => ({
+      ok: true,
+      json: async () => ["/audio/lessons/day-01-1-teaching.mp3"],
+    })));
+    vi.stubGlobal("Audio", SuccessfulAudio);
+    vi.stubGlobal("SpeechSynthesisUtterance", UtteranceMock);
+    Object.defineProperty(window, "speechSynthesis", {
+      configurable: true,
+      value: {
+        pending: false,
+        paused: false,
+        speaking: false,
+        cancel: vi.fn(),
+        resume: vi.fn(),
+        getVoices: () => [],
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+        speak: (utterance: UtteranceMock) => spoken.push(utterance.text),
+      },
+    });
+
+    const [{ speakTeaching, stopSpeech }, { courses }] = await Promise.all([
+      import("./speech"),
+      import("../data/courses"),
+    ]);
+    const result = speakTeaching(courses[0].characters[0]);
+    await vi.runAllTimersAsync();
+    expect(await result).toMatchObject({ ok: true, source: "local" });
+    expect(sources).toEqual([
+      "/audio/lessons/day-01-1-teaching.mp3?v=20260718b",
+    ]);
+    expect(spoken).toEqual([]);
+    stopSpeech();
+  });
 });
