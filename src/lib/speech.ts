@@ -1,11 +1,13 @@
 import type { CharacterItem } from "../types";
 import { getTeachingParts } from "./audioText";
+import { resolveAssetPath } from "./assets";
 
 export const AUDIO_VERSION = "20260718c";
 
 export function versionAudioPath(path: string): string {
-  const separator = path.includes("?") ? "&" : "?";
-  return `${path}${separator}v=${AUDIO_VERSION}`;
+  const resolvedPath = resolveAssetPath(path);
+  const separator = resolvedPath.includes("?") ? "&" : "?";
+  return `${resolvedPath}${separator}v=${AUDIO_VERSION}`;
 }
 
 export interface VoiceOption {
@@ -266,8 +268,17 @@ async function playLocal(
   if (!path) return false;
   const manifest = await getAudioManifest();
   if (!manifest.has(path) || token !== generation) return false;
+  const audioUrl = versionAudioPath(path);
+  // Audio elements may issue partial Range requests on Safari. A normal fetch
+  // first lets the service worker store the complete MP3 for offline replay.
+  try {
+    const response = await fetch(audioUrl);
+    if (!response.ok || token !== generation) return false;
+  } catch {
+    // The Audio element still gets a chance to use an existing runtime cache.
+  }
   return new Promise((resolve) => {
-    const audio = new Audio(versionAudioPath(path));
+    const audio = new Audio(audioUrl);
     activeAudio = audio;
     audio.preload = "auto";
     audio.volume = 1;

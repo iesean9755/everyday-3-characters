@@ -16,6 +16,7 @@
     "qa:browser": "node scripts/reproduce-sound-overlay.mjs",
     "qa:audio": "node scripts/qa-local-audio.mjs",
     "qa:pwa": "node scripts/qa-pwa-offline.mjs",
+    "qa:pwa:pages": "node scripts/qa-pages-pwa.mjs",
     "mobile:build": "pnpm build && cap sync android && cap sync ios && node scripts/fix-ios-spm.mjs",
     "mobile:sync": "pnpm mobile:build",
     "android:open": "cap open android",

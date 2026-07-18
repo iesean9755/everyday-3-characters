@@ -1,11 +1,20 @@
 import { defineConfig } from "vitest/config";
+import { loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
 import { VitePWA } from "vite-plugin-pwa";
 
-export default defineConfig({
-  plugins: [
-    react(),
-    VitePWA({
+const AUDIO_CACHE_VERSION = "20260718c";
+
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, ".", "");
+  const isGitHubPages = env.VITE_DEPLOY_TARGET === "github-pages";
+  const base = isGitHubPages ? "/everyday-3-characters/" : "/";
+
+  return {
+    base,
+    plugins: [
+      react(),
+      VitePWA({
       registerType: "autoUpdate",
       includeAssets: [
         "icons/icon.svg",
@@ -21,6 +30,8 @@ export default defineConfig({
         display: "standalone",
         orientation: "portrait-primary",
         lang: "zh-CN",
+        start_url: base,
+        scope: base,
         icons: [
           {
             src: "icons/icon-192.webp",
@@ -44,9 +55,29 @@ export default defineConfig({
       },
       workbox: {
         navigateFallback: "index.html",
-      globPatterns: ["**/*.{js,css,html,svg,png,mp3,json}"],
+        cleanupOutdatedCaches: true,
+        globPatterns: ["**/*.{js,css,html,svg,png,webp,json}"],
+        runtimeCaching: [
+          {
+            urlPattern: /\.mp3(?:\?.*)?$/i,
+            handler: "CacheFirst",
+            options: {
+              cacheName: `audio-runtime-${AUDIO_CACHE_VERSION}`,
+              cacheableResponse: { statuses: [0, 200] },
+              expiration: {
+                maxEntries: 700,
+                maxAgeSeconds: 60 * 60 * 24 * 180,
+              },
+            },
+          },
+        ],
       },
-    }),
-  ],
-  test: { environment: "jsdom", setupFiles: "./src/test/setup.ts", css: true },
+      }),
+    ],
+    test: {
+      environment: "jsdom",
+      setupFiles: "./src/test/setup.ts",
+      css: true,
+    },
+  };
 });
