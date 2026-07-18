@@ -60,14 +60,24 @@ function getDecoration(icon: string, label: string) {
     );
   }
 
-  // 安全/警示/危险/火焰/电相关 - 画警告三角
+  // 火焰/火相关 - 优先画火焰（更贴切“火”本身，而不是警告）
+  if (icon.includes('🔥') || label.includes('火') || label.includes('火焰')) {
+    decoration = (
+      <g>
+        {/* 火焰形状 - 橙红渐层效果，简单矩量 */}
+        <ellipse cx="68" cy="58" rx="18" ry="28" fill="#ff4500" />
+        <ellipse cx="68" cy="50" rx="12" ry="20" fill="#ffa500" />
+        <ellipse cx="68" cy="44" rx="7" ry="12" fill="#ffff00" />
+      </g>
+    );
+  }
+
+  // 安全/警示/危险/电相关 - 画警告三角（火相关已优先处理）
   if (
     label.includes('危险') ||
     label.includes('警示') ||
-    label.includes('火焰') ||
     label.includes('电') ||
     label.includes('插座') ||
-    icon.includes('🔥') ||
     icon.includes('⚠️')
   ) {
     decoration = (

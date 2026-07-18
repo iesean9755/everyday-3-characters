@@ -366,7 +366,7 @@ async function playBrowserSegment(
   return attemptBrowserSegment(segment, null, token);
 }
 
-async function playSegments(
+function playSegments(
   segments: SpeechSegment[],
   voiceName: string,
 ): Promise<PlaybackResult> {
@@ -452,7 +452,7 @@ export async function speakTeaching(
       },
       {
         text: character,
-        rate: Math.min(0.7, Math.max(0.62, normalRate - 0.12)),
+        rate: normalRate, // 保持正常语速，避免失真；靠停顿区分段落
         pauseAfterMs: options.characterPauseMs ?? 900,
         audioPath: item.characterAudio,
       },
