@@ -119,7 +119,7 @@ describe("本地音频回退", () => {
     await vi.runAllTimersAsync();
     expect(await result).toMatchObject({ ok: true, source: "local" });
     expect(sources).toEqual([
-      "/audio/lessons/day-01-1-teaching.mp3?v=20260718b",
+      "/audio/lessons/day-01-1-teaching.mp3?v=20260718c",
     ]);
     expect(spoken).toEqual([]);
     stopSpeech();

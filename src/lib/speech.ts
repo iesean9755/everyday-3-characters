@@ -1,7 +1,7 @@
 import type { CharacterItem } from "../types";
 import { getTeachingParts } from "./audioText";
 
-export const AUDIO_VERSION = "20260718b";
+export const AUDIO_VERSION = "20260718c";
 
 export function versionAudioPath(path: string): string {
   const separator = path.includes("?") ? "&" : "?";

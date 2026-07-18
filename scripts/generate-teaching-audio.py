@@ -14,6 +14,9 @@ AUDIO_ROOT = ROOT / "public" / "audio"
 SCRIPT_PATH = ROOT / "scripts" / "audio-script.json"
 REPORT_PATH = ROOT / "scripts" / "teaching-audio-report.json"
 INTRO_GAIN_DB = 3.0
+PREROLL_SECONDS = 0.150
+TRUE_PEAK_TARGET_DBTP = -1.5
+TRUE_PEAK_SAFETY_DBTP = -1.8
 
 
 def parse_args() -> argparse.Namespace:
@@ -132,11 +135,12 @@ def build_one(
     source_difference = measured["intro"] - other_average
 
     output.parent.mkdir(parents=True, exist_ok=True)
-    temporary = output.with_name(f"{output.stem}.teaching.tmp.mp3")
+    temporary = output.with_name(f"{output.stem}.teaching.tmp.wav")
     normalized = output.with_name(f"{output.stem}.teaching-final.tmp.mp3")
     temporary.unlink(missing_ok=True)
     normalized.unlink(missing_ok=True)
     filter_graph = (
+        f"anullsrc=r=44100:cl=mono:d={PREROLL_SECONDS:.3f}[pre];"
         f"[0:a]aformat=sample_rates=44100:channel_layouts=mono,volume={INTRO_GAIN_DB}dB[a0];"
         "[1:a]aformat=sample_rates=44100:channel_layouts=mono[a1];"
         "[2:a]aformat=sample_rates=44100:channel_layouts=mono[a2];"
@@ -144,8 +148,7 @@ def build_one(
         "anullsrc=r=44100:cl=mono:d=0.150[s1];"
         "anullsrc=r=44100:cl=mono:d=0.200[s2];"
         "anullsrc=r=44100:cl=mono:d=0.150[s3];"
-        "[a0][s1][a1][s2][a2][s3][a3]concat=n=7:v=0:a=1,"
-        "loudnorm=I=-18:TP=-1.5:LRA=7[out]"
+        "[pre][a0][s1][a1][s2][a2][s3][a3]concat=n=8:v=0:a=1[out]"
     )
     command = [ffmpeg, "-hide_banner", "-loglevel", "error", "-y"]
     for path in sources.values():
@@ -157,9 +160,7 @@ def build_one(
             "-map",
             "[out]",
             "-codec:a",
-            "libmp3lame",
-            "-q:a",
-            "3",
+            "pcm_s24le",
             str(temporary),
         ]
     )
@@ -177,40 +178,43 @@ def build_one(
             "audioPath": teaching["audioPath"],
             "error": result.stderr.strip() or "输出音频无效",
         }
-    measured = measure_loudnorm(ffmpeg, temporary)
-    final_filter = (
-        "loudnorm=I=-18:TP=-1.5:LRA=7:linear=true:"
-        f"measured_I={measured['input_i']}:"
-        f"measured_TP={measured['input_tp']}:"
-        f"measured_LRA={measured['input_lra']}:"
-        f"measured_thresh={measured['input_thresh']}:"
-        f"offset={measured['target_offset']}"
-    )
-    final_result = subprocess.run(
-        [
-            ffmpeg,
-            "-hide_banner",
-            "-loglevel",
-            "error",
-            "-y",
-            "-i",
-            str(temporary),
-            "-af",
-            final_filter,
-            "-ar",
-            "44100",
-            "-codec:a",
-            "libmp3lame",
-            "-q:a",
-            "3",
-            str(normalized),
-        ],
-        capture_output=True,
-        text=True,
-        encoding="utf-8",
-        errors="replace",
-        check=False,
-    )
+    combined_stats = measure_loudnorm(ffmpeg, temporary)
+    combined_true_peak = float(combined_stats["input_tp"])
+    whole_file_gain_db = min(0.0, TRUE_PEAK_SAFETY_DBTP - combined_true_peak)
+
+    def encode_with_gain(gain_db: float) -> subprocess.CompletedProcess[str]:
+        return subprocess.run(
+            [
+                ffmpeg,
+                "-hide_banner",
+                "-loglevel",
+                "error",
+                "-y",
+                "-i",
+                str(temporary),
+                "-af",
+                f"volume={gain_db:.3f}dB",
+                "-ar",
+                "44100",
+                "-codec:a",
+                "libmp3lame",
+                "-q:a",
+                "3",
+                str(normalized),
+            ],
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            check=False,
+        )
+
+    final_result = encode_with_gain(whole_file_gain_db)
+    if final_result.returncode == 0 and valid_audio(ffmpeg, normalized):
+        encoded_true_peak = float(measure_loudnorm(ffmpeg, normalized)["input_tp"])
+        if encoded_true_peak > TRUE_PEAK_TARGET_DBTP:
+            whole_file_gain_db -= encoded_true_peak - TRUE_PEAK_SAFETY_DBTP
+            final_result = encode_with_gain(whole_file_gain_db)
     temporary.unlink(missing_ok=True)
     if final_result.returncode != 0 or not valid_audio(ffmpeg, normalized):
         normalized.unlink(missing_ok=True)
@@ -218,11 +222,21 @@ def build_one(
             "audioPath": teaching["audioPath"],
             "error": final_result.stderr.strip() or "最终响度统一失败",
         }
+    final_stats = measure_loudnorm(ffmpeg, normalized)
+    if float(final_stats["input_tp"]) > TRUE_PEAK_TARGET_DBTP:
+        normalized.unlink(missing_ok=True)
+        return "failed", {
+            "audioPath": teaching["audioPath"],
+            "error": f"true peak exceeds target: {final_stats['input_tp']} dBTP",
+        }
     os.replace(normalized, output)
     return "generated", {
         "audioPath": teaching["audioPath"],
         "durationSeconds": duration_seconds(ffprobe, output),
         "sourceLufs": measured,
+        "prerollMs": round(PREROLL_SECONDS * 1000),
+        "finalTruePeakDbTp": float(final_stats["input_tp"]),
+        "wholeFileGainDb": round(whole_file_gain_db, 3),
         "introSourceDifferenceLu": round(source_difference, 2),
         "introGainDb": INTRO_GAIN_DB,
         "effectiveIntroDifferenceDb": round(source_difference + INTRO_GAIN_DB, 2),
@@ -265,6 +279,7 @@ def main() -> int:
             print(f"已处理 {index}/{len(teaching_rows)}")
 
     report = {
+        "prerollMs": round(PREROLL_SECONDS * 1000),
         "targetPausesMs": [150, 200, 150],
         "targetLufs": -18,
         "truePeakDb": -1.5,
