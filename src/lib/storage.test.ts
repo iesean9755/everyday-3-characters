@@ -19,6 +19,38 @@ import { addDays, todayKey } from "./date";
 describe("学习记录容错与迁移", () => {
   beforeEach(() => localStorage.clear());
 
+  it("旧默认停顿迁移为iPhone短停顿并保留家人自定义值", () => {
+    const fresh = freshProgress();
+    const migratedDefaults = migrateProgress({
+      ...fresh,
+      settings: {
+        ...fresh.settings,
+        introPauseMs: 600,
+        characterPauseMs: 900,
+      },
+    });
+    expect(migratedDefaults.settings).toMatchObject({
+      introPauseMs: 300,
+      characterPauseMs: 400,
+      explanationPauseMs: 300,
+    });
+
+    const migratedCustom = migrateProgress({
+      ...fresh,
+      settings: {
+        ...fresh.settings,
+        introPauseMs: 500,
+        characterPauseMs: 700,
+        explanationPauseMs: 200,
+      },
+    });
+    expect(migratedCustom.settings).toMatchObject({
+      introPauseMs: 500,
+      characterPauseMs: 700,
+      explanationPauseMs: 200,
+    });
+  });
+
   it("损坏数据会恢复成安全的新记录", () => {
     localStorage.setItem("everyday-3-characters-v1", "{坏数据");
     expect(loadProgress().version).toBe(3);

@@ -54,6 +54,7 @@ export interface Settings {
   voiceName: string;
   introPauseMs: number;
   characterPauseMs: number;
+  explanationPauseMs: number;
   autoPlay: boolean;
   fontScale: number;
   optionCount: 2 | 3;

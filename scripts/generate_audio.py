@@ -30,6 +30,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--all", action="store_true")
     parser.add_argument("--force", action="store_true")
     parser.add_argument("--concurrency", type=int, default=3)
+    parser.add_argument("--category", help="只生成指定分类，例如 character")
     return parser.parse_args()
 
 
@@ -43,7 +44,7 @@ async def generate_one(edge_tts, row: dict, args: argparse.Namespace, semaphore)
         return "skipped", row
 
     output.parent.mkdir(parents=True, exist_ok=True)
-    rate = "-25%" if row["category"] == "character" else "-15%"
+    rate = "-15%"
     async with semaphore:
         for attempt in range(1, 4):
             try:
@@ -86,7 +87,8 @@ async def main() -> int:
     selected = [
         row
         for row in rows
-        if args.all or row["courseDay"] == 0 or row["courseDay"] <= args.days
+        if (args.all or row["courseDay"] == 0 or row["courseDay"] <= args.days)
+        and (not args.category or row["category"] == args.category)
     ]
     semaphore = asyncio.Semaphore(args.concurrency)
     results = await asyncio.gather(

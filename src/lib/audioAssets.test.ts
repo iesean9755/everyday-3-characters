@@ -20,6 +20,7 @@ const courseAudioPaths = (course: (typeof courses)[number]) => [
   ...course.characters.flatMap((item) => [
     item.characterAudio,
     item.explanationAudio,
+    item.exampleAudio,
     item.questionAudio,
     item.successAudio,
     item.retryAudio,
@@ -75,7 +76,7 @@ describe("本地自然语音资源", () => {
 
   it("第8天和第30天仍有完整本地音频覆盖", () => {
     for (const course of [courses[7], courses[29]]) {
-      expect(new Set(courseAudioPaths(course)).size).toBe(16);
+      expect(new Set(courseAudioPaths(course)).size).toBe(19);
       for (const audioPath of courseAudioPaths(course)) {
         expect(manifestSet.has(audioPath), audioPath).toBe(true);
       }

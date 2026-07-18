@@ -29,6 +29,7 @@ yarn-error.log*
 pnpm-debug.log*
 temp/
 tmp/
+*.normalize.tmp.mp3
 
 # Local Android configuration and build output
 android/local.properties

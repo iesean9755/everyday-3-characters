@@ -22,8 +22,9 @@ export const defaultSettings: Settings = {
   dailyCount: 3,
   speechRate: 0.78,
   voiceName: "",
-  introPauseMs: 600,
-  characterPauseMs: 900,
+  introPauseMs: 300,
+  characterPauseMs: 400,
+  explanationPauseMs: 300,
   autoPlay: true,
   fontScale: 1,
   optionCount: 2,
@@ -265,7 +266,14 @@ export function migrateProgress(value: unknown): Progress {
   const old = value as unknown as Partial<Omit<Progress, "version">> & {
     version: 1 | 2 | 3;
   };
-  const settings = { ...defaultSettings, ...(old.settings ?? {}) };
+  const storedSettings: Partial<Settings> = old.settings ?? {};
+  const settings = { ...defaultSettings, ...storedSettings };
+  // Only migrate the former defaults. Preserve every other family choice.
+  if (storedSettings.introPauseMs === 600) settings.introPauseMs = 300;
+  if (storedSettings.characterPauseMs === 900) settings.characterPauseMs = 400;
+  if (typeof storedSettings.explanationPauseMs !== "number") {
+    settings.explanationPauseMs = 300;
+  }
   const total = unique(old.totalLearnedCharacterIds ?? old.learnedIds ?? []);
   const oldCourseIndex = Math.max(
     0,

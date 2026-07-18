@@ -44,6 +44,7 @@ export interface SpeechOptions {
 export interface TeachingOptions extends SpeechOptions {
   introPauseMs?: number;
   characterPauseMs?: number;
+  explanationPauseMs?: number;
 }
 
 type SpeechSegment = {
@@ -98,13 +99,25 @@ function scoreVoice(voice: SpeechSynthesisVoice): number {
 function refreshVoices(notify = true) {
   if (!speechSupported()) return;
   const loaded = window.speechSynthesis.getVoices();
-  if (loaded.length) voices = loaded;
+  // An empty list is meaningful; do not keep voices that disappeared.
+  voices = loaded;
   if (notify) voiceListeners.forEach((listener) => listener());
 }
 
 if (typeof window !== "undefined" && speechSupported()) {
-  window.speechSynthesis.addEventListener("voiceschanged", handleVoicesChanged);
+  window.speechSynthesis.addEventListener?.("voiceschanged", handleVoicesChanged);
   refreshVoices(false);
+}
+
+// The module-level listener keeps the voice list current for the lifetime of
+// the page. Components call this helper to trigger an immediate refresh while
+// keeping a stable cleanup contract for their effects.
+export function initializeVoices(): () => void {
+  // A previous readiness wait may have been interrupted by a page teardown.
+  // Start each mounted app with a fresh readiness check.
+  readinessPromise = null;
+  refreshVoices(false);
+  return () => undefined;
 }
 
 export function ensureSpeechReady(): Promise<SpeechReadiness> {
@@ -248,6 +261,7 @@ async function playLocal(
     const audio = new Audio(path);
     activeAudio = audio;
     audio.preload = "auto";
+    audio.volume = 1;
     audio.onended = () => resolve(token === generation);
     audio.onerror = () => resolve(false);
     audio.play().catch(() => resolve(false));
@@ -366,7 +380,7 @@ async function playBrowserSegment(
   return attemptBrowserSegment(segment, null, token);
 }
 
-function playSegments(
+async function playSegments(
   segments: SpeechSegment[],
   voiceName: string,
 ): Promise<PlaybackResult> {
@@ -401,6 +415,7 @@ function playSegments(
 
 export function stopSpeech() {
   generation += 1;
+  readinessPromise = null;
   if (pauseTimer !== undefined) window.clearTimeout(pauseTimer);
   pauseTimer = undefined;
   activeSegmentCancel?.();
@@ -447,19 +462,19 @@ export async function speakTeaching(
       {
         text: intro,
         rate: normalRate,
-        pauseAfterMs: options.introPauseMs ?? 600,
+        pauseAfterMs: options.introPauseMs ?? 300,
         audioPath: item.introAudio,
       },
       {
         text: character,
-        rate: normalRate, // 保持正常语速，避免失真；靠停顿区分段落
-        pauseAfterMs: options.characterPauseMs ?? 900,
+        rate: normalRate,
+        pauseAfterMs: options.characterPauseMs ?? 400,
         audioPath: item.characterAudio,
       },
       {
         text: explanation,
         rate: normalRate,
-        pauseAfterMs: 700,
+        pauseAfterMs: options.explanationPauseMs ?? 300,
         audioPath: item.explanationAudio,
       },
       {

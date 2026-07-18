@@ -13,6 +13,7 @@ class UtteranceMock {
 
 class FailingAudio {
   preload = "";
+  volume = 0;
   src = "";
   currentTime = 0;
   onended: (() => void) | null = null;

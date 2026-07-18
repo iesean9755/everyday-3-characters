@@ -187,6 +187,7 @@ function App({ initialProgress }: { initialProgress?: Progress } = {}) {
       voiceName: p.settings.voiceName,
       introPauseMs: p.settings.introPauseMs,
       characterPauseMs: p.settings.characterPauseMs,
+      explanationPauseMs: p.settings.explanationPauseMs,
     });
     return attempt === soundAttempt.current ? handlePlayback(result) : result;
   }, [handlePlayback, item, p.settings]);
@@ -1501,9 +1502,9 @@ function Settings({
           value={s.introPauseMs}
           onChange={(e) => setS({ ...s, introPauseMs: Number(e.target.value) })}
         >
-          <option value="400">短（0.4秒）</option>
-          <option value="600">标准（0.6秒）</option>
-          <option value="800">长（0.8秒）</option>
+          <option value="200">短（0.2秒）</option>
+          <option value="300">标准（0.3秒）</option>
+          <option value="500">长（0.5秒）</option>
         </select>
       </label>
       <label>
@@ -1514,9 +1515,22 @@ function Settings({
             setS({ ...s, characterPauseMs: Number(e.target.value) })
           }
         >
-          <option value="700">短（0.7秒）</option>
-          <option value="900">标准（0.9秒）</option>
-          <option value="1200">长（1.2秒）</option>
+          <option value="300">短（0.3秒）</option>
+          <option value="400">标准（0.4秒）</option>
+          <option value="600">长（0.6秒）</option>
+        </select>
+      </label>
+      <label>
+        生活解释后停顿
+        <select
+          value={s.explanationPauseMs}
+          onChange={(e) =>
+            setS({ ...s, explanationPauseMs: Number(e.target.value) })
+          }
+        >
+          <option value="200">短（0.2秒）</option>
+          <option value="300">标准（0.3秒）</option>
+          <option value="500">长（0.5秒）</option>
         </select>
       </label>
       <label>

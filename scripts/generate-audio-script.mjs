@@ -16,6 +16,7 @@ await vite.close();
 
 const audioRoot = path.join(root, "public/audio");
 const existingFiles = [];
+
 async function scan(directory) {
   for (const entry of await fs.readdir(directory, { withFileTypes: true })) {
     const full = path.join(directory, entry.name);
@@ -30,6 +31,7 @@ async function scan(directory) {
     }
   }
 }
+
 await scan(audioRoot);
 const existing = new Set(existingFiles);
 const rowsByPath = new Map();
@@ -118,7 +120,7 @@ add({
   id: "lesson-intro",
   category: "intro",
   text: audioText.getTeachingParts(courses[0].characters[0]).intro,
-  pause: "结束后600ms",
+  pause: "结束后停顿300ms",
   file: "/audio/lessons/intro.mp3",
 });
 
@@ -131,6 +133,7 @@ for (const course of courses) {
     text: audioText.getGoalSpeech(course),
     file: course.openingAudio,
   });
+
   for (const item of course.characters) {
     const suffix = item.id.split("-").at(-1);
     const prefix = `day-${day}-${suffix}`;
@@ -141,8 +144,7 @@ for (const course of courses) {
       day,
       character: item.characterKey,
       text: parts.character,
-      pause: "结束后900ms",
-      rate: "-25%",
+      pause: "结束后停顿400ms",
       file: item.characterAudio,
     });
     add({
@@ -151,7 +153,16 @@ for (const course of courses) {
       day,
       character: item.characterKey,
       text: parts.explanation,
+      pause: "结束后停顿300ms",
       file: item.explanationAudio,
+    });
+    add({
+      id: `${prefix}-example`,
+      category: "example",
+      day,
+      character: item.characterKey,
+      text: parts.example,
+      file: item.exampleAudio,
     });
     add({
       id: `${prefix}-question`,

@@ -19,6 +19,7 @@ const courseAudioPaths = (course) => [
   ...course.characters.flatMap((item) => [
     item.characterAudio,
     item.explanationAudio,
+    item.exampleAudio,
     item.questionAudio,
     item.successAudio,
     item.retryAudio,
@@ -118,6 +119,6 @@ const failed = Object.values(results).flatMap((group) => group.failed);
 console.log(JSON.stringify({ manifestCount, groups: results, consoleErrors }));
 await browser.close();
 
-if (manifestCount !== 476 || failed.length || consoleErrors.length) {
+if (manifestCount !== 566 || failed.length || consoleErrors.length) {
   process.exitCode = 1;
 }

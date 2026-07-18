@@ -56,20 +56,23 @@ describe("统一语音模块", () => {
     expect(getChineseVoices()[0].name).toContain("Xiaoxiao");
   });
 
-  it("件字按600ms和900ms停顿串行朗读", async () => {
+  it("教学语音按300ms、400ms和300ms停顿且目标字不减速", async () => {
     const item = courses[15].characters[0];
-    const result = speakTeaching(item, { rate: 0.8, introPauseMs: 600, characterPauseMs: 900 });
+    const result = speakTeaching(item, {
+      rate: 0.8,
+      introPauseMs: 300,
+      characterPauseMs: 400,
+      explanationPauseMs: 300,
+    });
     await vi.advanceTimersByTimeAsync(2);
     expect(spoken.map((entry) => entry.text)).toEqual(["这个字念"]);
-    await vi.advanceTimersByTimeAsync(598);
-    expect(spoken).toHaveLength(1);
-    await vi.advanceTimersByTimeAsync(2);
-    expect(spoken[1]).toMatchObject({ text: "件", rate: 0.68 });
-    await vi.advanceTimersByTimeAsync(899);
-    expect(spoken).toHaveLength(2);
-    await vi.advanceTimersByTimeAsync(2);
+    await vi.advanceTimersByTimeAsync(300);
+    expect(spoken[1]).toMatchObject({ text: "件", rate: 0.8 });
+    await vi.advanceTimersByTimeAsync(400);
     expect(spoken[2].text).toBe("快递件的件");
-    await vi.advanceTimersByTimeAsync(2);
+    await vi.advanceTimersByTimeAsync(302);
+    expect(spoken[3]).toMatchObject({ text: "您有一个快递件。", rate: 0.8 });
+    await vi.advanceTimersByTimeAsync(5);
     expect((await result).ok).toBe(true);
   });
 
